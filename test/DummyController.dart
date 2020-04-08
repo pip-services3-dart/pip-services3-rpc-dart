@@ -19,19 +19,19 @@
 // 		return this._commandSet;
 // 	}
 
-// 	public getPageByFilter(correlationId: string, filter: FilterParams, paging: PagingParams, 
+// 	public getPageByFilter(String correlationId, filter: FilterParams, paging: PagingParams, 
 // 		callback: (err: any, result: DataPage<Dummy>) => void): void {
 		
 // 		filter = filter != null ? filter : new FilterParams();
-// 		let key: string = filter.getAsNullableString("key");
+// 		var key: string = filter.getAsNullableString("key");
 		
 // 		paging = paging != null ? paging : new PagingParams();
-// 		let skip: number = paging.getSkip(0);
-// 		let take: number = paging.getTake(100);
+// 		var skip: number = paging.getSkip(0);
+// 		var take: number = paging.getTake(100);
 		
-// 		let result: Dummy[] = [];
+// 		var result: Dummy[] = [];
 // 		for (var i = 0; i < this._entities.length; i++) {
-//             let entity: Dummy = this._entities[i];
+//             var entity: Dummy = this._entities[i];
 // 			if (key != null && key != entity.key)
 // 				continue;
 				
@@ -47,9 +47,9 @@
 // 		callback(null,  new DataPage<Dummy>(result));
 // 	}
 
-// 	public getOneById(correlationId: string, id: string, callback: (err: any, result: Dummy) => void): void {
+// 	public getOneById(String correlationId, id: string, callback: (err: any, result: Dummy) => void): void {
 // 		for (var i = 0; i < this._entities.length; i++) {
-//             let entity: Dummy = this._entities[i];
+//             var entity: Dummy = this._entities[i];
 // 			if (id == entity.id) {
 // 				callback(null, entity);
 // 				return;
@@ -58,7 +58,7 @@
 // 		callback(null, null);
 // 	}
 
-// 	public create(correlationId: string, entity: Dummy, callback: (err: any, result: Dummy) => void): void {
+// 	public create(String correlationId, entity: Dummy, callback: (err: any, result: Dummy) => void): void {
 // 		if (entity.id == null) {
 //             entity.id = IdGenerator.nextLong();
 //             this._entities.push(entity);
@@ -66,9 +66,9 @@
 // 		callback(null, entity);
 // 	}
 
-// 	public update(correlationId: string, newEntity: Dummy, callback: (err: any, result: Dummy) => void): void {
+// 	public update(String correlationId, newEntity: Dummy, callback: (err: any, result: Dummy) => void): void {
 // 		for(var index = 0; index < this._entities.length; index++) {
-// 			let entity: Dummy = this._entities[index];
+// 			var entity: Dummy = this._entities[index];
 // 			if (entity.id == newEntity.id) {
 // 				this._entities[index] = newEntity;
 // 				callback(null, newEntity);
@@ -78,9 +78,9 @@
 // 		callback(null, null);
 // 	}
 
-// 	public deleteById(correlationId: string, id: string, callback: (err: any, result: Dummy) => void): void {
+// 	public deleteById(String correlationId, id: string, callback: (err: any, result: Dummy) => void): void {
 // 		for (var index = 0; index < this._entities.length; index++) {
-// 			let entity: Dummy = this._entities[index];
+// 			var entity: Dummy = this._entities[index];
 // 			if (entity.id == id) {
 // 				this._entities.splice(index, 1);
 // 				callback(null, entity);

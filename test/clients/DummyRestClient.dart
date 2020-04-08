@@ -8,8 +8,8 @@
 
 // export class DummyRestClient extends RestClient implements IDummyClient {
         
-//     public getDummies(correlationId: string, filter: FilterParams, paging: PagingParams, callback: (err: any, result: DataPage<Dummy>) => void): void {
-//         let params = {};
+//     public getDummies(String correlationId, filter: FilterParams, paging: PagingParams, callback: (err: any, result: DataPage<Dummy>) => void): void {
+//         var params = {};
 //         this.addFilterParams(params, filter);
 //         this.addPagingParams(params, paging);
 
@@ -24,7 +24,7 @@
 //         );
 //     }
 
-//     public getDummyById(correlationId: string, dummyId: string, callback: (err: any, result: Dummy) => void): void {
+//     public getDummyById(String correlationId, dummyId: string, callback: (err: any, result: Dummy) => void): void {
 //         this.call('get', 
 //             '/dummies/' + dummyId,
 //             correlationId,
@@ -36,7 +36,7 @@
 //         );        
 //     }
 
-//     public createDummy(correlationId: string, dummy: any, callback: (err: any, result: Dummy) => void): void {
+//     public createDummy(String correlationId, dummy: any, callback: (err: any, result: Dummy) => void): void {
 //         this.call('post', 
 //             '/dummies',
 //             correlationId,
@@ -49,7 +49,7 @@
 //         );
 //     }
 
-//     public updateDummy(correlationId: string, dummy: any, callback: (err: any, result: Dummy) => void): void {
+//     public updateDummy(String correlationId, dummy: any, callback: (err: any, result: Dummy) => void): void {
 //         this.call('put', 
 //             '/dummies',
 //             correlationId, 
@@ -62,7 +62,7 @@
 //         );
 //     }
 
-//     public deleteDummy(correlationId: string, dummyId: string, callback: (err: any, result: Dummy) => void): void {
+//     public deleteDummy(String correlationId, dummyId: string, callback: (err: any, result: Dummy) => void): void {
 //         this.call('delete', 
 //             '/dummies/' + dummyId,
 //             correlationId, 

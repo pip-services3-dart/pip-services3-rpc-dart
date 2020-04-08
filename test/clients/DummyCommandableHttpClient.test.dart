@@ -1,6 +1,6 @@
-// let assert = require('chai').assert;
-// let restify = require('restify');
-// let async = require('async');
+// var assert = require('chai').assert;
+// var restify = require('restify');
+// var async = require('async');
 
 // import {
 //     Descriptor,
@@ -21,19 +21,19 @@
 // );
 
 // suite('DummyCommandableHttpClient', ()=> {
-//     let service: DummyCommandableHttpService;
-//     let client: DummyCommandableHttpClient;
+//     var service: DummyCommandableHttpService;
+//     var client: DummyCommandableHttpClient;
 
-//     let rest: any;
-//     let fixture: DummyClientFixture;
+//     var rest: any;
+//     var fixture: DummyClientFixture;
 
 //     suiteSetup((done) => {
-//         let ctrl = new DummyController();
+//         var ctrl = new DummyController();
 
 //         service = new DummyCommandableHttpService();
 //         service.configure(restConfig);
 
-//         let references: References = References.fromTuples(
+//         var references: References = References.fromTuples(
 //             new Descriptor('pip-services-dummies', 'controller', 'default', 'default', '1.0'), ctrl,
 //             new Descriptor('pip-services-dummies', 'service', 'http', 'default', '1.0'), service
 //         );

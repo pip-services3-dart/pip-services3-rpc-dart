@@ -1,4 +1,4 @@
-// /** @module auth */
+//  @module auth 
 // const _ = require('lodash');
 
 // import { UnauthorizedException } from 'pip-services3-commons-node';
@@ -8,7 +8,7 @@
 
 //     public userInRoles(roles: string[]): (req: any, res: any, next: () => void) => void {
 //         return (req, res, next) => {
-//             let user = req.user;
+//             var user = req.user;
 //             if (user == null) {
 //                 HttpResponseSender.sendError(
 //                     req, res,
@@ -18,9 +18,9 @@
 //                     ).withStatus(401)
 //                 );
 //             } else {
-//                 let authorized = false;
+//                 var authorized = false;
                 
-//                 for (let role of roles)
+//                 for (var role of roles)
 //                     authorized = authorized || _.includes(user.roles, role);
 
 //                 if (!authorized) {

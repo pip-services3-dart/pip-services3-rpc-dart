@@ -1,5 +1,5 @@
-// let assert = require('chai').assert;
-// let async = require('async');
+// var assert = require('chai').assert;
+// var async = require('async');
 
 // import {
 //     Descriptor,
@@ -16,14 +16,14 @@
 //     var _dummy1: Dummy;
 //     var _dummy2: Dummy;
 
-//     let client: DummyDirectClient;
+//     var client: DummyDirectClient;
 
 //     suiteSetup((done) => {
-//         let ctrl = new DummyController();
+//         var ctrl = new DummyController();
 
 //         client = new DummyDirectClient();
 
-//         let references: References = References.fromTuples(
+//         var references: References = References.fromTuples(
 //             new Descriptor('pip-services-dummies', 'controller', 'default', 'default', '1.0'), ctrl
 //         );
 //         client.setReferences(references);

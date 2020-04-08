@@ -1,5 +1,5 @@
-// /** @module services */
-// /** @hidden */
+//  @module services 
+//  @hidden 
 // const _ = require('lodash');
 // const fs = require('fs');
 
@@ -17,50 +17,50 @@
 // import { HttpConnectionResolver } from '../connect/HttpConnectionResolver';
 // import { IRegisterable } from './IRegisterable';
 
-// /**
-//  * Used for creating HTTP endpoints. An endpoint is a URL, at which a given service can be accessed by a client. 
-//  * 
-//  * ### Configuration parameters ###
-//  * 
-//  * Parameters to pass to the [[configure]] method for component configuration:
-//  * 
-//  * - connection(s) - the connection resolver's connections:
-//  *     - "connection.discovery_key" - the key to use for connection resolving in a discovery service;
-//  *     - "connection.protocol" - the connection's protocol;
-//  *     - "connection.host" - the target host;
-//  *     - "connection.port" - the target port;
-//  *     - "connection.uri" - the target URI.
-//  * - credential - the HTTPS credentials:
-//  *     - "credential.ssl_key_file" - the SSL private key in PEM
-//  *     - "credential.ssl_crt_file" - the SSL certificate in PEM
-//  *     - "credential.ssl_ca_file" - the certificate authorities (root cerfiticates) in PEM
-//  * 
-//  * ### References ###
-//  * 
-//  * A logger, counters, and a connection resolver can be referenced by passing the 
-//  * following references to the object's [[setReferences]] method:
-//  * 
-//  * - logger: <code>"\*:logger:\*:\*:1.0"</code>;
-//  * - counters: <code>"\*:counters:\*:\*:1.0"</code>;
-//  * - discovery: <code>"\*:discovery:\*:\*:1.0"</code> (for the connection resolver).
-//  * 
-//  * ### Examples ###
-//  * 
-//  *     public MyMethod(_config: ConfigParams, _references: IReferences) {
-//  *         let endpoint = new HttpEndpoint();
-//  *         if (this._config)
-//  *             endpoint.configure(this._config);
-//  *         if (this._references)
-//  *             endpoint.setReferences(this._references);
-//  *         ...
-//  * 
-//  *         this._endpoint.open(correlationId, (err) => {
-//  *                 this._opened = err == null;
-//  *                 callback(err);
-//  *             });
-//  *         ...
-//  *     }
-//  */
+// 
+// /// Used for creating HTTP endpoints. An endpoint is a URL, at which a given service can be accessed by a client. 
+// /// 
+// /// ### Configuration parameters ###
+// /// 
+// /// Parameters to pass to the [[configure]] method for component configuration:
+// /// 
+// /// - connection(s) - the connection resolver's connections:
+// ///     - "connection.discovery_key" - the key to use for connection resolving in a discovery service;
+// ///     - "connection.protocol" - the connection's protocol;
+// ///     - "connection.host" - the target host;
+// ///     - "connection.port" - the target port;
+// ///     - "connection.uri" - the target URI.
+// /// - credential - the HTTPS credentials:
+// ///     - "credential.ssl_key_file" - the SSL private key in PEM
+// ///     - "credential.ssl_crt_file" - the SSL certificate in PEM
+// ///     - "credential.ssl_ca_file" - the certificate authorities (root cerfiticates) in PEM
+// /// 
+// /// ### References ###
+// /// 
+// /// A logger, counters, and a connection resolver can be referenced by passing the 
+// /// following references to the object's [[setReferences]] method:
+// /// 
+// /// - logger: <code>"\*:logger:\*:\*:1.0"</code>;
+// /// - counters: <code>"\*:counters:\*:\*:1.0"</code>;
+// /// - discovery: <code>"\*:discovery:\*:\*:1.0"</code> (for the connection resolver).
+// /// 
+// /// ### Examples ###
+// /// 
+// ///     public MyMethod(_config: ConfigParams, _references: IReferences) {
+// ///         var endpoint = new HttpEndpoint();
+// ///         if (this._config)
+// ///             endpoint.configure(this._config);
+// ///         if (this._references)
+// ///             endpoint.setReferences(this._references);
+// ///         ...
+// /// 
+// ///         this._endpoint.open(correlationId, (err) => {
+// ///                 this._opened = err == null;
+// ///                 callback(err);
+// ///             });
+// ///         ...
+// ///     }
+//  
 // export class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
 //     private static readonly _defaultConfig: ConfigParams = ConfigParams.fromTuples(
@@ -84,29 +84,29 @@
 // 	private _logger: CompositeLogger = new CompositeLogger();
 // 	private _counters: CompositeCounters = new CompositeCounters();
 //     private _maintenanceEnabled: boolean = false;
-//     private _fileMaxSize: number = 200 * 1024 * 1024;
+//     private _fileMaxSize: number = 200/// 1024/// 1024;
 //     private _protocolUpgradeEnabled: boolean = false;
 //     private _uri: string;
 //     private _registrations: IRegisterable[] = [];
     
-//     /**
-//      * Configures this HttpEndpoint using the given configuration parameters.
-//      * 
-//      * __Configuration parameters:__
-//      * - __connection(s)__ - the connection resolver's connections;
-//      *     - "connection.discovery_key" - the key to use for connection resolving in a discovery service;
-//      *     - "connection.protocol" - the connection's protocol;
-//      *     - "connection.host" - the target host;
-//      *     - "connection.port" - the target port;
-//      *     - "connection.uri" - the target URI.
-//      *     - "credential.ssl_key_file" - SSL private key in PEM
-//      *     - "credential.ssl_crt_file" - SSL certificate in PEM
-//      *     - "credential.ssl_ca_file" - Certificate authority (root certificate) in PEM
-//      * 
-//      * @param config    configuration parameters, containing a "connection(s)" section.
-//      * 
-//      * @see [[https://rawgit.com/pip-services-node/pip-services3-commons-node/master/doc/api/classes/config.configparams.html ConfigParams]] (in the PipServices "Commons" package)
-//      */
+//     
+//     /// Configures this HttpEndpoint using the given configuration parameters.
+//     /// 
+//     /// __Configuration parameters:__
+//     /// - __connection(s)__ - the connection resolver's connections;
+//     ///     - "connection.discovery_key" - the key to use for connection resolving in a discovery service;
+//     ///     - "connection.protocol" - the connection's protocol;
+//     ///     - "connection.host" - the target host;
+//     ///     - "connection.port" - the target port;
+//     ///     - "connection.uri" - the target URI.
+//     ///     - "credential.ssl_key_file" - SSL private key in PEM
+//     ///     - "credential.ssl_crt_file" - SSL certificate in PEM
+//     ///     - "credential.ssl_ca_file" - Certificate authority (root certificate) in PEM
+//     /// 
+//     /// - config    configuration parameters, containing a "connection(s)" section.
+//     /// 
+//     /// See [[https://rawgit.com/pip-services-node/pip-services3-commons-node/master/doc/api/classes/config.configparams.html ConfigParams]] (in the PipServices "Commons" package)
+//      
 // 	public configure(config: ConfigParams): void {
 // 		config = config.setDefaults(HttpEndpoint._defaultConfig);
 // 		this._connectionResolver.configure(config);
@@ -116,42 +116,42 @@
 //         this._protocolUpgradeEnabled = config.getAsBooleanWithDefault('options.protocol_upgrade_enabled', this._protocolUpgradeEnabled);
 //     }
         
-//     /**
-//      * Sets references to this endpoint's logger, counters, and connection resolver.
-//      * 
-//      * __References:__
-//      * - logger: <code>"\*:logger:\*:\*:1.0"</code>
-//      * - counters: <code>"\*:counters:\*:\*:1.0"</code>
-//      * - discovery: <code>"\*:discovery:\*:\*:1.0"</code> (for the connection resolver)
-//      * 
-//      * @param references    an IReferences object, containing references to a logger, counters, 
-//      *                      and a connection resolver.
-//      * 
-//      * @see [[https://rawgit.com/pip-services-node/pip-services3-commons-node/master/doc/api/interfaces/refer.ireferences.html IReferences]] (in the PipServices "Commons" package)
-//      */
+//     
+//     /// Sets references to this endpoint's logger, counters, and connection resolver.
+//     /// 
+//     /// __References:__
+//     /// - logger: <code>"\*:logger:\*:\*:1.0"</code>
+//     /// - counters: <code>"\*:counters:\*:\*:1.0"</code>
+//     /// - discovery: <code>"\*:discovery:\*:\*:1.0"</code> (for the connection resolver)
+//     /// 
+//     /// - references    an IReferences object, containing references to a logger, counters, 
+//     ///                      and a connection resolver.
+//     /// 
+//     /// See [[https://rawgit.com/pip-services-node/pip-services3-commons-node/master/doc/api/interfaces/refer.ireferences.html IReferences]] (in the PipServices "Commons" package)
+//      
 // 	public setReferences(references: IReferences): void {
 // 		this._logger.setReferences(references);
 // 		this._counters.setReferences(references);
 // 		this._connectionResolver.setReferences(references);
 // 	}
 
-//     /**
-//      * @returns whether or not this endpoint is open with an actively listening REST server.
-//      */
+//     
+//     /// Returns whether or not this endpoint is open with an actively listening REST server.
+//      
 // 	public isOpen(): boolean {
 // 		return this._server != null;
 // 	}
     
 //     //TODO: check for correct understanding.
-//     /**
-//      * Opens a connection using the parameters resolved by the referenced connection
-//      * resolver and creates a REST server (service) using the set options and parameters.
-//      * 
-//      * @param correlationId     (optional) transaction id to trace execution through call chain.
-//      * @param callback          (optional) the function to call once the opening process is complete.
-//      *                          Will be called with an error if one is raised.
-//      */
-// 	public open(correlationId: string, callback?: (err: any) => void): void {
+//     
+//     /// Opens a connection using the parameters resolved by the referenced connection
+//     /// resolver and creates a REST server (service) using the set options and parameters.
+//     /// 
+//     /// - correlationId     (optional) transaction id to trace execution through call chain.
+//     /// - callback          (optional) the function to call once the opening process is complete.
+//     ///                          Will be called with an error if one is raised.
+//      
+// 	public open(String correlationId, callback?: (err: any) => void): void {
 //     	if (this.isOpen()) {
 //             callback(null);
 //             return;
@@ -166,21 +166,21 @@
 //             this._uri = connection.getUri();
 
 //             try {
-//                 let options: any = {};
+//                 var options: any = {};
 
 //                 if (connection.getProtocol('http') == 'https') {
-//                     let sslKeyFile = credential.getAsNullableString('ssl_key_file');
-//                     let privateKey = fs.readFileSync(sslKeyFile).toString();
+//                     var sslKeyFile = credential.getAsNullableString('ssl_key_file');
+//                     var privateKey = fs.readFileSync(sslKeyFile).toString();
         
-//                     let sslCrtFile = credential.getAsNullableString('ssl_crt_file');
-//                     let certificate = fs.readFileSync(sslCrtFile).toString();
+//                     var sslCrtFile = credential.getAsNullableString('ssl_crt_file');
+//                     var certificate = fs.readFileSync(sslCrtFile).toString();
         
-//                     let ca = [];
-//                     let sslCaFile = credential.getAsNullableString('ssl_ca_file');
+//                     var ca = [];
+//                     var sslCaFile = credential.getAsNullableString('ssl_ca_file');
 //                     if (sslCaFile != null) {
-//                         let caText = fs.readFileSync(sslCaFile).toString();
+//                         var caText = fs.readFileSync(sslCaFile).toString();
 //                         while (caText != null && caText.trim().length > 0) {
-//                             let crtIndex = caText.lastIndexOf('-----BEGIN CERTIFICATE-----');
+//                             var crtIndex = caText.lastIndexOf('-----BEGIN CERTIFICATE-----');
 //                             if (crtIndex > -1) {
 //                                 ca.push(caText.substring(crtIndex));
 //                                 caText = caText.substring(0, crtIndex);
@@ -195,7 +195,7 @@
 //                 options.handleUpgrades = this._protocolUpgradeEnabled;
                          
 //                 // Create instance of restify application   
-//                 let restify = require('restify'); 
+//                 var restify = require('restify'); 
 //                 this._server = restify.createServer(options);
                 
 //                 // Configure restify application
@@ -216,8 +216,8 @@
 //                 //     this._server.use(restify.plugins.throttle(options.get("throttle")));
                 
 //                 // Configure CORS requests
-//                 let corsMiddleware = require('restify-cors-middleware');
-//                 let cors = corsMiddleware({
+//                 var corsMiddleware = require('restify-cors-middleware');
+//                 var cors = corsMiddleware({
 //                     preflightMaxAge: 5, //Optional
 //                     origins: ['*'],
 //                     allowHeaders: ['Authenticate', 'x-session-id'],
@@ -256,7 +256,7 @@
 //                 );
 //             } catch (ex) {
 //                 this._server = null;
-//                 let err = new ConnectionException(correlationId, "CANNOT_CONNECT", "Opening REST service failed")
+//                 var err = new ConnectionException(correlationId, "CANNOT_CONNECT", "Opening REST service failed")
 //                     .wrap(ex).withDetails("url", this._uri);
 //                 if (callback) callback(err);
 //             }
@@ -267,15 +267,15 @@
 //     private addCompatibility(req: any, res: any, next: () => void): void {
 //         req.param = (name) => {
 //             if (req.query) {
-//                 let param = req.query[name];
+//                 var param = req.query[name];
 //                 if (param) return param;
 //             }
 //             if (req.body) {
-//                 let param = req.body[name];
+//                 var param = req.body[name];
 //                 if (param) return param;
 //             }
 //             if (req.params) {
-//                 let param = req.params[name];
+//                 var param = req.params[name];
 //                 if (param) return param;
 //             }
 //             return null;
@@ -303,14 +303,14 @@
 //         } else next();
 //     }
     
-//     /**
-//      * Closes this endpoint and the REST server (service) that was opened earlier.
-//      * 
-//      * @param correlationId     (optional) transaction id to trace execution through call chain.
-//      * @param callback          (optional) the function to call once the closing process is complete.
-//      *                          Will be called with an error if one is raised.
-//      */
-//     public close(correlationId: string, callback?: (err: any) => void): void {
+//     
+//     /// Closes this endpoint and the REST server (service) that was opened earlier.
+//     /// 
+//     /// - correlationId     (optional) transaction id to trace execution through call chain.
+//     /// - callback          (optional) the function to call once the closing process is complete.
+//     ///                          Will be called with an error if one is raised.
+//      
+//     public close(String correlationId, callback?: (err: any) => void): void {
 //         if (this._server != null) {
 //             // Eat exceptions
 //             try {
@@ -327,31 +327,31 @@
 //         callback(null);
 //     }
 
-//     /**
-//      * Registers a registerable object for dynamic endpoint discovery.
-//      * 
-//      * @param registration      the registration to add. 
-//      * 
-//      * @see [[IRegisterable]]
-//      */
+//     
+//     /// Registers a registerable object for dynamic endpoint discovery.
+//     /// 
+//     /// - registration      the registration to add. 
+//     /// 
+//     /// See [[IRegisterable]]
+//      
 //     public register(registration: IRegisterable): void {
 //         this._registrations.push(registration);
 //     }
 
-//     /**
-//      * Unregisters a registerable object, so that it is no longer used in dynamic 
-//      * endpoint discovery.
-//      * 
-//      * @param registration      the registration to remove. 
-//      * 
-//      * @see [[IRegisterable]]
-//      */
+//     
+//     /// Unregisters a registerable object, so that it is no longer used in dynamic 
+//     /// endpoint discovery.
+//     /// 
+//     /// - registration      the registration to remove. 
+//     /// 
+//     /// See [[IRegisterable]]
+//      
 //     public unregister(registration: IRegisterable): void {
 //         this._registrations = _.remove(this._registrations, r => r == registration);
 //     }
 
 //     private performRegistrations(): void {
-//         for (let registration of this._registrations) {
+//         for (var registration of this._registrations) {
 //             registration.register();
 //         }
 //     }
@@ -362,14 +362,14 @@
 //         return route;
 //     }
 
-//     /**
-//      * Registers an action in this objects REST server (service) by the given method and route.
-//      * 
-//      * @param method        the HTTP method of the route.
-//      * @param route         the route to register in this object's REST server (service).
-//      * @param schema        the schema to use for parameter validation.
-//      * @param action        the action to perform at the given route.
-//      */
+//     
+//     /// Registers an action in this objects REST server (service) by the given method and route.
+//     /// 
+//     /// - method        the HTTP method of the route.
+//     /// - route         the route to register in this object's REST server (service).
+//     /// - schema        the schema to use for parameter validation.
+//     /// - action        the action to perform at the given route.
+//      
 //     public registerRoute(method: string, route: string, schema: Schema,
 //         action: (req: any, res: any) => void): void {
 //         method = method.toLowerCase();
@@ -378,12 +378,12 @@
 //         route = this.fixRoute(route);
 
 //         // Hack!!! Wrapping action to preserve prototyping context
-//         let actionCurl = (req, res) => { 
+//         var actionCurl = (req, res) => { 
 //             // Perform validation
 //             if (schema != null) {
-//                 let params = _.extend({}, req.params, { body: req.body });
-//                 let correlationId = params.correlaton_id;
-//                 let err = schema.validateAndReturnException(correlationId, params, false);
+//                 var params = _.extend({}, req.params, { body: req.body });
+//                 var correlationId = params.correlaton_id;
+//                 var err = schema.validateAndReturnException(correlationId, params, false);
 //                 if (err != null) {
 //                     HttpResponseSender.sendError(req, res, err);
 //                     return;
@@ -395,26 +395,26 @@
 //         };
 
 //         // Wrapping to preserve "this"
-//         let self = this;
+//         var self = this;
 //         this._server[method](route, actionCurl);
 //     }   
     
-//     /**
-//      * Registers an action with authorization in this objects REST server (service)
-//      * by the given method and route.
-//      * 
-//      * @param method        the HTTP method of the route.
-//      * @param route         the route to register in this object's REST server (service).
-//      * @param schema        the schema to use for parameter validation.
-//      * @param authorize     the authorization interceptor
-//      * @param action        the action to perform at the given route.
-//      */
+//     
+//     /// Registers an action with authorization in this objects REST server (service)
+//     /// by the given method and route.
+//     /// 
+//     /// - method        the HTTP method of the route.
+//     /// - route         the route to register in this object's REST server (service).
+//     /// - schema        the schema to use for parameter validation.
+//     /// - authorize     the authorization interceptor
+//     /// - action        the action to perform at the given route.
+//      
 //     public registerRouteWithAuth(method: string, route: string, schema: Schema,
 //         authorize: (req: any, res: any, next: () => void) => void,
 //         action: (req: any, res: any) => void): void {
             
 //         if (authorize) {
-//             let nextAction = action;
+//             var nextAction = action;
 //             action = (req, res) => {
 //                 authorize(req, res, () => { nextAction(req, res); });
 //             }
@@ -423,12 +423,12 @@
 //         this.registerRoute(method, route, schema, action);
 //     }   
 
-//     /**
-//      * Registers a middleware action for the given route.
-//      * 
-//      * @param route         the route to register in this object's REST server (service).
-//      * @param action        the middleware action to perform at the given route.
-//      */
+//     
+//     /// Registers a middleware action for the given route.
+//     /// 
+//     /// - route         the route to register in this object's REST server (service).
+//     /// - action        the middleware action to perform at the given route.
+//      
 //     public registerInterceptor(route: string,
 //         action: (req: any, res: any, next: () => void) => void): void {
 

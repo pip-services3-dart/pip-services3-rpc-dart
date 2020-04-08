@@ -1,21 +1,21 @@
-// /** @module services */
+//  @module services 
 
-// /**
-//  * Helper class that retrieves parameters from HTTP requests.
-//  */
+// 
+// /// Helper class that retrieves parameters from HTTP requests.
+//  
 // export class HttpRequestDetector {
 
-//     /**
-//      * Detects the platform (using "user-agent") from which the given HTTP request was made.
-//      * 
-//      * @param req   an HTTP request to process.
-//      * @returns the detected platform and version. Detectable platforms: "mobile", "iphone", 
-//      * "ipad",  "macosx", "android",  "webos", "mac", "windows". Otherwise - "unknown" will 
-//      * be returned.
-//      */
+//     
+//     /// Detects the platform (using "user-agent") from which the given HTTP request was made.
+//     /// 
+//     /// - req   an HTTP request to process.
+//     /// Returns the detected platform and version. Detectable platforms: "mobile", "iphone", 
+//     /// "ipad",  "macosx", "android",  "webos", "mac", "windows". Otherwise - "unknown" will 
+//     /// be returned.
+//      
 //     public static detectPlatform(req: any): string {
-//         let ua = req.headers['user-agent'];
-//         let version;
+//         var ua = req.headers['user-agent'];
+//         var version;
 
 //         if (/mobile/i.test(ua)) {
 //             return 'mobile';
@@ -55,15 +55,15 @@
 //         return 'unknown';
 //     }
 
-//     /**
-//      * Detects the browser (using "user-agent") from which the given HTTP request was made.
-//      * 
-//      * @param req   an HTTP request to process.
-//      * @returns the detected browser. Detectable browsers: "chrome", "msie", "firefox", 
-//      *          "safari". Otherwise - "unknown" will be returned.
-//      */
+//     
+//     /// Detects the browser (using "user-agent") from which the given HTTP request was made.
+//     /// 
+//     /// - req   an HTTP request to process.
+//     /// Returns the detected browser. Detectable browsers: "chrome", "msie", "firefox", 
+//     ///          "safari". Otherwise - "unknown" will be returned.
+//      
 //     public static detectBrowser(req: any): string {
-//         let ua = req.headers['user-agent'];
+//         var ua = req.headers['user-agent'];
 
 //         if (/chrome/i.test(ua))
 //             return 'chrome'
@@ -77,15 +77,15 @@
 //         return ua || 'unknown';
 //     }
 
-//     /**
-//      * Detects the IP address from which the given HTTP request was received.
-//      * 
-//      * @param req   an HTTP request to process.
-//      * @returns the detected IP address (without a port). If no IP is detected - 
-//      * <code>null</code> will be returned.
-//      */
+//     
+//     /// Detects the IP address from which the given HTTP request was received.
+//     /// 
+//     /// - req   an HTTP request to process.
+//     /// Returns the detected IP address (without a port). If no IP is detected - 
+//     /// <code>null</code> will be returned.
+//      
 //     public static detectAddress(req: any): string {
-//         let ip = null;
+//         var ip = null;
 
 //         if (req.headers['x-forwarded-for']) {
 //             ip = req.headers['x-forwarded-for'].split(',')[0]
@@ -118,22 +118,22 @@
 //         return ip;
 //     }
 
-//     /**
-//      * Detects the host name of the request's destination server.
-//      * 
-//      * @param req   an HTTP request to process.
-//      * @returns the destination server's host name.
-//      */
+//     
+//     /// Detects the host name of the request's destination server.
+//     /// 
+//     /// - req   an HTTP request to process.
+//     /// Returns the destination server's host name.
+//      
 //     public static detectServerHost(req: any): string {
 //         return "" + req.socket.localAddress;
 //     }
 
-//     /**
-//      * Detects the request's destination port number.
-//      * 
-//      * @param req   an HTTP request to process.
-//      * @returns the detected port number or <code>80</code> (if none are detected).
-//      */
+//     
+//     /// Detects the request's destination port number.
+//     /// 
+//     /// - req   an HTTP request to process.
+//     /// Returns the detected port number or <code>80</code> (if none are detected).
+//      
 //     public static detectServerPort(req) {
 //         return req.socket.localPort;
 //     }

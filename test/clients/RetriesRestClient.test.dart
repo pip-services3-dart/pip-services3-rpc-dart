@@ -1,4 +1,4 @@
-// let assert = require('chai').assert;
+// var assert = require('chai').assert;
 
 // import { ConfigParams } from 'pip-services3-commons-node';
 // import { References } from 'pip-services3-commons-node';
@@ -16,9 +16,9 @@
 // );
 
 // suite('RetriesRestClient', ()=> {
-//     let client: DummyRestClient;
+//     var client: DummyRestClient;
 
-//     let rest: any;
+//     var rest: any;
 
 //     setup((done) => {
 //         client = new DummyRestClient();

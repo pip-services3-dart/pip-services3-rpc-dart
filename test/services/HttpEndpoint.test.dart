@@ -1,6 +1,6 @@
-// let assert = require('chai').assert;
-// let restify = require('restify-clients');
-// let async = require('async');
+// var assert = require('chai').assert;
+// var restify = require('restify-clients');
+// var async = require('async');
 
 // import { Descriptor } from 'pip-services3-commons-node';
 // import { ConfigParams } from 'pip-services3-commons-node';
@@ -21,13 +21,13 @@
 //     var _dummy1: Dummy;
 //     var _dummy2: Dummy;
 
-//     let endpoint: HttpEndpoint;
-//     let service: DummyRestService;
+//     var endpoint: HttpEndpoint;
+//     var service: DummyRestService;
 
-//     let rest: any;
+//     var rest: any;
 
 //     suiteSetup((done) => {
-//         let ctrl = new DummyController();
+//         var ctrl = new DummyController();
 
 //         service = new DummyRestService();
 //         service.configure(ConfigParams.fromTuples(
@@ -37,7 +37,7 @@
 //         endpoint = new HttpEndpoint();
 //         endpoint.configure(restConfig);
 
-//         let references: References = References.fromTuples(
+//         var references: References = References.fromTuples(
 //             new Descriptor('pip-services-dummies', 'controller', 'default', 'default', '1.0'), ctrl,
 //             new Descriptor('pip-services-dummies', 'service', 'rest', 'default', '1.0'), service,
 //             new Descriptor('pip-services', 'endpoint', 'http', 'default', '1.0'), endpoint
@@ -58,7 +58,7 @@
 //     });
 
 //     setup(() => {
-//         let url = 'http://localhost:3000';
+//         var url = 'http://localhost:3000';
 //         rest = restify.createJsonClient({ url: url, version: '*' });
 
 //         _dummy1 = { id: null, key: "Key 1", content: "Content 1"};

@@ -34,9 +34,9 @@
 // 			new ObjectSchema(true)
 //                 .withOptionalProperty("filter", new FilterParamsSchema())
 //                 .withOptionalProperty("paging", new PagingParamsSchema()),
-// 			(correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
-// 				let filter = FilterParams.fromValue(args.get("filter"));
-// 				let paging = PagingParams.fromValue(args.get("paging"));
+// 			(String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
+// 				var filter = FilterParams.fromValue(args.get("filter"));
+// 				var paging = PagingParams.fromValue(args.get("paging"));
 // 				this._controller.getPageByFilter(correlationId, filter, paging, callback);
 // 			}
 // 		);
@@ -47,8 +47,8 @@
 // 			"get_dummy_by_id",
 //             new ObjectSchema(true)
 //                 .withRequiredProperty("dummy_id", TypeCode.String),
-// 			(correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
-// 				let id = args.getAsString("dummy_id");
+// 			(String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
+// 				var id = args.getAsString("dummy_id");
 // 				this._controller.getOneById(correlationId, id, callback);
 // 			}
 // 		);
@@ -59,8 +59,8 @@
 // 			"create_dummy",
 //             new ObjectSchema(true)
 //                 .withRequiredProperty("dummy", new DummySchema()),
-// 			(correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
-// 				let entity: Dummy = args.get("dummy");
+// 			(String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
+// 				var entity: Dummy = args.get("dummy");
 // 				this._controller.create(correlationId, entity, callback);
 // 			}
 // 		);
@@ -71,8 +71,8 @@
 // 			"update_dummy",
 //             new ObjectSchema(true)
 //                 .withRequiredProperty("dummy", new DummySchema()),
-// 			(correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
-// 				let entity: Dummy = args.get("dummy");
+// 			(String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
+// 				var entity: Dummy = args.get("dummy");
 // 				this._controller.update(correlationId, entity, callback);
 // 			}
 // 		);
@@ -83,8 +83,8 @@
 // 			"delete_dummy",
 //             new ObjectSchema(true)
 //                 .withRequiredProperty("dummy_id", TypeCode.String),
-// 			(correlationId: string, args: Parameters, callback: (err: any, result: any) => void) => {
-// 				let id = args.getAsString("dummy_id");
+// 			(String correlationId, args: Parameters, callback: (err: any, result: any) => void) => {
+// 				var id = args.getAsString("dummy_id");
 // 				this._controller.deleteById(correlationId, id, callback);
 // 			}
 // 		);

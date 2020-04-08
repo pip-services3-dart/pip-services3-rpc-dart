@@ -1,6 +1,6 @@
-// let assert = require('chai').assert;
-// let restify = require('restify-clients');
-// let async = require('async');
+// var assert = require('chai').assert;
+// var restify = require('restify-clients');
+// var async = require('async');
 
 // import { Descriptor } from 'pip-services3-commons-node';
 // import { ConfigParams } from 'pip-services3-commons-node';
@@ -16,18 +16,18 @@
 // );
 
 // suite('StatusRestService', ()=> {
-//     let service: StatusRestService;
-//     let rest: any;
+//     var service: StatusRestService;
+//     var rest: any;
 
 //     suiteSetup((done) => {
 //         service = new StatusRestService();
 //         service.configure(restConfig);
 
-//         let contextInfo = new ContextInfo();
+//         var contextInfo = new ContextInfo();
 //         contextInfo.name = "Test";
 //         contextInfo.description = "This is a test container";
 
-//         let references = References.fromTuples(
+//         var references = References.fromTuples(
 //             new Descriptor("pip-services", "context-info", "default", "default", "1.0"), contextInfo,
 //             new Descriptor("pip-services", "status-service", "http", "default", "1.0"), service
 //         );
@@ -41,7 +41,7 @@
 //     });
 
 //     setup(() => {
-//         let url = 'http://localhost:3000';
+//         var url = 'http://localhost:3000';
 //         rest = restify.createJsonClient({ url: url, version: '*' });
 //     });
     

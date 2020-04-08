@@ -1,4 +1,4 @@
-// let assert = require('chai').assert;
+// var assert = require('chai').assert;
 
 // import {  ConfigParams } from 'pip-services3-commons-node';
 
@@ -7,7 +7,7 @@
 // suite('HttpConnectionResolver', ()=> {
 
 //     test('Resolve URI', (done) => {
-//         let resolver = new HttpConnectionResolver();
+//         var resolver = new HttpConnectionResolver();
 //         resolver.configure(ConfigParams.fromTuples(
 //             "connection.uri", "http://somewhere.com:777"
 //         ));
@@ -22,7 +22,7 @@
 //     });
 
 //     test('Resolve Parameters', (done) => {
-//         let resolver = new HttpConnectionResolver();
+//         var resolver = new HttpConnectionResolver();
 //         resolver.configure(ConfigParams.fromTuples(
 //             "connection.protocol", "http",
 //             "connection.host", "somewhere.com",

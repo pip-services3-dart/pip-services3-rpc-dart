@@ -1,5 +1,5 @@
-// let assert = require('chai').assert;
-// let async = require('async');
+// var assert = require('chai').assert;
+// var async = require('async');
 
 // import { FilterParams } from 'pip-services3-commons-node';
 // import { PagingParams } from 'pip-services3-commons-node';
@@ -14,8 +14,8 @@
 //     }
 
 //     public testCrudOperations(done: any): void {
-//         let dummy1 = { id: null, key: "Key 1", content: "Content 1" };
-//         let dummy2 = { id: null, key: "Key 2", content: "Content 2" };
+//         var dummy1 = { id: null, key: "Key 1", content: "Content 1" };
+//         var dummy2 = { id: null, key: "Key 2", content: "Content 2" };
 
 //         async.series([
 //             // Create one dummy

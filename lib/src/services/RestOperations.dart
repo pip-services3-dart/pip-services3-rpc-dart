@@ -1,4 +1,4 @@
-// /** @module services */
+//  @module services 
 // const _ = require('lodash');
 
 // import { IConfigurable } from 'pip-services3-commons-node';
@@ -39,14 +39,14 @@
 //     }
 
 //     protected getFilterParams(req: any): FilterParams {
-//         let filter = FilterParams.fromValue(
+//         var filter = FilterParams.fromValue(
 //             _.omit(req.query, 'skip', 'take', 'total')
 //         );
 //         return filter;
 //     }
 
 //     protected getPagingParams(req: any): PagingParams {
-//         let paging = PagingParams.fromValue(
+//         var paging = PagingParams.fromValue(
 //             _.pick(req.query, 'skip', 'take', 'total')
 //         );
 //         return paging;
@@ -73,45 +73,45 @@
 //     }
 
 //     protected sendBadRequest(req: any, res: any, message: string): void {
-//         let correlationId = this.getCorrelationId(req);
-//         let error = new BadRequestException(correlationId, 'BAD_REQUEST', message);
+//         var correlationId = this.getCorrelationId(req);
+//         var error = new BadRequestException(correlationId, 'BAD_REQUEST', message);
 //         this.sendError(req, res, error);
 //     }
 
 //     protected sendUnauthorized(req: any, res: any, message: string): void  {
-//         let correlationId = this.getCorrelationId(req);
-//         let error = new UnauthorizedException(correlationId, 'UNAUTHORIZED', message);
+//         var correlationId = this.getCorrelationId(req);
+//         var error = new UnauthorizedException(correlationId, 'UNAUTHORIZED', message);
 //         this.sendError(req, res, error);
 //     }
 
 //     protected sendNotFound(req: any, res: any, message: string): void  {
-//         let correlationId = this.getCorrelationId(req);
-//         let error = new NotFoundException(correlationId, 'NOT_FOUND', message);
+//         var correlationId = this.getCorrelationId(req);
+//         var error = new NotFoundException(correlationId, 'NOT_FOUND', message);
 //         this.sendError(req, res, error);
 //     }
 
 //     protected sendConflict(req: any, res: any, message: string): void  {
-//         let correlationId = this.getCorrelationId(req);
-//         let error = new ConflictException(correlationId, 'CONFLICT', message);
+//         var correlationId = this.getCorrelationId(req);
+//         var error = new ConflictException(correlationId, 'CONFLICT', message);
 //         this.sendError(req, res, error);
 //     }
 
 //     protected sendSessionExpired(req: any, res: any, message: string): void  {
-//         let correlationId = this.getCorrelationId(req);
-//         let error = new UnknownException(correlationId, 'SESSION_EXPIRED', message);
+//         var correlationId = this.getCorrelationId(req);
+//         var error = new UnknownException(correlationId, 'SESSION_EXPIRED', message);
 //         error.status = 440;
 //         this.sendError(req, res, error);
 //     }
 
 //     protected sendInternalError(req: any, res: any, message: string): void  {
-//         let correlationId = this.getCorrelationId(req);
-//         let error = new UnknownException(correlationId, 'INTERNAL', message);
+//         var correlationId = this.getCorrelationId(req);
+//         var error = new UnknownException(correlationId, 'INTERNAL', message);
 //         this.sendError(req, res, error);
 //     }
 
 //     protected sendServerUnavailable(req: any, res: any, message: string): void  {
-//         let correlationId = this.getCorrelationId(req);
-//         let error = new ConflictException(correlationId, 'SERVER_UNAVAILABLE', message);
+//         var correlationId = this.getCorrelationId(req);
+//         var error = new ConflictException(correlationId, 'SERVER_UNAVAILABLE', message);
 //         error.status = 503;
 //         this.sendError(req, res, error);
 //     }

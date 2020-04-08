@@ -1,4 +1,4 @@
-// /** @module services */
+//  @module services 
 // const os = require('os');
 
 // import { IReferences } from 'pip-services3-commons-node';
@@ -26,11 +26,11 @@
 //     }
 
 //     private getNetworkAddresses(): string[] {
-//         let interfaces = os.networkInterfaces();
-//         let addresses: string[] = [];
-//         for (let k in interfaces) {
-//             for (let k2 in interfaces[k]) {
-//                 let address = interfaces[k][k2];
+//         var interfaces = os.networkInterfaces();
+//         var addresses: string[] = [];
+//         for (var k in interfaces) {
+//             for (var k2 in interfaces[k]) {
+//                 var address = interfaces[k][k2];
 //                 if (address.family === 'IPv4' && !address.internal) {
 //                     addresses.push(address.address);
 //                 }
@@ -40,7 +40,7 @@
 //     }
 
 //     public about(req, res) {
-//         let about = {
+//         var about = {
 //             server: {
 //                 name: this._contextInfo != null ? this._contextInfo.name : 'unknown',
 //                 description: this._contextInfo != null ? this._contextInfo.description : null,

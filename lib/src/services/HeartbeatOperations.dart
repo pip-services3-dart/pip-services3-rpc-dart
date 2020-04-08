@@ -1,4 +1,4 @@
-// /** @module services */
+//  @module services 
 // import { RestOperations } from './RestOperations';
 
 // export class HeartbeatOperations extends RestOperations {

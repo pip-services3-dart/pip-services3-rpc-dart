@@ -1,5 +1,5 @@
-// let assert = require('chai').assert;
-// let restify = require('restify-clients');
+// var assert = require('chai').assert;
+// var restify = require('restify-clients');
 
 // import { ConfigParams } from 'pip-services3-commons-node';
 
@@ -12,8 +12,8 @@
 // );
 
 // suite('HeartbeatRestService', ()=> {
-//     let service: HeartbeatRestService;
-//     let rest: any;
+//     var service: HeartbeatRestService;
+//     var rest: any;
 
 //     suiteSetup((done) => {
 //         service = new HeartbeatRestService();
@@ -27,7 +27,7 @@
 //     });
 
 //     setup(() => {
-//         let url = 'http://localhost:3000';
+//         var url = 'http://localhost:3000';
 //         rest = restify.createJsonClient({ url: url, version: '*' });
 //     });
     
