@@ -1,0 +1,15 @@
+name: pip_services3_rpc
+version: 1.0.0
+author: Sergey Seroukhov <seroukhov@gmail.com>
+description: This framework is a part of the [Pip.Services] project. It provides the following synchronous communication components over HTTP RPC
+homepage: https://github.com/pip-services3-dart/pip-services3-rpc-dart
+
+environment:
+  sdk: ">=2.0.0 <3.0.0"
+
+dependencies:
+  pip_services3_commons: ">=1.0.2 <2.0.0"
+  pip_services3_components: ">=1.0.2 <2.0.0"
+
+dev_dependencies:
+  test: '>=1.14.2 <2.0.0'
