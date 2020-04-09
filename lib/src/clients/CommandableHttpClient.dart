@@ -9,7 +9,7 @@ import './RestClient.dart';
 ///
 /// ### Configuration parameters ###
 ///
-/// base_route:              base route for remote URI
+/// [base_route]:              base route for remote URI
 ///
 /// - [connection](s):
 ///   - [discovery_key]:         (optional) a key to retrieve the connection from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]]

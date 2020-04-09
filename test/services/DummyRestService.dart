@@ -1,118 +1,116 @@
-// import { IReferences } from 'pip-services3-commons-node';
-// import { Descriptor } from 'pip-services3-commons-node';
-// import { FilterParams } from 'pip-services3-commons-node';
-// import { PagingParams } from 'pip-services3-commons-node';
-// import { ObjectSchema } from 'pip-services3-commons-node';
-// import { TypeCode } from 'pip-services3-commons-node';
-// import { FilterParamsSchema } from 'pip-services3-commons-node';
 
-// import { DummySchema } from '../DummySchema';
-// import { RestService } from '../../src/services/RestService';
-// import { IDummyController } from '../IDummyController';
+import 'dart:async';
 
-// export class DummyRestService extends RestService {
-//     private _controller: IDummyController;
-//     private _numberOfCalls: number = 0;
+import 'package:angel_framework/angel_framework.dart' as angel;
+import 'package:angel_framework/http.dart';
+import  'package:pip_services3_commons/pip_services3_commons.dart';
+import '../DummySchema.dart';
+import'../../src/services/RestService.dart';
+import '../IDummyController.dart';
+
+class DummyRestService extends RestService {
+    IDummyController _controller;
+    int _numberOfCalls = 0;
 	
-//     public constructor() {
-//         super();
-//         this._dependencyResolver.put('controller', new Descriptor("pip-services-dummies", "controller", "default", "*", "*"));
-//     }
+    DummyRestService(): super() {
+        _dependencyResolver.put('controller', Descriptor('pip-services-dummies', 'controller', 'default', '*', '*'));
+    }
 
-// 	public setReferences(references: IReferences): void {
-// 		super.setReferences(references);
-//         this._controller = this._dependencyResolver.getOneRequired<IDummyController>('controller');
-//     }
+@override
+	void  setReferences(IReferences references) {
+		super.setReferences(references);
+        _controller = _dependencyResolver.getOneRequired<IDummyController>('controller');
+    }
     
-//     public getNumberOfCalls(): number {
-//         return this._numberOfCalls;
-//     }
+    int getNumberOfCalls() {
+        return _numberOfCalls;
+    }
 
-//     private incrementNumberOfCalls(req: any, res: any, next: () => void) {
-//         this._numberOfCalls++;
-//         next();
-//     }
+    Future _incrementNumberOfCalls(angel.RequestContext req, angel.ResponseContext res) async {
+        _numberOfCalls++;
+        return true;
+    }
 
-//     private getPageByFilter(req: any, res: any) {
-//         this._controller.getPageByFilter(
-//             req.params.correlation_id,
-//             new FilterParams(req.params),
-//             new PagingParams(req.params),
-//             this.sendResult(req, res)
-//         );
-//     }
+    void _getPageByFilter(angel.RequestContext req, angel.ResponseContext res) {
+        this._controller.getPageByFilter(
+            req.params['correlation_id'],
+            FilterParams(req.params),
+            PagingParams(req.params),
+            this.sendResult(req, res)
+        );
+    }
 
-//     private getOneById(req, res) {
-//         this._controller.getOneById(
-//             req.params.correlation_id,
-//             req.params.dummy_id,
-//             this.sendResult(req, res)
-//         );
-//     }
+    void _getOneById(angel.RequestContext req, angel.ResponseContext res) {
+        this._controller.getOneById(
+            req.params['correlation_id'],
+            req.params['dummy_id'],
+            this.sendResult(req, res)
+        );
+    }
 
-//     private create(req, res) {
-//         this._controller.create(
-//             req.params.correlation_id,
-//             req.body,
-//             this.sendCreatedResult(req, res)
-//         );
-//     }
+    void _create(angel.RequestContext req, angel.ResponseContext res) {
+        this._controller.create(
+            req.params['correlation_id'],
+            req.body,
+            this.sendCreatedResult(req, res)
+        );
+    }
 
-//     private update(req, res) {
-//         this._controller.update(
-//             req.params.correlation_id,
-//             req.body,
-//             this.sendResult(req, res)
-//         );
-//     }
+    void _update(angel.RequestContext req, angel.ResponseContext res) {
+        this._controller.update(
+            req.params['correlation_id'],
+            req.body,
+            this.sendResult(req, res)
+        );
+    }
 
-//     private deleteById(req, res) {
-//         this._controller.deleteById(
-//             req.params.correlation_id,
-//             req.params.dummy_id,
-//             this.sendDeletedResult(req, res)
-//         );
-//     }    
+    void _deleteById(angel.RequestContext req, angel.ResponseContext res) {
+        this._controller.deleteById(
+            req.params['correlation_id'],
+            req.params['dummy_id'],
+            this.sendDeletedResult(req, res)
+        );
+    }    
         
-//     public register() {
-//         this.registerInterceptor('/dummies', this.incrementNumberOfCalls);
+    register() {
+        registerInterceptor('/dummies', _incrementNumberOfCalls);
 
-//         this.registerRoute(
-//             'get', '/dummies', 
-//             new ObjectSchema(true)
-//                 .withOptionalProperty("skip", TypeCode.String)
-//                 .withOptionalProperty("take", TypeCode.String)
-//                 .withOptionalProperty("total", TypeCode.String)
-//                 .withOptionalProperty("body", new FilterParamsSchema()),
-//             this.getPageByFilter
-//         );
+        registerRoute(
+            'get', '/dummies', 
+            ObjectSchema(true)
+                .withOptionalProperty('skip', TypeCode.String)
+                .withOptionalProperty('take', TypeCode.String)
+                .withOptionalProperty('total', TypeCode.String)
+                .withOptionalProperty('body', FilterParamsSchema()),
+            _getPageByFilter
+        );
 
-//         this.registerRoute(
-//             'get', '/dummies/:dummy_id', 
-//             new ObjectSchema(true)
-//                 .withRequiredProperty("dummy_id", TypeCode.String),
-//             this.getOneById
-//         );
+        registerRoute(
+            'get', '/dummies/:dummy_id', 
+            ObjectSchema(true)
+                .withRequiredProperty('dummy_id', TypeCode.String),
+            _getOneById
+        );
 
-//         this.registerRoute(
-//             'post', '/dummies', 
-//             new ObjectSchema(true)
-//                 .withRequiredProperty("body", new DummySchema()),
-//             this.create
-//         );
+        registerRoute(
+            'post', '/dummies', 
+             ObjectSchema(true)
+                .withRequiredProperty('body', DummySchema()),
+            _create
+        );
 
-//         this.registerRoute(
-//             'put', '/dummies', 
-//             new ObjectSchema(true)
-//                 .withRequiredProperty("body", new DummySchema()),
-//             this.update
-//         );
+        registerRoute(
+            'put', '/dummies', 
+             ObjectSchema(true)
+                .withRequiredProperty('body', DummySchema()),
+            _update
+        );
 
-//         this.registerRoute(
-//             'delete', '/dummies/:dummy_id', 
-//             new ObjectSchema(true)
-//                 .withRequiredProperty("dummy_id", TypeCode.String),
-//             this.deleteById
-//         );
-//     }
-// }
+        registerRoute(
+            'delete', '/dummies/:dummy_id', 
+             ObjectSchema(true)
+                .withRequiredProperty('dummy_id', TypeCode.String),
+            _deleteById
+        );
+    }
+}

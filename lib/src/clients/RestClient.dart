@@ -346,17 +346,15 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     for (; retries > 0;) {
       try {
         if (method == 'get') {
-          response = await client.get(route, headers: headers); 
+          response = await client.get(route, headers: headers);
         } else if (method == 'head') {
-          response = await client.head(route, headers: headers); 
+          response = await client.head(route, headers: headers);
         } else if (method == 'post') {
-          response =
-              await client.post(route, headers: headers, body: data); 
+          response = await client.post(route, headers: headers, body: data);
         } else if (method == 'put') {
-          response =
-              await client.put(route, headers: headers, body: data); 
+          response = await client.put(route, headers: headers, body: data);
         } else if (method == 'delete') {
-          response = await client.delete(route, headers: headers); 
+          response = await client.delete(route, headers: headers);
         } else {
           var error = UnknownException(correlationId, 'UNSUPPORTED_METHOD',
                   'Method is not supported by REST client')
@@ -366,6 +364,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
       } catch (ex) {
         retriesCount--;
         if (retriesCount == 0) {
+          client.close();
           rethrow;
         } else {
           logger.trace(
@@ -378,12 +377,13 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
       return null;
     }
 
-     if (response == null)
-            {
-                throw ApplicationExceptionFactory.create(ErrorDescriptionFactory.create(
-                     UnknownException(correlationId, 'Unable to get a result from uri ${uri} with method ${method}')));
-            }
+    client.close();
+    if (response == null) {
+      throw ApplicationExceptionFactory.create(ErrorDescriptionFactory.create(
+          UnknownException(correlationId,
+              'Unable to get a result from uri ${uri} with method ${method}')));
+    }
 
-   return response;
+    return response;
   }
 }

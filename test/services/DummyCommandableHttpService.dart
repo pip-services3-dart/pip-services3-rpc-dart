@@ -1,9 +1,8 @@
-// import { Descriptor } from 'pip-services3-commons-node';
-// import { CommandableHttpService } from '../../src/services/CommandableHttpService';
+import 'package:pip_services3_commons/pip_services3_commons.dart';
+import '../../lib/src/services/CommandableHttpService.dart';
 
-// export class DummyCommandableHttpService extends CommandableHttpService {
-//     public constructor() {
-//         super('dummy');
-//         this._dependencyResolver.put('controller', new Descriptor('pip-services-dummies', 'controller', 'default', '*', '*'));
-//     }
-// }
+class DummyCommandableHttpService extends CommandableHttpService {
+    DummyCommandableHttpService(): super('dummy') {
+        _dependencyResolver.put('controller', new Descriptor('pip-services-dummies', 'controller', 'default', '*', '*'));
+    }
+}
