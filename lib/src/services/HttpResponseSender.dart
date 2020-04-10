@@ -1,4 +1,4 @@
-//import 'dart:convert';
+import 'dart:convert';
 import 'package:angel_framework/angel_framework.dart' as angel;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 
@@ -22,7 +22,7 @@ class HttpResponseSender {
     // result = _.defaults(result, { 'code': 'Undefined', 'status': 500, 'message': 'Unknown error' });
 
     res.statusCode = error.status;
-    res.json(error);
+   res.write(json.encode(error));
   }
 
   /// Creates a callback function that sends result as JSON object.
@@ -46,8 +46,8 @@ class HttpResponseSender {
       res.statusCode = 204;
       res.close();
     } else {
-      res.json(result);
-      res.close();
+     res.write(json.encode(result));
+     res.close();
     }
   }
 
@@ -88,7 +88,7 @@ class HttpResponseSender {
       res.statusCode = 204;
     } else {
       res.statusCode = 201;
-      res.json(result);
+     res.write(json.encode(result));
     }
   }
 
@@ -113,7 +113,7 @@ class HttpResponseSender {
       res.statusCode = 204;
     } else {
       res.statusCode = 200;
-      res.json(result);
+     res.write(json.encode(result));
     }
   }
 }

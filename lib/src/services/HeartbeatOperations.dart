@@ -1,18 +1,17 @@
-//  @module services 
-// import { RestOperations } from './RestOperations';
 
-// export class HeartbeatOperations extends RestOperations {
-//     public constructor() {
-//         super();
-//     }
+import 'package:angel_framework/angel_framework.dart' as angel;
+import './RestOperations.dart';
 
-//     public getHeartbeatOperation() {
-//         return (req, res) => {
-//             this.heartbeat(req, res);
-//         };
-//     }
+class HeartbeatOperations extends RestOperations {
+    HeartbeatOperations():super();
 
-//     public heartbeat(req, res): void {
-//         this.sendResult(req, res)(null, new Date());
-//     }
-// }
+     Function (angel.RequestContext req, angel.ResponseContext res) getHeartbeatOperation() {
+        return (angel.RequestContext req, angel.ResponseContext res)  {
+            heartbeat(req, res);
+        };
+    }
+
+    void heartbeat(angel.RequestContext req, angel.ResponseContext res) {
+        sendResult(req, res, null, DateTime.now());
+    }
+}

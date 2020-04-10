@@ -1,443 +1,399 @@
-//  @module services 
-//  @hidden 
-// const _ = require('lodash');
+import 'dart:async';
 
-// import { IOpenable } from 'pip-services3-commons-node';
-// import { IUnreferenceable } from 'pip-services3-commons-node';
-// import { InvalidStateException } from 'pip-services3-commons-node';
-// import { IConfigurable } from 'pip-services3-commons-node';
-// import { IReferenceable } from 'pip-services3-commons-node';
-// import { IReferences } from 'pip-services3-commons-node';
-// import { ConfigParams } from 'pip-services3-commons-node';
-// import { DependencyResolver } from 'pip-services3-commons-node';
-// import { CompositeLogger } from 'pip-services3-components-node';
-// import { CompositeCounters } from 'pip-services3-components-node';
-// import { Timing } from 'pip-services3-components-node';
-// import { Schema } from 'pip-services3-commons-node';
+import 'package:angel_framework/angel_framework.dart' as angel;
+import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:pip_services3_components/pip_services3_components.dart';
 
-// import { HttpEndpoint } from './HttpEndpoint';
-// import { IRegisterable } from './IRegisterable';
-// import { HttpResponseSender } from './HttpResponseSender';
+import './HttpEndpoint.dart';
+import './IRegisterable.dart';
+import './HttpResponseSender.dart';
 
-// 
-// /// Abstract service that receives remove calls via HTTP/REST protocol.
-// /// 
-// /// ### Configuration parameters ###
-// /// 
-// /// - base_route:              base route for remote URI
-// /// - dependencies:
-// ///   - endpoint:              override for HTTP Endpoint dependency
-// ///   - controller:            override for Controller dependency
-// /// - connection(s):           
-// ///   - discovery_key:         (optional) a key to retrieve the connection from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]]
-// ///   - protocol:              connection protocol: http or https
-// ///   - host:                  host name or IP address
-// ///   - port:                  port number
-// ///   - uri:                   resource URI or connection string with all parameters in it
-// /// - credential - the HTTPS credentials:
-// ///   - ssl_key_file:         the SSL private key in PEM
-// ///   - ssl_crt_file:         the SSL certificate in PEM
-// ///   - ssl_ca_file:          the certificate authorities (root cerfiticates) in PEM
-// /// 
-// /// ### References ###
-// /// 
-// /// - <code>\*:logger:\*:\*:1.0</code>               (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/log.ilogger.html ILogger]] components to pass log messages
-// /// - <code>\*:counters:\*:\*:1.0</code>             (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/count.icounters.html ICounters]] components to pass collected measurements
-// /// - <code>\*:discovery:\*:\*:1.0</code>            (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]] services to resolve connection
-// /// - <code>\*:endpoint:http:\*:1.0</code>          (optional) [[HttpEndpoint]] reference
-// /// 
-// /// See [[RestClient]]
-// /// 
-// /// ### Example ###
-// /// 
-// ///     class MyRestService extends RestService {
-// ///        private _controller: IMyController;
-// ///        ...
-// ///        public constructor() {
-// ///           base();
-// ///           this._dependencyResolver.put(
-// ///               "controller",
-// ///               new Descriptor("mygroup","controller","*","*","1.0")
-// ///           );
-// ///        }
-// /// 
-// ///        public setReferences(references: IReferences): void {
-// ///           base.setReferences(references);
-// ///           this._controller = this._dependencyResolver.getRequired<IMyController>("controller");
-// ///        }
-// /// 
-// ///        public register(): void {
-// ///            registerRoute("get", "get_mydata", null, (req, res) => {
-// ///                var correlationId = req.param("correlation_id");
-// ///                var id = req.param("id");
-// ///                this._controller.getMyData(correlationId, id, this.sendResult(req, res));
-// ///            });
-// ///            ...
-// ///        }
-// ///     }
-// /// 
-// ///     var service = new MyRestService();
-// ///     service.configure(ConfigParams.fromTuples(
-// ///         "connection.protocol", "http",
-// ///         "connection.host", "localhost",
-// ///         "connection.port", 8080
-// ///     ));
-// ///     service.setReferences(References.fromTuples(
-// ///        new Descriptor("mygroup","controller","default","default","1.0"), controller
-// ///     ));
-// /// 
-// ///     service.open("123", (err) => {
-// ///        console.log("The REST service is running on port 8080");
-// ///     });
-//  
-// export abstract class RestService implements IOpenable, IConfigurable, IReferenceable,
-//     IUnreferenceable, IRegisterable {
+/// Abstract service that receives remove calls via HTTP/REST protocol.
+///
+/// ### Configuration parameters ###
+///
+/// - base_route:              base route for remote URI
+/// - dependencies:
+///   - endpoint:              override for HTTP Endpoint dependency
+///   - controller:            override for Controller dependency
+/// - connection(s):
+///   - discovery_key:         (optional) a key to retrieve the connection from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]]
+///   - protocol:              connection protocol: http or https
+///   - host:                  host name or IP address
+///   - port:                  port number
+///   - uri:                   resource URI or connection string with all parameters in it
+/// - credential - the HTTPS credentials:
+///   - ssl_key_file:         the SSL private key in PEM
+///   - ssl_crt_file:         the SSL certificate in PEM
+///   - ssl_ca_file:          the certificate authorities (root cerfiticates) in PEM
+///
+/// ### References ###
+///
+/// - [\*:logger:\*:\*:1.0]               (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/log.ilogger.html ILogger]] components to pass log messages
+/// - [\*:counters:\*:\*:1.0]             (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/count.icounters.html ICounters]] components to pass collected measurements
+/// - [\*:discovery:\*:\*:1.0]            (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]] services to resolve connection
+/// - [\*:endpoint:http:\*:1.0]          (optional) [[HttpEndpoint]] reference
+///
+/// See [[RestClient]]
+///
+/// ### Example ###
+///
+///     class MyRestService extends RestService {
+///        private _controller: IMyController;
+///        ...
+///        public constructor() {
+///           base();
+///           this.dependencyResolver.put(
+///               "controller",
+///               new Descriptor("mygroup","controller","*","*","1.0")
+///           );
+///        }
+///
+///        public setReferences(references: IReferences): void {
+///           base.setReferences(references);
+///           this._controller = this.dependencyResolver.getRequired<IMyController>("controller");
+///        }
+///
+///        public register(): void {
+///            registerRoute("get", "get_mydata", null, (req, res) => {
+///                var correlationId = req.param("correlation_id");
+///                var id = req.param("id");
+///                this._controller.getMyData(correlationId, id, this.sendResult(req, res));
+///            });
+///            ...
+///        }
+///     }
+///
+///     var service = new MyRestService();
+///     service.configure(ConfigParams.fromTuples(
+///         "connection.protocol", "http",
+///         "connection.host", "localhost",
+///         "connection.port", 8080
+///     ));
+///     service.setReferences(References.fromTuples(
+///        new Descriptor("mygroup","controller","default","default","1.0"), controller
+///     ));
+///
+///     service.open("123", (err) => {
+///        console.log("The REST service is running on port 8080");
+///     });
 
-//     private static readonly _defaultConfig: ConfigParams = ConfigParams.fromTuples(
-//         "base_route", "",
-//         "dependencies.endpoint", "*:endpoint:http:*:1.0"
-//     );
+abstract class RestService
+    implements
+        IOpenable,
+        IConfigurable,
+        IReferenceable,
+        IUnreferenceable,
+        IRegisterable {
+  static final _defaultConfig = ConfigParams.fromTuples(
+      ['base_route', '', 'dependencies.endpoint', '*:endpoint:http:*:1.0']);
 
-//     private _config: ConfigParams;
-//     private _references: IReferences;
-//     private _localEndpoint: boolean;
-//     private _opened: boolean;
+  ConfigParams _config;
+  IReferences _references;
+  bool _localEndpoint = false;
+  bool _opened = false;
 
-//     
-//     /// The base route.
-//      
-//     protected _baseRoute: string;
-//     
-//     /// The HTTP endpoint that exposes this service.
-//      
-//     protected _endpoint: HttpEndpoint;    
-//     
-//     /// The dependency resolver.
-//      
-//     protected _dependencyResolver: DependencyResolver = new DependencyResolver(RestService._defaultConfig);
-//     
-//     /// The logger.
-//      
-//     protected _logger: CompositeLogger = new CompositeLogger();
-//     
-//     /// The performance counters.
-//      
-// 	protected _counters: CompositeCounters = new CompositeCounters();
+  /// The base route.
 
-//     
-//     /// Configures component by passing configuration parameters.
-//     /// 
-//     /// - config    configuration parameters to be set.
-//      
-// 	public configure(config: ConfigParams): void {
-//         config = config.setDefaults(RestService._defaultConfig);
+  String baseRoute;
 
-//         this._config = config;
-//         this._dependencyResolver.configure(config);
+  /// The HTTP endpoint that exposes this service.
 
-//         this._baseRoute = config.getAsStringWithDefault("base_route", this._baseRoute);
-// 	}
+  HttpEndpoint endpoint;
 
-//     
-// 	/// Sets references to dependent components.
-// 	/// 
-// 	/// - references 	references to locate the component dependencies. 
-//      
-// 	public setReferences(references: IReferences): void {
-//         this._references = references;
+  /// The dependency resolver.
 
-// 		this._logger.setReferences(references);
-//         this._counters.setReferences(references);
-//         this._dependencyResolver.setReferences(references);
+  var dependencyResolver = DependencyResolver(RestService._defaultConfig);
 
-//         // Get endpoint
-//         this._endpoint = this._dependencyResolver.getOneOptional('endpoint');
-//         // Or create a local one
-//         if (this._endpoint == null) {
-//             this._endpoint = this.createEndpoint();
-//             this._localEndpoint = true;
-//         } else {
-//             this._localEndpoint = false;
-//         }
-//         // Add registration callback to the endpoint
-//         this._endpoint.register(this);
-//     }
-    
-//     
-// 	/// Unsets (clears) previously set references to dependent components. 
-//      
-//     public unsetReferences(): void {
-//         // Remove registration callback from endpoint
-//         if (this._endpoint != null) {
-//             this._endpoint.unregister(this);
-//             this._endpoint = null;
-//         }
-//     }
+  /// The logger.
 
-//     private createEndpoint(): HttpEndpoint {
-//         var endpoint = new HttpEndpoint();
-        
-//         if (this._config)
-//             endpoint.configure(this._config);
-        
-//         if (this._references)
-//             endpoint.setReferences(this._references);
-            
-//         return endpoint;
-//     }
+  var logger = CompositeLogger();
 
-//     
-//     /// Adds instrumentation to log calls and measure call time.
-//     /// It returns a Timing object that is used to end the time measurement.
-//     /// 
-//     /// - correlationId     (optional) transaction id to trace execution through call chain.
-//     /// - name              a method name.
-//     /// Returns Timing object to end the time measurement.
-//      
-// 	protected instrument(String correlationId, name: string): Timing {
-//         this._logger.trace(correlationId, "Executing %s method", name);
-//         this._counters.incrementOne(name + ".exec_count");
-// 		return this._counters.beginTiming(name + ".exec_time");
-// 	}
+  /// The performance counters.
 
-//     
-//     /// Adds instrumentation to error handling.
-//     /// 
-//     /// - correlationId     (optional) transaction id to trace execution through call chain.
-//     /// - name              a method name.
-//     /// - err               an occured error
-//     /// - result            (optional) an execution result
-//     /// - callback          (optional) an execution callback
-//      
-//     protected instrumentError(String correlationId, name: string, err: any,
-//         result: any = null, callback: (err: any, result: any) => void = null): void {
-//         if (err != null) {
-//             this._logger.error(correlationId, err, "Failed to execute %s method", name);
-//             this._counters.incrementOne(name + '.exec_errors');    
-//         }
+  var counters = CompositeCounters();
 
-//         if (callback) callback(err, result);
-//     }
+  /// Configures component by passing configuration parameters.
+  ///
+  /// - config    configuration parameters to be set.
+  @override
+  void configure(ConfigParams config) {
+    config = config.setDefaults(RestService._defaultConfig);
+    _config = config;
+    dependencyResolver.configure(config);
+    baseRoute = config.getAsStringWithDefault('base_route', baseRoute);
+  }
 
-//     
-// 	/// Checks if the component is opened.
-// 	/// 
-// 	/// Returns true if the component has been opened and false otherwise.
-//      
-// 	public isOpen(): boolean {
-// 		return this._opened;
-// 	}
-    
-//     
-// 	/// Opens the component.
-// 	/// 
-// 	/// - correlationId 	(optional) transaction id to trace execution through call chain.
-//     /// - callback 			callback function that receives error or null no errors occured.
-//      
-// 	public open(String correlationId, callback?: (err: any) => void): void {
-//     	if (this._opened) {
-//             callback(null);
-//             return;
-//         }
-        
-//         if (this._endpoint == null) {
-//             this._endpoint = this.createEndpoint();
-//             this._endpoint.register(this);
-//             this._localEndpoint = true;
-//         }
+  /// Sets references to dependent components.
+  ///
+  /// - references 	references to locate the component dependencies.
+  @override
+  void setReferences(IReferences references) {
+    _references = references;
 
-//         if (this._localEndpoint) {
-//             this._endpoint.open(correlationId, (err) => {
-//                 this._opened = err == null;
-//                 callback(err);
-//             });
-//         } else {
-//             this._opened = true;
-//             callback(null);
-//         }
-//     }
+    logger.setReferences(references);
+    counters.setReferences(references);
+    dependencyResolver.setReferences(references);
 
-//     
-// 	/// Closes component and frees used resources.
-// 	/// 
-// 	/// - correlationId 	(optional) transaction id to trace execution through call chain.
-//     /// - callback 			callback function that receives error or null no errors occured.
-//      
-//     public close(String correlationId, callback?: (err: any) => void): void {
-//     	if (!this._opened) {
-//             callback(null);
-//             return;
-//         }
+    // Get endpoint
+    endpoint = dependencyResolver.getOneOptional<HttpEndpoint>('endpoint');
+    // Or create a local one
+    if (endpoint == null) {
+      endpoint = _createEndpoint();
+      _localEndpoint = true;
+    } else {
+      _localEndpoint = false;
+    }
+    // Add registration callback to the endpoint
+    endpoint.register(this);
+  }
 
-//         if (this._endpoint == null) {
-//             callback(new InvalidStateException(correlationId, 'NO_ENDPOINT', 'HTTP endpoint is missing'));
-//             return;
-//         }
-        
-//         if (this._localEndpoint) {
-//             this._endpoint.close(correlationId, (err) => {
-//                 this._opened = false;
-//                 callback(err);
-//             });
-//         } else {
-//             this._opened = false;
-//             callback(null);
-//         }
-//     }
+  /// Unsets (clears) previously set references to dependent components.
+  @override
+  void unsetReferences() {
+    // Remove registration callback from endpoint
+    if (endpoint != null) {
+      endpoint.unregister(this);
+      endpoint = null;
+    }
+  }
 
-//     
-//     /// Creates a callback function that sends result as JSON object.
-//     /// That callack function call be called directly or passed
-//     /// as a parameter to business logic components.
-//     /// 
-//     /// If object is not null it returns 200 status code.
-//     /// For null results it returns 204 status code.
-//     /// If error occur it sends ErrorDescription with approproate status code.
-//     /// 
-//     /// - req       a HTTP request object.
-//     /// - res       a HTTP response object.
-//     /// - callback function that receives execution result or error.
-//      
-//     protected sendResult(req, res): (err: any, result: any) => void {
-//         return HttpResponseSender.sendResult(req, res);
-//     }
+  HttpEndpoint _createEndpoint() {
+    var endpoint = HttpEndpoint();
 
-//     
-//     /// Creates a callback function that sends newly created object as JSON.
-//     /// That callack function call be called directly or passed
-//     /// as a parameter to business logic components.
-//     /// 
-//     /// If object is not null it returns 201 status code.
-//     /// For null results it returns 204 status code.
-//     /// If error occur it sends ErrorDescription with approproate status code.
-//     /// 
-//     /// - req       a HTTP request object.
-//     /// - res       a HTTP response object.
-//     /// - callback function that receives execution result or error.
-//      
-//     protected sendCreatedResult(req, res): (err: any, result: any) => void {
-//         return HttpResponseSender.sendCreatedResult(req, res);
-//     }
+    if (_config != null) {
+      endpoint.configure(_config);
+    }
 
-//     
-//     /// Creates a callback function that sends deleted object as JSON.
-//     /// That callack function call be called directly or passed
-//     /// as a parameter to business logic components.
-//     /// 
-//     /// If object is not null it returns 200 status code.
-//     /// For null results it returns 204 status code.
-//     /// If error occur it sends ErrorDescription with approproate status code.
-//     /// 
-//     /// - req       a HTTP request object.
-//     /// - res       a HTTP response object.
-//     /// - callback function that receives execution result or error.
-//      
-//     protected sendDeletedResult(req, res): (err: any, result: any) => void {
-//         return HttpResponseSender.sendDeletedResult(req, res);
-//     }
+    if (_references != null) {
+      endpoint.setReferences(_references);
+    }
 
-//     
-//     /// Sends error serialized as ErrorDescription object
-//     /// and appropriate HTTP status code.
-//     /// If status code is not defined, it uses 500 status code.
-//     /// 
-//     /// - req       a HTTP request object.
-//     /// - res       a HTTP response object.
-//     /// - error     an error object to be sent.
-//      
-//     protected sendError(req, res, error): void {
-//         HttpResponseSender.sendError(req, res, error);
-//     }
+    return endpoint;
+  }
 
-//     private appendBaseRoute(route: string): string {
-//         route = route || "";
+  /// Adds instrumentation to log calls and measure call time.
+  /// It returns a Timing object that is used to end the time measurement.
+  ///
+  /// - correlationId     (optional) transaction id to trace execution through call chain.
+  /// - name              a method name.
+  /// Returns Timing object to end the time measurement.
 
-//         if (this._baseRoute != null && this._baseRoute.length > 0) {
-//             var baseRoute = this._baseRoute;
-//             if (baseRoute[0] != '/') baseRoute = '/' + baseRoute;
-//             route = baseRoute + route;
-//         }
+  Timing instrument(String correlationId, String name) {
+    logger.trace(correlationId, 'Executing %s method', [name]);
+    counters.incrementOne(name + '.exec_count');
+    return counters.beginTiming(name + '.exec_time');
+  }
 
-//         return route;
-//     }
+  /// Adds instrumentation to error handling.
+  ///
+  /// - correlationId     (optional) transaction id to trace execution through call chain.
+  /// - name              a method name.
+  /// - err               an occured error
+  /// - result            (optional) an execution result
+  /// - callback          (optional) an execution callback
+  @override
+  instrumentError(String correlationId, String name, err,
+      [bool reerror = false]) {
+    if (err != null) {
+      logger.error(correlationId, err, 'Failed to execute %s method', [name]);
+      counters.incrementOne(name + '.exec_errors');
+      if (reerror != null && reerror == true) {
+        throw err;
+      }
+    }
+  }
 
-//     
-//     /// Registers a route in HTTP endpoint.
-//     /// 
-//     /// - method        HTTP method: "get", "head", "post", "put", "delete"
-//     /// - route         a command route. Base route will be added to this route
-//     /// - schema        a validation schema to validate received parameters.
-//     /// - action        an action function that is called when operation is invoked.
-//      
-//     protected registerRoute(method: string, route: string, schema: Schema,
-//         action: (req: any, res: any) => void): void {
-//         if (this._endpoint == null) return;
+  /// Checks if the component is opened.
+  ///
+  /// Returns true if the component has been opened and false otherwise.
 
-//         route = this.appendBaseRoute(route);
+  @override
+  bool isOpen() {
+    return _opened;
+  }
 
-//         this._endpoint.registerRoute(
-//             method, route, schema,
-//             (req, res) => {
-//                 action.call(this, req, res);
-//             }
-//         );
-//     }    
+  /// Opens the component.
+  ///
+  /// - correlationId 	(optional) transaction id to trace execution through call chain.
+  /// Return 			Future that receives null no errors occured.
+  /// Throws error
+  @override
+  Future open(String correlationId) async {
+    if (_opened) {
+      return null;
+    }
 
-//     
-//     /// Registers a route with authorization in HTTP endpoint.
-//     /// 
-//     /// - method        HTTP method: "get", "head", "post", "put", "delete"
-//     /// - route         a command route. Base route will be added to this route
-//     /// - schema        a validation schema to validate received parameters.
-//     /// - authorize     an authorization interceptor
-//     /// - action        an action function that is called when operation is invoked.
-//      
-//     protected registerRouteWithAuth(method: string, route: string, schema: Schema,
-//         authorize: (req: any, res: any, next: () => void) => void,
-//         action: (req: any, res: any) => void): void {
-//         if (this._endpoint == null) return;
+    if (endpoint == null) {
+      endpoint = _createEndpoint();
+      endpoint.register(this);
+      _localEndpoint = true;
+    }
 
-//         route = this.appendBaseRoute(route);
+    if (_localEndpoint) {
+      await endpoint.open(correlationId);
+    }
+    return null;
+  }
 
-//         this._endpoint.registerRouteWithAuth(
-//             method, route, schema,
-//             (req, res, next) => {
-//                 if (authorize)
-//                     authorize.call(this, req, res, next);
-//                 else next();
-//             },
-//             (req, res) => {
-//                 action.call(this, req, res);
-//             }
-//         );
-//     }    
+  /// Closes component and frees used resources.
+  ///
+  /// - correlationId 	(optional) transaction id to trace execution through call chain.
+  /// Return			Future that receives null no errors occured.
+  /// throws error
+  ///
+  @override
+  Future close(String correlationId) async {
+    if (!_opened) {
+      return null;
+    }
 
-//     
-//     /// Registers a middleware for a given route in HTTP endpoint.
-//     /// 
-//     /// - route         a command route. Base route will be added to this route
-//     /// - action        an action function that is called when middleware is invoked.
-//      
-//     protected registerInterceptor(route: string,
-//         action: (req: any, res: any, next: () => void) => void): void {
-//         if (this._endpoint == null) return;
+    if (endpoint == null) {
+      throw InvalidStateException(
+          correlationId, 'NOendpoint', 'HTTP endpoint is missing');
+    }
 
-//         route = this.appendBaseRoute(route);
+    if (_localEndpoint) {
+      await endpoint.close(correlationId);
+    }
+    _opened = false;
+    return null;
+  }
 
-//         this._endpoint.registerInterceptor(
-//             route,
-//             (req, res, next) => {
-//                 action.call(this, req, res, next);
-//             }
-//         );
-//     }    
-    
-//     
-//     /// Registers all service routes in HTTP endpoint.
-//     /// 
-//     /// This method is called by the service and must be overriden
-//     /// in child classes.
-//      
-//     public abstract register(): void;
+  /// Creates a callback function that sends result as JSON object.
+  /// That callack function call be called directly or passed
+  /// as a parameter to business logic components.
+  ///
+  /// If object is not null it returns 200 status code.
+  /// For null results it returns 204 status code.
+  /// If error occur it sends ErrorDescription with approproate status code.
+  ///
+  /// - req       a HTTP request object.
+  /// - res       a HTTP response object.
+  /// - callback function that receives execution result or error.
 
-// }
+  sendResult(angel.RequestContext req, angel.ResponseContext res, err, result) {
+     HttpResponseSender.sendResult(req, res, err, result);
+  }
+
+  /// Creates a callback function that sends newly created object as JSON.
+  /// That callack function call be called directly or passed
+  /// as a parameter to business logic components.
+  ///
+  /// If object is not null it returns 201 status code.
+  /// For null results it returns 204 status code.
+  /// If error occur it sends ErrorDescription with approproate status code.
+  ///
+  /// - req       a HTTP request object.
+  /// - res       a HTTP response object.
+  /// - callback function that receives execution result or error.
+
+  void sendCreatedResult(
+      angel.RequestContext req, angel.ResponseContext res, err, result) {
+     HttpResponseSender.sendCreatedResult(req, res, err, result);
+  }
+
+  /// Creates a callback function that sends deleted object as JSON.
+  /// That callack function call be called directly or passed
+  /// as a parameter to business logic components.
+  ///
+  /// If object is not null it returns 200 status code.
+  /// For null results it returns 204 status code.
+  /// If error occur it sends ErrorDescription with approproate status code.
+  ///
+  /// - req       a HTTP request object.
+  /// - res       a HTTP response object.
+  /// - callback function that receives execution result or error.
+
+  void sendDeletedResult(
+      angel.RequestContext req, angel.ResponseContext res, err, result) {
+     HttpResponseSender.sendDeletedResult(req, res, err, result);
+  }
+
+  /// Sends error serialized as ErrorDescription object
+  /// and appropriate HTTP status code.
+  /// If status code is not defined, it uses 500 status code.
+  ///
+  /// - req       a HTTP request object.
+  /// - res       a HTTP response object.
+  /// - error     an error object to be sent.
+
+  void sendError(angel.RequestContext req, angel.ResponseContext res, error) {
+    HttpResponseSender.sendError(req, res, error);
+  }
+
+  String _appendBaseRoute(String route) {
+    route ??= '';
+
+    if (baseRoute != null && baseRoute.isNotEmpty) {
+      var baseRoute = this.baseRoute;
+      if (baseRoute[0] != '/') baseRoute = '/' + baseRoute;
+      route = baseRoute + route;
+    }
+
+    return route;
+  }
+
+  /// Registers a route in HTTP endpoint.
+  ///
+  /// - method        HTTP method: "get", "head", "post", "put", "delete"
+  /// - route         a command route. Base route will be added to this route
+  /// - schema        a validation schema to validate received parameters.
+  /// - action        an action function that is called when operation is invoked.
+
+  void registerRoute(String method, String route, Schema schema,
+      action(angel.RequestContext req, angel.ResponseContext res)) {
+    if (endpoint == null) return;
+    route = _appendBaseRoute(route);
+    endpoint.registerRoute(method, route, schema, action);
+  }
+
+  /// Registers a route with authorization in HTTP endpoint.
+  ///
+  /// - method        HTTP method: "get", "head", "post", "put", "delete"
+  /// - route         a command route. Base route will be added to this route
+  /// - schema        a validation schema to validate received parameters.
+  /// - authorize     an authorization interceptor
+  /// - action        an action function that is called when operation is invoked.
+
+  void registerRouteWithAuth(
+      String method,
+      String route,
+      Schema schema,
+      authorize(angel.RequestContext req, angel.ResponseContext res, next()),
+      action(angel.RequestContext req, angel.ResponseContext res)) {
+    if (endpoint == null) return;
+
+    route = _appendBaseRoute(route);
+
+    endpoint.registerRouteWithAuth(method, route, schema,
+        (angel.RequestContext req, angel.ResponseContext res, next()) {
+      if (authorize != null) {
+        authorize(req, res, next);
+      } else {
+        next();
+      }
+    }, action);
+  }
+
+  /// Registers a middleware for a given route in HTTP endpoint.
+  ///
+  /// - route         a command route. Base route will be added to this route
+  /// - action        an action function that is called when middleware is invoked.
+
+  registerInterceptor(String route,
+      action(angel.RequestContext req, angel.ResponseContext res)) {
+    if (endpoint == null) return;
+
+    route = _appendBaseRoute(route);
+
+    endpoint.registerInterceptor(route, action);
+  }
+
+  /// Registers all service routes in HTTP endpoint.
+  ///
+  /// This method is called by the service and must be overriden
+  /// in child classes.
+  @override
+  void register();
+}

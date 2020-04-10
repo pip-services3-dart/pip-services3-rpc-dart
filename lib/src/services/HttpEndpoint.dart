@@ -32,9 +32,9 @@ import './IRegisterable.dart';
 /// A logger, counters, and a connection resolver can be referenced by passing the
 /// following references to the object's [[setReferences]] method:
 ///
-/// - logger: <code>'\*:logger:\*:\*:1.0'</code>;
-/// - counters: <code>'\*:counters:\*:\*:1.0'</code>;
-/// - discovery: <code>'\*:discovery:\*:\*:1.0'</code> (for the connection resolver).
+/// - logger: ['\*:logger:\*:\*:1.0'];
+/// - counters: ['\*:counters:\*:\*:1.0'];
+/// - discovery: ['\*:discovery:\*:\*:1.0'] (for the connection resolver).
 ///
 /// ### Examples ###
 ///
@@ -81,7 +81,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
   AngelHttp _server;
   angel.Angel _app;
-  List<angel.RequestHandler> _middleware;
+  final _middleware = <angel.RequestHandler>[];
   final _connectionResolver = HttpConnectionResolver();
   final _logger = CompositeLogger();
   final _counters = CompositeCounters();
@@ -124,15 +124,14 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// Sets references to this endpoint's logger, counters, and connection resolver.
   ///
   /// __References:__
-  /// - logger: <code>'\*:logger:\*:\*:1.0'</code>
-  /// - counters: <code>'\*:counters:\*:\*:1.0'</code>
-  /// - discovery: <code>'\*:discovery:\*:\*:1.0'</code> (for the connection resolver)
+  /// - logger: ['\*:logger:\*:\*:1.0']
+  /// - counters: ['\*:counters:\*:\*:1.0']
+  /// - discovery: ['\*:discovery:\*:\*:1.0'] (for the connection resolver)
   ///
   /// - references    an IReferences object, containing references to a logger, counters,
   ///                      and a connection resolver.
   ///
   /// See [[https://rawgit.com/pip-services-node/pip-services3-commons-node/master/doc/api/interfaces/refer.ireferences.html IReferences]] (in the PipServices 'Commons' package)
-
   @override
   void setReferences(IReferences references) {
     _logger.setReferences(references);
@@ -141,7 +140,6 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   }
 
   /// Returns whether or not this endpoint is open with an actively listening REST server.
-
   @override
   bool isOpen() {
     return _server != null;
@@ -151,9 +149,8 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// resolver and creates a REST server (service) using the set options and parameters.
   ///
   /// - correlationId     (optional) transaction id to trace execution through call chain.
-  /// - callback          (optional) the function to call once the opening process is complete.
-  ///                          Will be called with an error if one is raised.
-
+  /// Return              Future when the opening process is complete.
+  ///                     Will be called with an error if one is raised.
   @override
   Future open(String correlationId) async {
     if (isOpen()) {
@@ -174,12 +171,15 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
         _server = AngelHttp(_app);
       }
 
+      // _app.addRoute('GET', '*', (angel.RequestContext req, angel.ResponseContext res){
+      //     res.write('Test ok');
+      //     res.close();
+      // });
+
       _middleware.add(_addCors);
       _middleware.add(_addCompatibility);
       _middleware.add(_noCache);
       _middleware.add(_doMaintenance);
-
-      //_app.addRoute(method, path, handler, middleware: _middleware);
 
       _performRegistrations();
       await _server.startServer(connection.getHost(), connection.getPort());
@@ -253,7 +253,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// Closes this endpoint and the REST server (service) that was opened earlier.
   ///
   /// - correlationId     (optional) transaction id to trace execution through call chain.
-  /// - callback          (optional) the function to call once the closing process is complete.
+  /// Return              once the closing process is complete.
   ///                          Will be called with an error if one is raised.
 
   @override
@@ -324,8 +324,8 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
       throw ApplicationException('', 'NOT_OPENED', 'Can\'t add route');
     }
 
-    method = method.toLowerCase();
-    if (method == 'delete') method = 'del';
+    method = method.toUpperCase();
+    if (method == 'DELETE') method = 'DEL';
 
     route = _fixRoute(route);
 
@@ -348,6 +348,8 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
       action(req, res);
     };
     _app.addRoute(method, route, actionCurl, middleware: _middleware);
+    
+
   }
 
   /// Registers an action with authorization in this objects REST server (service)

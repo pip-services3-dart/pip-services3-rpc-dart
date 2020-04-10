@@ -1,141 +1,129 @@
-//  @module services 
+import 'dart:core';
+import 'package:angel_framework/angel_framework.dart' as angel;
 
-// 
-// /// Helper class that retrieves parameters from HTTP requests.
-//  
-// export class HttpRequestDetector {
+/// Helper class that retrieves parameters from HTTP requests.
 
-//     
-//     /// Detects the platform (using "user-agent") from which the given HTTP request was made.
-//     /// 
-//     /// - req   an HTTP request to process.
-//     /// Returns the detected platform and version. Detectable platforms: "mobile", "iphone", 
-//     /// "ipad",  "macosx", "android",  "webos", "mac", "windows". Otherwise - "unknown" will 
-//     /// be returned.
-//      
-//     public static detectPlatform(req: any): string {
-//         var ua = req.headers['user-agent'];
-//         var version;
+class HttpRequestDetector {
+  /// Detects the platform (using "user-agent") from which the given HTTP request was made.
+  ///
+  /// - req   an HTTP request to process.
+  /// Returns the detected platform and version. Detectable platforms: "mobile", "iphone",
+  /// "ipad",  "macosx", "android",  "webos", "mac", "windows". Otherwise - "unknown" will
+  /// be returned.
 
-//         if (/mobile/i.test(ua)) {
-//             return 'mobile';
-//         }
-//         if (/like Mac OS X/.test(ua)) {
-//             version = /CPU( iPhone)? OS ([0-9\._]+) like Mac OS X/.exec(ua)[2].replace(/_/g, '.');
-//             if (/iPhone/.test(ua)) {
-//                 return 'iphone ' + version;
-//             }
-//             if (/iPad/.test(ua)) {
-//                 return 'ipad ' + version;
-//             }
-//             return 'macosx ' + version;
-//         }
-//         if (/Android/.test(ua)) {
-//             version = /Android ([0-9\.]+)[\);]/.exec(ua)[1];
-//             return 'android ' + version;
-//         }
-//         if (/webOS\//.test(ua)) {
-//             version = /webOS\/([0-9\.]+)[\);]/.exec(ua)[1];
-//             return 'webos ' + version;
-//         }
-//         if (/(Intel|PPC) Mac OS X/.test(ua)) {
-//             version = /(Intel|PPC) Mac OS X ?([0-9\._]*)[\)\;]/.exec(ua)[2].replace(/_/g, '.');
-//             return 'mac ' + version;
-//         }
+  static String detectPlatform(angel.RequestContext req) {
+    var ua = req.headers['user-agent'][0];
+    var version;
 
-//         if (/Windows NT/.test(ua)) {
-//             try {
-//                 version = /Windows NT ([0-9\._]+)[\);]/.exec(ua)[1];
-//                 return 'windows ' + version;
-//             }
-//             catch (ex) {
-//                 return 'unknown';
-//             }
-//         }
-//         return 'unknown';
-//     }
+    if (RegExp(r'mobile').hasMatch(ua)) {
+        return 'mobile';
+    }
+    if (RegExp(r'like Mac OS X').hasMatch(ua)) {
+        version = RegExp(r'CPU( iPhone)? OS ([0-9\._]+) like Mac OS X').firstMatch(ua).group(1).replaceAll('_', '.'); //exec(ua)[2].replace(/_/g, '.');
+        if (RegExp(r'iPhone').hasMatch(ua)) {
+            return 'iphone ' + version;
+        }
+        if (RegExp(r'iPad').hasMatch(ua)) {
+            return 'ipad ' + version;
+        }
+        return 'macosx ' + version;
+    }
+    if (RegExp(r'Android').hasMatch(ua)) {
+        version = RegExp(r'Android ([0-9\.]+)[\);]').firstMatch(ua).group(0); // exec(ua)[1];
+        return 'android ' + version;
+    }
+    if (RegExp(r'webOS/').hasMatch(ua)) {
+        version = RegExp(r'webOS\/([0-9\.]+)[\);]').firstMatch(ua).group(0); // exec(ua)[1];
+        return 'webos ' + version;
+    }
+    if (RegExp(r'(Intel|PPC) Mac OS X').hasMatch(ua)) {
+        version = RegExp(r'(Intel|PPC) Mac OS X ?([0-9\._]*)[\)\;]').firstMatch(ua).group(1).replaceAll('_', '.');//exec(ua)[2].replace(/_/g, '.');
+        return 'mac ' + version;
+    }
 
-//     
-//     /// Detects the browser (using "user-agent") from which the given HTTP request was made.
-//     /// 
-//     /// - req   an HTTP request to process.
-//     /// Returns the detected browser. Detectable browsers: "chrome", "msie", "firefox", 
-//     ///          "safari". Otherwise - "unknown" will be returned.
-//      
-//     public static detectBrowser(req: any): string {
-//         var ua = req.headers['user-agent'];
+    if (RegExp(r'Windows NT').hasMatch(ua)) {
+        try {
+            version = RegExp(r'Windows NT ([0-9\._]+)[\);]').firstMatch(ua).group(0); //exec(ua)[1];
+            return 'windows ' + version;
+        }
+        catch (ex) {
+            return 'unknown';
+        }
+    }
+    return 'unknown';
+  }
 
-//         if (/chrome/i.test(ua))
-//             return 'chrome'
-//         if (/msie/i.test(ua))
-//             return 'msie';
-//         if (/firefox/i.test(ua))
-//             return 'firefox';
-//         if (/safari/i.test(ua))
-//             return 'safari';
+  /// Detects the browser (using "user-agent") from which the given HTTP request was made.
+  ///
+  /// - req   an HTTP request to process.
+  /// Returns the detected browser. Detectable browsers: "chrome", "msie", "firefox",
+  ///          "safari". Otherwise - "unknown" will be returned.
 
-//         return ua || 'unknown';
-//     }
+  static String detectBrowser(angel.RequestContext req) {
+    var ua = req.headers['user-agent'][0];
 
-//     
-//     /// Detects the IP address from which the given HTTP request was received.
-//     /// 
-//     /// - req   an HTTP request to process.
-//     /// Returns the detected IP address (without a port). If no IP is detected - 
-//     /// <code>null</code> will be returned.
-//      
-//     public static detectAddress(req: any): string {
-//         var ip = null;
+    if (RegExp(r'chrome').hasMatch(ua)) {
+      return 'chrome';
+    }
+    if (RegExp(r'msie').hasMatch(ua)) {
+      return 'msie';
+    }
+    if (RegExp(r'firefox').hasMatch(ua)) {
+      return 'firefox';
+    }
+    if (RegExp(r'safari').hasMatch(ua)) {
+      return 'safari';
+    }
 
-//         if (req.headers['x-forwarded-for']) {
-//             ip = req.headers['x-forwarded-for'].split(',')[0]
-//         }
+    return ua ?? 'unknown';
+  }
 
-//         if (ip == null && req.ip) {
-//             ip = req.ip;
-//         }
+  /// Detects the IP address from which the given HTTP request was received.
+  ///
+  /// - req   an HTTP request to process.
+  /// Returns the detected IP address (without a port). If no IP is detected -
+  /// [null] will be returned.
 
-//         if (ip == null && req.connection) {
-//             ip = req.connection.remoteAddress;
-//             if (!ip && req.connection.socket) {
-//                 ip = req.connection.socket.remoteAddress;
-//             }
-//         }
+  static String detectAddress(angel.RequestContext req) {
+    var ip;
 
-//         if (ip == null && req.socket) {
-//             ip = req.socket.remoteAddress;
-//         }
+    if (req.headers['x-forwarded-for'] != null) {
+      ip = req.headers['x-forwarded-for'][0];
+    }
 
-//         // Remove port
-//         if (ip != null) {
-//             ip = ip.toString();
-//             var index = ip.indexOf(':');
-//             if (index > 0) {
-//                 ip = ip.substring(0, index);
-//             }
-//         }
+    if (ip == null && req.ip != null) {
+      ip = req.ip;
+    }
 
-//         return ip;
-//     }
+    ip ??= req.remoteAddress;
 
-//     
-//     /// Detects the host name of the request's destination server.
-//     /// 
-//     /// - req   an HTTP request to process.
-//     /// Returns the destination server's host name.
-//      
-//     public static detectServerHost(req: any): string {
-//         return "" + req.socket.localAddress;
-//     }
+    // Remove port
+    if (ip != null) {
+      ip = ip.toString();
+      var index = ip.indexOf(':');
+      if (index > 0) {
+        ip = ip.substring(0, index);
+      }
+    }
 
-//     
-//     /// Detects the request's destination port number.
-//     /// 
-//     /// - req   an HTTP request to process.
-//     /// Returns the detected port number or <code>80</code> (if none are detected).
-//      
-//     public static detectServerPort(req) {
-//         return req.socket.localPort;
-//     }
+    return ip;
+  }
 
-// }
+  /// Detects the host name of the request's destination server.
+  ///
+  /// - req   an HTTP request to process.
+  /// Returns the destination server's host name.
+
+  static String detectServerHost(angel.RequestContext req) {
+    return req.uri.host; // socket.localAddress;
+  }
+
+  /// Detects the request's destination port number.
+  ///
+  /// - req   an HTTP request to process.
+  /// Returns the detected port number or [80] (if none are detected).
+
+  static String detectServerPort(angel.RequestContext req) {
+    return req.uri.port.toString(); //req.socket.localPort;
+  }
+}

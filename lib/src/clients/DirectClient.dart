@@ -15,9 +15,9 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 ///
 /// ### References ###
 ///
-/// - <code>\*:logger:\*:\*:1.0</code>         (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/log.ilogger.html ILogger]] components to pass log messages
-/// - <code>\*:counters:\*:\*:1.0</code>       (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/count.icounters.html ICounters]] components to pass collected measurements
-/// - <code>\*:controller:\*:\*:1.0</code>     controller to call business methods
+/// - [\*:logger:\*:\*:1.0]         (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/log.ilogger.html ILogger]] components to pass log messages
+/// - [\*:counters:\*:\*:1.0]       (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/count.icounters.html ICounters]] components to pass collected measurements
+/// - [\*:controller:\*:\*:1.0]     controller to call business methods
 ///
 /// ### Example ###
 ///

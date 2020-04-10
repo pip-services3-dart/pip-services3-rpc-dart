@@ -1,69 +1,69 @@
-//  @module services 
-// const os = require('os');
 
-// import { IReferences } from 'pip-services3-commons-node';
-// import { Descriptor } from 'pip-services3-commons-node';
-// import { ContextInfo } from 'pip-services3-components-node';
-// import { HttpRequestDetector } from './HttpRequestDetector';
+import 'dart:io';
+import 'dart:convert';
+import 'package:angel_framework/angel_framework.dart' as angel;
+import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:pip_services3_components/pip_services3_components.dart';
+import './HttpRequestDetector.dart';
 
-// import { RestOperations } from './RestOperations';
+import './RestOperations.dart';
 
-// export class AboutOperations extends RestOperations {
-//     private _contextInfo: ContextInfo;
+class AboutOperations extends RestOperations {
+    ContextInfo _contextInfo;
 
-//     public setReferences(references: IReferences): void {
-//         super.setReferences(references);
+    @override
+    void setReferences(IReferences references) {
+        super.setReferences(references);
 
-//         this._contextInfo = references.getOneOptional<ContextInfo>(
-//             new Descriptor('pip-services', 'context-info', '*', '*', '*')
-//         );
-//     }
+        _contextInfo = references.getOneOptional<ContextInfo>(
+             Descriptor('pip-services', 'context-info', '*', '*', '*')
+        );
+    }
 
-//     public getAboutOperation() {
-//         return (req, res) => {
-//             this.about(req, res);
-//         };
-//     }
+    Function (angel.RequestContext req, angel.ResponseContext res) getAboutOperation() {
+        return (angel.RequestContext req, angel.ResponseContext res) {
+            about(req, res);
+        };
+    }
 
-//     private getNetworkAddresses(): string[] {
-//         var interfaces = os.networkInterfaces();
-//         var addresses: string[] = [];
-//         for (var k in interfaces) {
-//             for (var k2 in interfaces[k]) {
-//                 var address = interfaces[k][k2];
-//                 if (address.family === 'IPv4' && !address.internal) {
-//                     addresses.push(address.address);
-//                 }
-//             }
-//         }
-//         return addresses;
-//     }
+    Future<List<String>> _getNetworkAddresses() async {
+        var interfaces = await NetworkInterface.list();
+        var addresses = <String>[];
+        for (var interface in interfaces) {
+            for (var address in interface.addresses) {
+                if (address.type == InternetAddressType.IPv4 && !address.isLinkLocal) {
+                    addresses.add(address.address);
+                }
+            }
+        }
+        return addresses;
+    }
 
-//     public about(req, res) {
-//         var about = {
-//             server: {
-//                 name: this._contextInfo != null ? this._contextInfo.name : 'unknown',
-//                 description: this._contextInfo != null ? this._contextInfo.description : null,
-//                 properties: this._contextInfo != null ? this._contextInfo.properties : null,
-//                 uptime: this._contextInfo != null ? this._contextInfo.uptime : null,
-//                 start_time: this._contextInfo != null ? this._contextInfo.startTime : null,
+    void about(req, res) {
+        var about = {
+            'server': {
+                'name': _contextInfo != null ? _contextInfo.name : 'unknown',
+                'description': _contextInfo != null ? _contextInfo.description : null,
+                'properties': _contextInfo != null ? _contextInfo.properties : null,
+                'uptime': _contextInfo != null ? _contextInfo.uptime : null,
+                'start_time': _contextInfo != null ? _contextInfo.startTime : null,
 
-//                 current_time: new Date().toISOString(),
-//                 protocol: req.protocol,
-//                 host: HttpRequestDetector.detectServerHost(req),
-//                 addresses: this.getNetworkAddresses(),
-//                 port: HttpRequestDetector.detectServerPort(req),
-//                 url: req.originalUrl,
-//             },
-//             client: {
-//                 address: HttpRequestDetector.detectAddress(req),
-//                 client: HttpRequestDetector.detectBrowser(req),
-//                 platform: HttpRequestDetector.detectPlatform(req),
-//                 user: req.user
-//             }
-//         };
+                'current_time': DateTime.now().toIso8601String(),
+                'protocol': req.protocol,
+                'host': HttpRequestDetector.detectServerHost(req),
+                'addresses': _getNetworkAddresses(),
+                'port': HttpRequestDetector.detectServerPort(req),
+                'url': req.originalUrl,
+            },
+            'client': {
+                'address': HttpRequestDetector.detectAddress(req),
+                'client': HttpRequestDetector.detectBrowser(req),
+                'platform': HttpRequestDetector.detectPlatform(req),
+                'user': req.user
+            }
+        };
 
-//         res.json(about);
-//     }
+        res.write(json.encode(about));
+    }
 
-// }
+}

@@ -267,7 +267,7 @@
     },
     {
       "name": "pip_services3_commons",
-      "rootUri": "file:///C:/Users/Nikopol/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/pip_services3_commons-1.0.3",
+      "rootUri": "file:///C:/Users/Nikopol/AppData/Roaming/Pub/Cache/hosted/pub.dartlang.org/pip_services3_commons-1.0.4",
       "packageUri": "lib/",
       "languageVersion": "2.0"
     },
@@ -452,7 +452,7 @@
       "languageVersion": "2.0"
     }
   ],
-  "generated": "2020-04-09T16:07:19.919240Z",
+  "generated": "2020-04-10T16:49:19.643609Z",
   "generator": "pub",
   "generatorVersion": "2.7.2"
 }
