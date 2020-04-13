@@ -38,8 +38,8 @@ class DummyRestService extends RestService {
   void _getPageByFilter(
       angel.RequestContext req, angel.ResponseContext res) async {
     try {
-      var page = await controller.getPageByFilter(req.params['correlation_id'],
-          FilterParams(req.params), PagingParams(req.params));
+      var page = await controller.getPageByFilter(req.queryParameters['correlation_id'],
+          FilterParams(req.queryParameters), PagingParams(req.queryParameters));
       sendResult(req, res, null, page);
     } catch (ex) {
       sendError(req, res, ex);
@@ -49,17 +49,18 @@ class DummyRestService extends RestService {
   void _getOneById(angel.RequestContext req, angel.ResponseContext res) async {
     try {
       var dummy = await controller.getOneById(
-          req.params['correlation_id'], req.params['dummy_id']);
+          req.queryParameters['correlation_id'], req.params['dummy_id']);
       sendResult(req, res, null, dummy);
     } catch (ex) {
       sendError(req, res, ex);
     }
   }
 
-  void _create(angel.RequestContext req, angel.ResponseContext res) {
+  void _create(angel.RequestContext req, angel.ResponseContext res) async {
     try {
-      var item = Dummy.fromJson(json.decode(req.body.toString()));
-      var dummy = controller.create(req.params['correlation_id'], item);
+      await req.parseBody();
+      var item = Dummy.fromJson(req.bodyAsMap);
+      var dummy = await controller.create(req.params['correlation_id'], item);
       sendCreatedResult(req, res, null, dummy);
     } catch (ex) {
       sendError(req, res, ex);
@@ -68,7 +69,8 @@ class DummyRestService extends RestService {
 
   void _update(angel.RequestContext req, angel.ResponseContext res) async {
     try {
-      var item = Dummy.fromJson(json.decode(req.body.toString()));
+      await req.parseBody();
+      var item = Dummy.fromJson(req.bodyAsMap);
       var dummy = await controller.update(req.params['correlation_id'], item);
       sendResult(req, res, null, dummy);
     } catch (ex) {
@@ -79,7 +81,7 @@ class DummyRestService extends RestService {
   void _deleteById(angel.RequestContext req, angel.ResponseContext res) async {
     try {
       var dummy = await controller.deleteById(
-          req.params['correlation_id'], req.params['dummy_id']);
+          req.queryParameters['correlation_id'], req.params['dummy_id']);
       sendCreatedResult(req, res, null, dummy);
     } catch (ex) {
       sendError(req, res, ex);

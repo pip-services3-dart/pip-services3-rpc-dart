@@ -88,7 +88,7 @@ class HttpResponseSender {
       res.statusCode = 204;
     } else {
       res.statusCode = 201;
-     res.write(json.encode(result));
+      res.write(json.encode(result));
     }
   }
 

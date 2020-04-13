@@ -86,7 +86,7 @@ abstract class RestService
         IUnreferenceable,
         IRegisterable {
   static final _defaultConfig = ConfigParams.fromTuples(
-      ['base_route', '', 'dependencies.endpoint', '*:endpoint:http:*:1.0']);
+      ['base_route', null, 'dependencies.endpoint', '*:endpoint:http:*:1.0']);
 
   ConfigParams _config;
   IReferences _references;
@@ -191,12 +191,10 @@ abstract class RestService
   /// - name              a method name.
   /// - err               an occured error
   /// - result            (optional) an execution result
-  /// - callback          (optional) an execution callback
-  @override
-  instrumentError(String correlationId, String name, err,
+  void instrumentError(String correlationId, String name, err,
       [bool reerror = false]) {
     if (err != null) {
-      logger.error(correlationId, err, 'Failed to execute %s method', [name]);
+      logger.error(correlationId, ApplicationException().wrap(err), 'Failed to execute %s method', [name]);
       counters.incrementOne(name + '.exec_errors');
       if (reerror != null && reerror == true) {
         throw err;

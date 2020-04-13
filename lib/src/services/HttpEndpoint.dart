@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 
 import 'package:angel_framework/angel_framework.dart' as angel;
 import 'package:angel_framework/http.dart';
@@ -171,11 +172,6 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
         _server = AngelHttp(_app);
       }
 
-      // _app.addRoute('GET', '*', (angel.RequestContext req, angel.ResponseContext res){
-      //     res.write('Test ok');
-      //     res.close();
-      // });
-
       _middleware.add(_addCors);
       _middleware.add(_addCompatibility);
       _middleware.add(_noCache);
@@ -188,6 +184,9 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
     } catch (ex) {
       _server = null;
       _app = null;
+
+      print(ex);
+
       var err = ConnectionException(
               correlationId, 'CANNOT_CONNECT', 'Opening REST service failed')
           .wrap(ex)
@@ -262,6 +261,8 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
       // Eat exceptions
       try {
         await _server.close();
+        await _app.close();
+        
         _logger.debug(correlationId, 'Closed REST service at %s', [_uri]);
       } catch (ex) {
         _logger.warn(
@@ -325,16 +326,23 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
     }
 
     method = method.toUpperCase();
-    if (method == 'DELETE') method = 'DEL';
+    if (method == 'DEL') method = 'DELETE';
 
     route = _fixRoute(route);
 
     // Hack!!! Wrapping action to preserve prototyping context
-    var actionCurl = (angel.RequestContext req, angel.ResponseContext res) {
+    var actionCurl =
+        (angel.RequestContext req, angel.ResponseContext res) async {
       // Perform validation
       if (schema != null) {
         var params = req.params;
-        params['body'] = req.body;
+        params.addAll(req.queryParameters);
+        if (req.contentType != null) {
+          await req.parseBody();
+          var body = req.bodyAsMap;
+          params['body'] = body;
+        }
+
         var correlationId = params['correlaton_id'];
         var err =
             schema.validateAndReturnException(correlationId, params, false);
@@ -345,11 +353,9 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
       }
 
       // Todo: perform verification?
-      action(req, res);
+      await action(req, res);
     };
     _app.addRoute(method, route, actionCurl, middleware: _middleware);
-    
-
   }
 
   /// Registers an action with authorization in this objects REST server (service)

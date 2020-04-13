@@ -158,7 +158,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   void instrumentError(String correlationId, String name, err,
       [bool reerror = false]) {
     if (err != null) {
-      logger.error(correlationId, err, 'Failed to call %s method', [name]);
+      logger.error(correlationId, ApplicationException().wrap(err), 'Failed to call %s method', [name]);
       counters.incrementOne(name + '.call_errors');
       if (reerror != null && reerror == true) {
         throw err;

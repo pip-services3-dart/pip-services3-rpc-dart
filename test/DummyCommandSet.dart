@@ -51,7 +51,7 @@ class DummyCommandSet extends CommandSet {
             ObjectSchema(true)
                 .withRequiredProperty('dummy', DummySchema()),
 			(String correlationId, Parameters args )  {
-				Dummy entity = args.get('dummy');
+				var entity = Dummy.fromJson(args.get('dummy'));
 				return _controller.create(correlationId, entity);
 			}
 		);
@@ -63,7 +63,7 @@ class DummyCommandSet extends CommandSet {
             ObjectSchema(true)
                 .withRequiredProperty('dummy', DummySchema()),
 			(String correlationId, Parameters args )  {
-				Dummy entity = args.get('dummy');
+				var entity = Dummy.fromJson(args.get('dummy'));
 				return _controller.update(correlationId, entity);
 			}
 		);

@@ -82,6 +82,6 @@ class HeartbeatRestService extends RestService {
     /// - res   an HTTP response
      
     void _heartbeat(angel.RequestContext req, angel.ResponseContext res) {
-        sendResult(req, res, null, DateTime.now());
+        sendResult(req, res, null, DateTime.now().toIso8601String());
     }
 }

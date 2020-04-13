@@ -13,14 +13,12 @@ var restConfig = ConfigParams.fromTuples([
   'connection.host',
   'localhost',
   'connection.port',
-  3000
+  '3001'
 ]);
 
 void main() {
   group('HttpEndpoint', () {
-    Dummy _dummy1;
-    Dummy _dummy2;
-
+   
     HttpEndpoint endpoint;
     DummyRestService service;
 
@@ -35,7 +33,7 @@ void main() {
     endpoint = HttpEndpoint();
     endpoint.configure(restConfig);
 
-    setUp(() async {
+    setUpAll(() async {
       var references = References.fromTuples([
         Descriptor(
             'pip-services-dummies', 'controller', 'default', 'default', '1.0'),
@@ -50,19 +48,15 @@ void main() {
       await endpoint.open(null);
       await service.open(null);
 
-      url = 'http://localhost:3000';
+      url = 'http://localhost:3001';
       rest = http.Client();
-
-      _dummy1 = Dummy.from(null, 'Key 1', 'Content 1');
-      _dummy2 = Dummy.from(null, 'Key 2', 'Content 2');
     });
 
-    tearDown(() async {
+    tearDownAll(() async {
       await service.close(null);
       await endpoint.close(null);
     });
 
-    
     test('CRUD Operations', () async {
       
       try {

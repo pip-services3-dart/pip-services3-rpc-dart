@@ -126,7 +126,7 @@ class StatusRestService extends RestService {
             'description': description,
             'start_time': StringConverter.toString2(_startTime),
             'current_time': StringConverter.toString2(DateTime.now()),
-            'uptime': uptime,
+            'uptime': uptime.toIso8601String(),
             'properties': properties,
             'components': components
         };

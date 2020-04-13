@@ -68,7 +68,7 @@ abstract class CommandableHttpService extends RestService {
   /// - baseRoute a service base route.
 
   CommandableHttpService(String baseRoute) : super() {
-    baseRoute = baseRoute;
+    this.baseRoute = baseRoute;
     dependencyResolver.put('controller', 'none');
   }
 
@@ -87,8 +87,14 @@ abstract class CommandableHttpService extends RestService {
       route = route[0] != '/' ? '/' + route : route;
 
       registerRoute('post', route, null, (angel.RequestContext req, angel.ResponseContext res) async {
-        var params = json.decode(req.body.toString()) ?? {};
+        
+        var params = {};
 
+        if (req.contentType != null) {
+            await req.parseBody();
+            params = req.bodyAsMap ?? {};
+        }
+         
         var correlationId = req.params['correlation_id'];
         var args = Parameters.fromValue(params);
         var timing =
@@ -100,7 +106,7 @@ abstract class CommandableHttpService extends RestService {
         } catch (err) {
           instrumentError(
               correlationId, baseRoute + '.' + command.getName(), err);
-          sendResult(req, res, err, null);
+          sendResult(req, res, ApplicationException().wrap(err), null);
         }
       });
     }
