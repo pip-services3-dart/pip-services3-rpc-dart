@@ -1,90 +1,58 @@
-// import {
-//     Descriptor,
-//     FilterParams,
-//     PagingParams,
-//     DataPage
-// } from 'pip-services3-commons-node';
+import 'dart:async';
 
-// import { DirectClient } from '../../src/clients/DirectClient';
-// import { IDummyClient } from './IDummyClient';
-// import { IDummyController } from '../IDummyController';
-// import { Dummy } from '../Dummy';
+import 'package:pip_services3_commons/pip_services3_commons.dart';
 
-// export class DummyDirectClient extends DirectClient<IDummyController> implements IDummyClient {
-            
-//     public constructor() {
-//         super();
+import '../../lib/src/clients/DirectClient.dart';
+import './IDummyClient.dart';
+import '../IDummyController.dart';
+import '../Dummy.dart';
 
-//         this._dependencyResolver.put('controller', new Descriptor("pip-services-dummies", "controller", "*", "*", "*"))
-//     }
+class DummyDirectClient extends DirectClient<IDummyController>
+    implements IDummyClient {
+  DummyDirectClient() : super() {
+    dependencyResolver.put('controller',
+        Descriptor('pip-services-dummies', 'controller', '*', '*', '*'));
+  }
 
-//     public getDummies(String correlationId, filter: FilterParams, paging: PagingParams,
-//         callback: (err: any, result: DataPage<Dummy>) => void): void {
+  @override
+  Future<DataPage<Dummy>> getDummies(
+      String correlationId, FilterParams filter, PagingParams paging) async {
+    var timing = instrument(correlationId, 'dummy.get_page_by_filter');
+    var result =
+        await controller.getPageByFilter(correlationId, filter, paging);
+    timing.endTiming();
+    return result;
+  }
 
-//         var timing = this.instrument(correlationId, 'dummy.get_page_by_filter');
-//         this._controller.getPageByFilter(
-//             correlationId, 
-//             filter,
-//             paging,
-//             (err, result) => {
-//                 timing.endTiming()
-//                 callback(err, result);
-//             }
-//         );
-//     }
+  Future<Dummy> getDummyById(String correlationId, String dummyId) async {
+    var timing = instrument(correlationId, 'dummy.get_one_by_id');
+    var result = await controller.getOneById(correlationId, dummyId);
 
-//     public getDummyById(String correlationId, dummyId: string, callback: (err: any, result: Dummy) => void): void {
-//         var timing = this.instrument(correlationId, 'dummy.get_one_by_id');
-//         this._controller.getOneById(
-//             correlationId,
-//             dummyId, 
-//             (err, result) => {
-//                 timing.endTiming();
-//                 callback(err, result);
-//             }
-//         );        
-//     }
+    timing.endTiming();
+    return result;
+  }
 
-//     public createDummy(String correlationId, dummy: any, 
-//         callback: (err: any, result: Dummy) => void): void {
-        
-//         var timing = this.instrument(correlationId, 'dummy.create');
-//         this._controller.create(
-//             correlationId,
-//             dummy, 
-//             (err, result) => {
-//                 timing.endTiming();
-//                 callback(err, result);
-//             }
-//         );
-//     }
+  @override
+  Future<Dummy> createDummy(String correlationId, Dummy dummy) async {
+    var timing = instrument(correlationId, 'dummy.create');
+    var result = await controller.create(correlationId, dummy);
+    timing.endTiming();
+    return result;
+  }
 
-//     public updateDummy(String correlationId, dummy: any, 
-//         callback: (err: any, result: Dummy) => void): void {
-        
-//         var timing = this.instrument(correlationId, 'dummy.update');
-//         this._controller.update(
-//             correlationId, 
-//             dummy, 
-//             (err, result) => {
-//                 timing.endTiming();
-//                 callback(err, result);
-//             }
-//         );
-//     }
+  @override
+  Future<Dummy> updateDummy(String correlationId, Dummy dummy) async {
+    var timing = instrument(correlationId, 'dummy.update');
+    var result = await controller.update(correlationId, dummy);
+    timing.endTiming();
+    return result;
+  }
 
-//     public deleteDummy(String correlationId, dummyId: string, 
-//         callback: (err: any, result: Dummy) => void): void {
-        
-//         var timing = this.instrument(correlationId, 'dummy.delete_by_id');
-//         this._controller.deleteById(
-//             correlationId, 
-//             dummyId,
-//             (err, result) => {
-//                 timing.endTiming();
-//                 callback(err, result);
-//             }
-//         );
-//     }
-  
-// }
+  @override
+  Future<Dummy> deleteDummy(String correlationId, String dummyId) async {
+    var timing = instrument(correlationId, 'dummy.delete_by_id');
+    var result = await controller.deleteById(correlationId, dummyId);
+    timing.endTiming();
+    return result;
+  }
+}

@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_components/pip_services3_components.dart';
@@ -222,6 +223,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     if (client != null) {
       // Eat exceptions
       try {
+        client.close();
         logger.debug(correlationId, 'Closed REST service at %s', [uri]);
       } catch (ex) {
         logger.warn(correlationId, 'Failed while closing REST service: %s', ex);
@@ -346,15 +348,15 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     for (; retries > 0;) {
       try {
         if (method == 'get') {
-          response = await client.get(route, headers: headers);
+          response = await client.get(route); //headers: headers
         } else if (method == 'head') {
-          response = await client.head(route, headers: headers);
+          response = await client.head(route); //headers: headers
         } else if (method == 'post') {
-          response = await client.post(route, headers: headers, body: data);
+          response = await client.post(route, headers: headers, body: json.encode(data));
         } else if (method == 'put') {
-          response = await client.put(route, headers: headers, body: data);
+          response = await client.put(route, headers: headers, body: json.encode(data));
         } else if (method == 'delete') {
-          response = await client.delete(route, headers: headers);
+          response = await client.delete(route); //headers: headers
         } else {
           var error = UnknownException(correlationId, 'UNSUPPORTED_METHOD',
                   'Method is not supported by REST client')
@@ -364,7 +366,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
       } catch (ex) {
         retriesCount--;
         if (retriesCount == 0) {
-          client.close();
+          //client.close();
           rethrow;
         } else {
           logger.trace(
@@ -377,13 +379,13 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
       return null;
     }
 
-    client.close();
+    //client.close();
     if (response == null) {
       throw ApplicationExceptionFactory.create(ErrorDescriptionFactory.create(
           UnknownException(correlationId,
               'Unable to get a result from uri ${uri} with method ${method}')));
     }
 
-    return response;
+    return response.body;
   }
 }

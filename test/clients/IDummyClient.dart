@@ -1,13 +1,12 @@
-// import { DataPage } from 'pip-services3-commons-node';
-// import { FilterParams } from 'pip-services3-commons-node';
-// import { PagingParams } from 'pip-services3-commons-node';
+import 'dart:async';
+import 'package:pip_services3_commons/pip_services3_commons.dart';
+import '../Dummy.dart';
 
-// import { Dummy } from '../Dummy';
-
-// export interface IDummyClient {
-//     getDummies(String correlationId, filter: FilterParams, paging: PagingParams, callback: (err: any, result: DataPage<Dummy>) => void): void;
-//     getDummyById(String correlationId, dummyId: string, callback: (err: any, result: Dummy) => void): void;
-//     createDummy(String correlationId, dummy: Dummy, callback: (err: any, result: Dummy) => void): void;
-//     updateDummy(String correlationId, dummy: Dummy, callback: (err: any, result: Dummy) => void): void;
-//     deleteDummy(String correlationId, dummyId: string, callback: (err: any, result: Dummy) => void): void;
-// }
+abstract class IDummyClient {
+  Future<DataPage<Dummy>> getDummies(
+      String correlationId, FilterParams filter, PagingParams paging);
+  Future<Dummy> getDummyById(String correlationId, String dummyId);
+  Future<Dummy> createDummy(String correlationId, Dummy dummy);
+  Future<Dummy> updateDummy(String correlationId, Dummy dummy);
+  Future<Dummy> deleteDummy(String correlationId, String dummyId);
+}

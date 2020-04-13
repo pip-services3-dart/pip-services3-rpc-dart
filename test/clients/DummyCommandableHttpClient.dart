@@ -1,73 +1,53 @@
-// import {
-//     FilterParams,
-//     PagingParams,
-//     DataPage
-// } from 'pip-services3-commons-node';
+import 'dart:async';
+import 'dart:convert';
+import 'package:pip_services3_commons/pip_services3_commons.dart';
 
-// import { CommandableHttpClient } from '../../src/clients/CommandableHttpClient';
-// import { IDummyClient } from './IDummyClient';
-// import { Dummy } from '../Dummy';
+import '../../lib/src/clients/CommandableHttpClient.dart';
+import './IDummyClient.dart';
+import '../Dummy.dart';
 
-// export class DummyCommandableHttpClient extends CommandableHttpClient implements IDummyClient {
-        
-//     public constructor() {
-//         super('dummy');
-//     }
+class DummyCommandableHttpClient extends CommandableHttpClient
+    implements IDummyClient {
+  DummyCommandableHttpClient() : super('dummy');
 
-//     public getDummies(String correlationId, filter: FilterParams, paging: PagingParams, callback: (err: any, result: DataPage<Dummy>) => void): void {
-//         this.callCommand(
-//             'get_dummies', 
-//             correlationId, 
-//             {
-//                 filter: filter,
-//                 paging: paging
-//             },
-//             callback
-//         );
-//     }
+  @override
+  Future<DataPage<Dummy>> getDummies(
+      String correlationId, FilterParams filter, PagingParams paging) async {
+    var result = await callCommand(
+        'get_dummies', correlationId, {'filter': filter, 'paging': paging});
+    return DataPage<Dummy>.fromJson(
+        json.decode(result), (item) => Dummy.fromJson(item));
+  }
 
-//     public getDummyById(String correlationId, dummyId: string, callback: (err: any, result: Dummy) => void): void {
-//         this.callCommand(
-//             'get_dummy_by_id', 
-//             correlationId,
-//             {
-//                 dummy_id: dummyId
-//             }, 
-//             callback
-//         );        
-//     }
+  @override
+  Future<Dummy> getDummyById(String correlationId, String dummyId) async {
+    var result = await callCommand(
+        'get_dummy_by_id', correlationId, {'dummy_id': dummyId});
+    if (result == null) return null;
+    return Dummy.fromJson(json.decode(result));
+  }
 
-//     public createDummy(String correlationId, dummy: any, callback: (err: any, result: Dummy) => void): void {
-//         this.callCommand(
-//             'create_dummy',
-//             correlationId,
-//             {
-//                 dummy: dummy
-//             }, 
-//             callback
-//         );
-//     }
+  @override
+  Future<Dummy> createDummy(String correlationId, Dummy dummy) async {
+    var result =
+        await callCommand('create_dummy', correlationId, {'dummy': dummy});
+    if (result == null) return null;
+    return Dummy.fromJson(json.decode(result));
+  }
 
-//     public updateDummy(String correlationId, dummy: any, callback: (err: any, result: Dummy) => void): void {
-//         this.callCommand(
-//             'update_dummy',
-//             correlationId,
-//             {
-//                 dummy: dummy
-//             }, 
-//             callback
-//         );
-//     }
+  @override
+  Future<Dummy> updateDummy(String correlationId, Dummy dummy) async {
+    var result =
+        await callCommand('update_dummy', correlationId, {'dummy': dummy});
+    if (result == null) return null;
+    return Dummy.fromJson(json.decode(result));
+  }
 
-//     public deleteDummy(String correlationId, dummyId: string, callback: (err: any, result: Dummy) => void): void {
-//         this.callCommand(
-//             'delete_dummy',
-//             correlationId, 
-//             {
-//                 dummy_id: dummyId
-//             },
-//             callback
-//         );
-//     }
-  
-// }
+  @override
+  Future<Dummy> deleteDummy(String correlationId, String dummyId) async {
+    var result =
+        await callCommand('delete_dummy', correlationId, {'dummy_id': dummyId});
+    if (result == null) return null;
+    return Dummy.fromJson(json.decode(result));
+  }
+}

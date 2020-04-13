@@ -1,77 +1,56 @@
-// import { FilterParams } from 'pip-services3-commons-node';
-// import { PagingParams } from 'pip-services3-commons-node';
-// import { DataPage } from 'pip-services3-commons-node';
+import 'dart:async';
+import 'dart:convert';
+import 'package:http/http.dart' as http;
+import 'package:pip_services3_commons/pip_services3_commons.dart';
 
-// import { RestClient } from '../../src/clients/RestClient';
-// import { IDummyClient } from './IDummyClient';
-// import { Dummy } from '../Dummy';
+import '../../lib/src/clients/RestClient.dart';
+import './IDummyClient.dart';
+import '../Dummy.dart';
 
-// export class DummyRestClient extends RestClient implements IDummyClient {
-        
-//     public getDummies(String correlationId, filter: FilterParams, paging: PagingParams, callback: (err: any, result: DataPage<Dummy>) => void): void {
-//         var params = {};
-//         this.addFilterParams(params, filter);
-//         this.addPagingParams(params, paging);
+class DummyRestClient extends RestClient implements IDummyClient {
+  @override
+  Future<DataPage<Dummy>> getDummies(
+      String correlationId, FilterParams filter, PagingParams paging) async {
+    var params = {};
+    addFilterParams(params, filter);
+    addPagingParams(params, paging);
 
-//         this.call('get', 
-//             '/dummies',
-//             correlationId, 
-//             params,
-//             (err, result) => {
-//                 this.instrument(correlationId, 'dummy.get_page_by_filter');
-//                 callback(err, result);
-//             }
-//         );
-//     }
+    var result = await call('get', '/dummies', correlationId, params);
+    instrument(correlationId, 'dummy.get_page_by_filter');
+    if (result == null) return null;
+    return DataPage<Dummy>.fromJson(
+        json.decode(result), (item) => Dummy.fromJson(item));
+  }
 
-//     public getDummyById(String correlationId, dummyId: string, callback: (err: any, result: Dummy) => void): void {
-//         this.call('get', 
-//             '/dummies/' + dummyId,
-//             correlationId,
-//             {}, 
-//             (err, result) => {
-//                 this.instrument(correlationId, 'dummy.get_one_by_id');
-//                 callback(err, result);
-//             }
-//         );        
-//     }
+  @override
+  Future<Dummy> getDummyById(String correlationId, String dummyId) async {
+    var result = await call('get', '/dummies/' + dummyId, correlationId, {});
+    instrument(correlationId, 'dummy.get_one_by_id');
+    if (result == null) return null;
+    return Dummy.fromJson(json.decode(result));
+  }
 
-//     public createDummy(String correlationId, dummy: any, callback: (err: any, result: Dummy) => void): void {
-//         this.call('post', 
-//             '/dummies',
-//             correlationId,
-//             {}, 
-//             dummy, 
-//             (err, result) => {
-//                 this.instrument(correlationId, 'dummy.create');
-//                 callback(err, result);
-//             }
-//         );
-//     }
+  @override
+  Future<Dummy> createDummy(String correlationId, Dummy dummy) async {
+    var result = await call('post', '/dummies', correlationId, {}, dummy);
+    instrument(correlationId, 'dummy.create');
+    if (result == null) return null;
+    return Dummy.fromJson(json.decode(result));
+  }
 
-//     public updateDummy(String correlationId, dummy: any, callback: (err: any, result: Dummy) => void): void {
-//         this.call('put', 
-//             '/dummies',
-//             correlationId, 
-//             {}, 
-//             dummy, 
-//             (err, result) => {
-//                 this.instrument(correlationId, 'dummy.update');
-//                 callback(err, result);
-//             }
-//         );
-//     }
+  @override
+  Future<Dummy> updateDummy(String correlationId, Dummy dummy) async {
+    var result = await call('put', '/dummies', correlationId, {}, dummy);
+    instrument(correlationId, 'dummy.update');
+    if (result == null) return null;
+    return Dummy.fromJson(json.decode(result));
+  }
 
-//     public deleteDummy(String correlationId, dummyId: string, callback: (err: any, result: Dummy) => void): void {
-//         this.call('delete', 
-//             '/dummies/' + dummyId,
-//             correlationId, 
-//             {}, 
-//             (err, result) => {
-//                 this.instrument(correlationId, 'dummy.delete_by_id');
-//                 callback(err, result);
-//             }
-//         );
-//     }
-  
-// }
+  @override
+  Future<Dummy> deleteDummy(String correlationId, String dummyId) async {
+    var result = await call('delete', '/dummies/' + dummyId, correlationId, {});
+    instrument(correlationId, 'dummy.delete_by_id');
+    if (result == null) return null;
+    return Dummy.fromJson(json.decode(result));
+  }
+}
