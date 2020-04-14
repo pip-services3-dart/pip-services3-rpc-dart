@@ -16,7 +16,7 @@ class StatusOperations extends RestOperations {
 
   /// Sets references to dependent components.
   ///
-  /// - references 	references to locate the component dependencies.
+  /// - [references] 	references to locate the component dependencies.
   @override
   void setReferences(IReferences references) {
     _references2 = references;
@@ -35,9 +35,8 @@ class StatusOperations extends RestOperations {
 
   /// Handles status requests
   ///
-  /// - req   an HTTP request
-  /// - res   an HTTP response
-
+  /// - [req]   an HTTP request
+  /// - [res]   an HTTP response
   void status(angel.RequestContext req, angel.ResponseContext res) {
     var id = _contextInfo != null ? _contextInfo.contextId : '';
     var name = _contextInfo != null ? _contextInfo.name : 'Unknown';

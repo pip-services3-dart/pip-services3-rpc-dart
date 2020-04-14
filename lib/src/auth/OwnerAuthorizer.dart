@@ -1,65 +1,61 @@
-//  @module auth 
-// const _ = require('lodash');
+import 'dart:async';
+import 'package:angel_framework/angel_framework.dart' as angel;
+import 'package:pip_services3_commons/pip_services3_commons.dart';
+import '../services/HttpResponseSender.dart';
 
-// import { UnauthorizedException } from 'pip-services3-commons-node';
-// import { HttpResponseSender } from '../services/HttpResponseSender';
+class OwnerAuthorizer {
+  Future<bool> owner(angel.RequestContext req, angel.ResponseContext res, user,
+      {String idParam = 'user_id'}) async {
+    if (user == null) {
+      HttpResponseSender.sendError(
+          req,
+          res,
+          UnauthorizedException(null, 'NOT_SIGNED',
+                  'User must be signed in to perform this operation')
+              .withStatus(401));
+      return false;
+    } else {
+      var userId = req.params[idParam] ?? req.queryParameters[idParam];
+      if (user.user_id != userId) {
+        HttpResponseSender.sendError(
+            req,
+            res,
+            UnauthorizedException(null, 'FORBIDDEN',
+                    'Only data owner can perform this operation')
+                .withStatus(403));
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
 
-// export class OwnerAuthorizer {
-
-//     public owner(idParam: string = 'user_id'): (req: any, res: any, next: () => void) => void {
-//         return (req, res, next) => {
-//             if (req.user == null) {
-//                 HttpResponseSender.sendError(
-//                     req, res,
-//                     new UnauthorizedException(
-//                         null, 'NOT_SIGNED',
-//                         'User must be signed in to perform this operation'
-//                     ).withStatus(401)
-//                 );
-//             } else {
-//                 var userId = req.params[idParam] || req.param(idParam);
-//                 if (req.user_id != userId) {
-//                     HttpResponseSender.sendError(
-//                         req, res,
-//                         new UnauthorizedException(
-//                             null, 'FORBIDDEN',
-//                             'Only data owner can perform this operation'
-//                         ).withStatus(403)
-//                     );
-//                 } else {
-//                     next();
-//                 }
-//             }
-//         };
-//     }
-
-//     public ownerOrAdmin(idParam: string = 'user_id'): (req: any, res: any, next: () => void) => void {
-//         return (req, res, next) => {
-//             if (req.user == null) {
-//                 HttpResponseSender.sendError(
-//                     req, res,
-//                     new UnauthorizedException(
-//                         null, 'NOT_SIGNED',
-//                         'User must be signed in to perform this operation'
-//                     ).withStatus(401)
-//                 );
-//             } else {
-//                 var userId = req.params[idParam] || req.param(idParam);
-//                 var roles = req.user != null ? req.user.roles : null;
-//                 var admin = _.includes(roles, 'admin');
-//                 if (req.user_id != userId && !admin) {
-//                     HttpResponseSender.sendError(
-//                         req, res,
-//                         new UnauthorizedException(
-//                             null, 'FORBIDDEN',
-//                             'Only data owner can perform this operation'
-//                         ).withStatus(403)
-//                     );
-//                 } else {
-//                     next();
-//                 }
-//             }
-//         };
-//     }
-
-// }
+  Future<bool> ownerOrAdmin(
+      angel.RequestContext req, angel.ResponseContext res, user,
+      {String idParam = 'user_id'}) async {
+    if (user == null) {
+      HttpResponseSender.sendError(
+          req,
+          res,
+          UnauthorizedException(null, 'NOT_SIGNED',
+                  'User must be signed in to perform this operation')
+              .withStatus(401));
+      return false;
+    } else {
+      var userId = req.params[idParam] || req.queryParameters[idParam];
+      var roles = user != null ? user.roles : null;
+      var admin = roles['admin'] != null;
+      if (user.user_id != userId && !admin) {
+        HttpResponseSender.sendError(
+            req,
+            res,
+            UnauthorizedException(null, 'FORBIDDEN',
+                    'Only data owner can perform this operation')
+                .withStatus(403));
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
+}

@@ -2,8 +2,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:test/test.dart';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
-import '../../lib/src/services/HttpEndpoint.dart';
-import '../Dummy.dart';
+import 'package:pip_services3_rpc/pip_services3_rpc.dart';
 import '../DummyController.dart';
 import './DummyRestService.dart';
 
@@ -18,7 +17,6 @@ var restConfig = ConfigParams.fromTuples([
 
 void main() {
   group('HttpEndpoint', () {
-   
     HttpEndpoint endpoint;
     DummyRestService service;
 
@@ -58,7 +56,6 @@ void main() {
     });
 
     test('CRUD Operations', () async {
-      
       try {
         var resp = await rest.get(url + '/api/v1/dummies');
 

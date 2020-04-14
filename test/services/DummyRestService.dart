@@ -1,11 +1,8 @@
 import 'dart:async';
-import 'dart:convert';
-
 import 'package:angel_framework/angel_framework.dart' as angel;
-import 'package:angel_framework/http.dart';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import '../DummySchema.dart';
-import '../../lib/src/services/RestService.dart';
+import 'package:pip_services3_rpc/pip_services3_rpc.dart';
 import '../IDummyController.dart';
 import '../Dummy.dart';
 
@@ -38,8 +35,10 @@ class DummyRestService extends RestService {
   void _getPageByFilter(
       angel.RequestContext req, angel.ResponseContext res) async {
     try {
-      var page = await controller.getPageByFilter(req.queryParameters['correlation_id'],
-          FilterParams(req.queryParameters), PagingParams(req.queryParameters));
+      var page = await controller.getPageByFilter(
+          req.queryParameters['correlation_id'],
+          FilterParams(req.queryParameters),
+          PagingParams(req.queryParameters));
       sendResult(req, res, null, page);
     } catch (ex) {
       sendError(req, res, ex);
@@ -101,7 +100,7 @@ class DummyRestService extends RestService {
             .withOptionalProperty('total', TypeCode.String)
             .withOptionalProperty('body', FilterParamsSchema()),
         _getPageByFilter);
-  
+
     registerRoute(
         'get',
         '/dummies/:dummy_id',
@@ -125,6 +124,5 @@ class DummyRestService extends RestService {
         '/dummies/:dummy_id',
         ObjectSchema(true).withRequiredProperty('dummy_id', TypeCode.String),
         _deleteById);
-      
   }
 }

@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
-
-import '../../lib/src/clients/RestClient.dart';
+import 'package:pip_services3_rpc/pip_services3_rpc.dart';
 import './IDummyClient.dart';
 import '../Dummy.dart';
 
@@ -23,7 +22,8 @@ class DummyRestClient extends RestClient implements IDummyClient {
 
   @override
   Future<Dummy> getDummyById(String correlationId, String dummyId) async {
-    var result = await call('get', '/dummies/' + dummyId, correlationId, {}, null);
+    var result =
+        await call('get', '/dummies/' + dummyId, correlationId, {}, null);
     instrument(correlationId, 'dummy.get_one_by_id');
     if (result == null) return null;
     return Dummy.fromJson(json.decode(result));

@@ -17,16 +17,16 @@ import './IRegisterable.dart';
 ///
 /// Parameters to pass to the [[configure]] method for component configuration:
 ///
-/// - connection(s) - the connection resolver's connections:
-///     - 'connection.discovery_key' - the key to use for connection resolving in a discovery service;
-///     - 'connection.protocol' - the connection's protocol;
-///     - 'connection.host' - the target host;
-///     - 'connection.port' - the target port;
-///     - 'connection.uri' - the target URI.
-/// - credential - the HTTPS credentials:
-///     - 'credential.ssl_key_file' - the SSL private key in PEM
-///     - 'credential.ssl_crt_file' - the SSL certificate in PEM
-///     - 'credential.ssl_ca_file' - the certificate authorities (root cerfiticates) in PEM
+/// - [connection](s) - the connection resolver's connections:
+///     - '[connection.discovery_key]' - the key to use for connection resolving in a discovery service;
+///     - '[connection.protocol]' - the connection's protocol;
+///     - '[connection.host]' - the target host;
+///     - '[connection.port]' - the target port;
+///     - '[connection.uri]' - the target URI.
+/// - [credential] - the HTTPS credentials:
+///     - '[credential.ssl_key_fil]e' - the SSL private key in PEM
+///     - '[credential.ssl_crt_file]' - the SSL certificate in PEM
+///     - '[credential.ssl_ca_file]' - the certificate authorities (root cerfiticates) in PEM
 ///
 /// ### References ###
 ///
@@ -39,18 +39,17 @@ import './IRegisterable.dart';
 ///
 /// ### Examples ###
 ///
-///     public MyMethod(_config: ConfigParams, _references: IReferences) {
-///         var endpoint = new HttpEndpoint();
-///         if (this._config)
-///             endpoint.configure(this._config);
-///         if (this._references)
-///             endpoint.setReferences(this._references);
+///     public MyMethod(ConfigParams _config, IReferences _references) {
+///         var endpoint = HttpEndpoint();
+///         if (config != null)
+///             endpoint.configure(_config);
+///         if (references)
+///             endpoint.setReferences(references);
 ///         ...
 ///
-///         this._endpoint.open(correlationId, (err) => {
-///                 this._opened = err == null;
-///                 callback(err);
-///             });
+///         _endpoint.open(correlationId)
+///         _opened = true;
+///
 ///         ...
 ///     }
 
@@ -94,20 +93,20 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
   /// Configures this HttpEndpoint using the given configuration parameters.
   ///
-  /// __Configuration parameters:__
-  /// - __connection(s)__ - the connection resolver's connections;
-  ///     - 'connection.discovery_key' - the key to use for connection resolving in a discovery service;
-  ///     - 'connection.protocol' - the connection's protocol;
-  ///     - 'connection.host' - the target host;
-  ///     - 'connection.port' - the target port;
-  ///     - 'connection.uri' - the target URI.
-  ///     - 'credential.ssl_key_file' - SSL private key in PEM
-  ///     - 'credential.ssl_crt_file' - SSL certificate in PEM
-  ///     - 'credential.ssl_ca_file' - Certificate authority (root certificate) in PEM
+  /// [Configuration parameters:]
+  /// - [connection(s)] - the connection resolver's connections;
+  ///     - '[connection.discovery_key]' - the key to use for connection resolving in a discovery service;
+  ///     - '[connection.protocol]' - the connection's protocol;
+  ///     - '[connection.host]' - the target host;
+  ///     - '[connection.port]' - the target port;
+  ///     - '[connection.uri]' - the target URI.
+  ///     - '[credential.ssl_key_file]' - SSL private key in PEM
+  ///     - '[credential.ssl_crt_file]' - SSL certificate in PEM
+  ///     - '[credential.ssl_ca_file]' - Certificate authority (root certificate) in PEM
   ///
-  /// - config    configuration parameters, containing a 'connection(s)' section.
+  /// - [config]    configuration parameters, containing a 'connection(s)' section.
   ///
-  /// See [[https://rawgit.com/pip-services-node/pip-services3-commons-node/master/doc/api/classes/config.configparams.html ConfigParams]] (in the PipServices 'Commons' package)
+  /// See [ConfigParams] (in the PipServices 'Commons' package)
 
   @override
   void configure(ConfigParams config) {
@@ -124,7 +123,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
   /// Sets references to this endpoint's logger, counters, and connection resolver.
   ///
-  /// __References:__
+  /// [References:[
   /// - logger: ['\*:logger:\*:\*:1.0']
   /// - counters: ['\*:counters:\*:\*:1.0']
   /// - discovery: ['\*:discovery:\*:\*:1.0'] (for the connection resolver)
@@ -132,7 +131,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// - references    an IReferences object, containing references to a logger, counters,
   ///                      and a connection resolver.
   ///
-  /// See [[https://rawgit.com/pip-services-node/pip-services3-commons-node/master/doc/api/interfaces/refer.ireferences.html IReferences]] (in the PipServices 'Commons' package)
+  /// See [IReferences] (in the PipServices 'Commons' package)
   @override
   void setReferences(IReferences references) {
     _logger.setReferences(references);
@@ -149,7 +148,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// Opens a connection using the parameters resolved by the referenced connection
   /// resolver and creates a REST server (service) using the set options and parameters.
   ///
-  /// - correlationId     (optional) transaction id to trace execution through call chain.
+  /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// Return              Future when the opening process is complete.
   ///                     Will be called with an error if one is raised.
   @override
@@ -207,6 +206,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
   Future _addCompatibility(
       angel.RequestContext req, angel.ResponseContext res) async {
+    //TODO: need write the method
     // req.param = (name) => {
     //     if (req.query) {
     //         var param = req.query[name];
@@ -251,10 +251,9 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
   /// Closes this endpoint and the REST server (service) that was opened earlier.
   ///
-  /// - correlationId     (optional) transaction id to trace execution through call chain.
+  /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// Return              once the closing process is complete.
-  ///                          Will be called with an error if one is raised.
-
+  ///                     Will be called with an error if one is raised.
   @override
   Future close(String correlationId) async {
     if (_server != null) {
@@ -262,7 +261,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
       try {
         await _server.close();
         await _app.close();
-        
+
         _logger.debug(correlationId, 'Closed REST service at %s', [_uri]);
       } catch (ex) {
         _logger.warn(
@@ -280,10 +279,9 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
   /// Registers a registerable object for dynamic endpoint discovery.
   ///
-  /// - registration      the registration to add.
+  /// - [registration]      the IRegisterable registration to add.
   ///
   /// See [[IRegisterable]]
-
   void register(IRegisterable registration) {
     _registrations.add(registration);
   }
@@ -291,10 +289,9 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// Unregisters a registerable object, so that it is no longer used in dynamic
   /// endpoint discovery.
   ///
-  /// - registration      the registration to remove.
+  /// - [registration]      the IRegisterable registration to remove.
   ///
   /// See [[IRegisterable]]
-
   void unregister(IRegisterable registration) {
     _registrations.remove(registration);
   }
@@ -314,11 +311,10 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
   /// Registers an action in this objects REST server (service) by the given method and route.
   ///
-  /// - method        the HTTP method of the route.
-  /// - route         the route to register in this object's REST server (service).
-  /// - schema        the schema to use for parameter validation.
-  /// - action        the action to perform at the given route.
-
+  /// - [method]        the HTTP method of the route.
+  /// - [route]         the route to register in this object's REST server (service).
+  /// - [schema]        the schema to use for parameter validation.
+  /// - [action]        the action to perform at the given route.
   void registerRoute(String method, String route, Schema schema,
       action(angel.RequestContext req, angel.ResponseContext res)) {
     if (_app == null) {
@@ -330,7 +326,6 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
     route = _fixRoute(route);
 
-    // Hack!!! Wrapping action to preserve prototyping context
     var actionCurl =
         (angel.RequestContext req, angel.ResponseContext res) async {
       // Perform validation
@@ -351,8 +346,6 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
           return;
         }
       }
-
-      // Todo: perform verification?
       await action(req, res);
     };
     _app.addRoute(method, route, actionCurl, middleware: _middleware);
@@ -361,12 +354,11 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// Registers an action with authorization in this objects REST server (service)
   /// by the given method and route.
   ///
-  /// - method        the HTTP method of the route.
-  /// - route         the route to register in this object's REST server (service).
-  /// - schema        the schema to use for parameter validation.
-  /// - authorize     the authorization interceptor
-  /// - action        the action to perform at the given route.
-
+  /// - [method]        the HTTP method of the route.
+  /// - [route]         the route to register in this object's REST server (service).
+  /// - [schema]        the schema to use for parameter validation.
+  /// - [authorize]     the authorization interceptor
+  /// - [action]        the action to perform at the given route.
   void registerRouteWithAuth(
       String method,
       String route,
@@ -387,9 +379,8 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
   /// Registers a middleware action for the given route.
   ///
-  /// - route         the route to register in this object's REST server (service).
-  /// - action        the middleware action to perform at the given route.
-
+  /// - [route]         the route to register in this object's REST server (service).
+  /// - [action]        the middleware action to perform at the given route.
   void registerInterceptor(String route,
       Future action(angel.RequestContext req, angel.ResponseContext res)) {
     route = _fixRoute(route);

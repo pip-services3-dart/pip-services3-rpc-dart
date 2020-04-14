@@ -1,25 +1,26 @@
-# <img src="https://github.com/pip-services/pip-services/raw/master/design/Logo.png" alt="Pip.Services Logo" style="max-width:30%"> <br/> Remote Procedure Calls for Node.js
+# <img src="https://github.com/pip-services/pip-services/raw/master/design/Logo.png" alt="Pip.Services Logo" style="max-width:30%"> 
+# Remote Procedure Calls for Dart
 
 This framework is a part of the [Pip.Services](https://github.com/pip-services/pip-services) project.
 It provides the following synchronous communication components:
 
-- [**Direct**](https://pip-services3-node.github.io/pip-services3-rpc-node/classes/clients.directclient.html) - Direct client
-- **Rest** - RESTful [services](https://pip-services3-node.github.io/pip-services3-rpc-node/classes/services.restservice.html) and [clients](https://pip-services3-node.github.io/pip-services3-rpc-node/classes/clients.restclient.html)
-- **Status** - [Heartbeat](https://pip-services3-node.github.io/pip-services3-rpc-node/classes/services.heartbeatrestservice.html) and [status](https://pip-services3-node.github.io/pip-services3-rpc-node/classes/services.statusrestservice.html) services
+- **Direct** - Direct client
+- **Rest** - RESTful [services] and [clients]
+- **Status** - [Heartbeat] and [status] services
 
 Quick Links:
 
-* [Downloads](https://github.com/pip-services3-node/pip-services3-rpc-node/blob/master/docs/Downloads.md)
-* [API Reference](https://pip-services3-node.github.io/pip-services3-rpc-node/globals.html)
-* [Building and Testing](https://github.com/pip-services3-node/pip-services3-rpc-node/blob/master/docs/Development.md)
-* [Contributing](https://github.com/pip-services3-node/pip-services3-rpc-node/blob/master/docs/Development.md#contrib)
+* [Downloads](https://github.com/pip-services3-dart/pip-services3-rpc-dart/blob/master/doc/Downloads.md)
+* [API Reference](https://pub.dev/documentation/pip_services3_rpc/latest/pip_services3_rpc/pip_services3_rpc-library.html)
+* [Building and Testing](https://github.com/pip-services3-dart/pip-services3-rpc-dart/blob/master/doc/Development.md)
+* [Contributing](https://github.com/pip-services3-dart/pip-services3-rpc-dart/blob/master/doc/Development.md#contrib)
 
 ## Acknowledgements
 
-The Node.js version of Pip.Services is created and maintained by:
-- **Volodymyr Tkachenko**
+The Dart version of Pip.Services is created and maintained by:
 - **Sergey Seroukhov**
-- **Mark Zontak**
+- **Levichev Dmitry**
 
 The documentation is written by:
 - **Mark Makarychev**
+- **Levichev Dmitry**

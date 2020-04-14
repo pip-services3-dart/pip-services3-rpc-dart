@@ -1,8 +1,6 @@
 import 'package:test/test.dart';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 
-import '../Dummy.dart';
-import '../IDummyController.dart';
 import '../DummyController.dart';
 import '../services/DummyCommandableHttpService.dart';
 import './DummyCommandableHttpClient.dart';

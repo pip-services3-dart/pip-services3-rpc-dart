@@ -1,49 +1,52 @@
-//  @module auth 
-// const _ = require('lodash');
+import 'dart:async';
+import 'package:angel_framework/angel_framework.dart' as angel;
+import 'package:pip_services3_commons/pip_services3_commons.dart';
+import '../services/HttpResponseSender.dart';
 
-// import { UnauthorizedException } from 'pip-services3-commons-node';
-// import { HttpResponseSender } from '../services/HttpResponseSender';
+class RoleAuthorizer {
+  Future<bool> userInRoles(angel.RequestContext req, angel.ResponseContext res,
+      user, List<String> roles) async {
+    if (user == null) {
+      HttpResponseSender.sendError(
+          req,
+          res,
+          UnauthorizedException(null, 'NOT_SIGNED',
+                  'User must be signed in to perform this operation')
+              .withStatus(401));
+      return false;
+    } else {
+      var authorized = false;
 
-// export class RoleAuthorizer {
+      for (var role in roles) {
+        authorized = authorized ?? user.roles[role] != null;
+      }
 
-//     public userInRoles(roles: string[]): (req: any, res: any, next: () => void) => void {
-//         return (req, res, next) => {
-//             var user = req.user;
-//             if (user == null) {
-//                 HttpResponseSender.sendError(
-//                     req, res,
-//                     new UnauthorizedException(
-//                         null, 'NOT_SIGNED',
-//                         'User must be signed in to perform this operation'
-//                     ).withStatus(401)
-//                 );
-//             } else {
-//                 var authorized = false;
-                
-//                 for (var role of roles)
-//                     authorized = authorized || _.includes(user.roles, role);
+      if (!authorized) {
+        HttpResponseSender.sendError(
+            req,
+            res,
+            UnauthorizedException(
+                    null,
+                    'NOT_IN_ROLE',
+                    'User must be ' +
+                        roles.join(' or ') +
+                        ' to perform this operation')
+                .withDetails('roles', roles)
+                .withStatus(403));
+        return false;
+      } else {
+        return true;
+      }
+    }
+  }
 
-//                 if (!authorized) {
-//                     HttpResponseSender.sendError(
-//                         req, res,
-//                         new UnauthorizedException(
-//                             null, 'NOT_IN_ROLE',
-//                             'User must be ' + roles.join(' or ') + ' to perform this operation'
-//                         ).withDetails('roles', roles).withStatus(403)
-//                     );
-//                 } else {
-//                     next();
-//                 }
-//             }
-//         };
-//     }
+  Future<bool> userInRole(angel.RequestContext req, angel.ResponseContext res,
+      user, String role) async {
+    return userInRoles(req, res, user, [role]);
+  }
 
-//     public userInRole(role: string): (req: any, res: any, next: () => void) => void {
-//         return this.userInRoles([role]);
-//     }
-        
-//     public admin(): (req: any, res: any, next: () => void) => void {
-//         return this.userInRole('admin');
-//     }
-
-// }
+  Future<bool> admin(
+      angel.RequestContext req, angel.ResponseContext res, user) async {
+    return userInRole(req, res, user, 'admin');
+  }
+}

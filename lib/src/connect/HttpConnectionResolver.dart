@@ -9,11 +9,11 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 ///
 /// ### Configuration parameters ###
 ///
-/// - connection:
-///   - discovery_key:               (optional) a key to retrieve the connection from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]]
+/// - [connection]:
+///   - [discovery_key]:               (optional) a key to retrieve the connection from [IDiscovery]
 ///   - ...                          other connection parameters
 ///
-/// - connections:                   alternative to connection
+/// - [connections]:                   alternative to connection
 ///   - [connection params 1]:       first connection parameters
 ///   -  ...
 ///   - [connection params N]:       Nth connection parameters
@@ -21,10 +21,10 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 ///
 /// ### References ###
 ///
-/// - [\*:discovery:\*:\*:1.0]            (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]] services
+/// - [\*:discovery:\*:\*:1.0]            (optional) [IDiscovery]] services
 ///
-/// See [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/classes/connect.connectionparams.html ConnectionParams]]
-/// See [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/classes/connect.connectionresolver.html ConnectionResolver]]
+/// See [ConnectionParams]
+/// See [ConnectionResolver]
 ///
 /// ### Example ###
 ///
@@ -37,7 +37,7 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 ///     connectionResolver.configure(config);
 ///     connectionResolver.setReferences(references);
 ///
-///     var connection = connectionResolver.resolve('123', 
+///     var connection = connectionResolver.resolve('123',
 ///           // Now use connection...
 ///
 
@@ -155,10 +155,9 @@ class HttpConnectionResolver implements IReferenceable, IConfigurable {
   /// from Discovery service it finds a IDiscovery and resolves the connection there.
   ///
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
-  /// Return 			          Future that receives resolved connection 
+  /// Return 			          Future that receives resolved connection
   /// Throws error.
   Future<ConnectionParams> resolve(String correlationId) async {
-
     var connection = await connectionResolver.resolve(correlationId);
     var credential = await credentialResolver.lookup(correlationId);
     _validateConnection(correlationId, connection, credential);

@@ -1,8 +1,7 @@
 import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
-
-import '../../lib/src/services/HeartbeatRestService.dart';
+import 'package:pip_services3_rpc/pip_services3_rpc.dart';
 
 void main() {
   var restConfig = ConfigParams.fromTuples([
@@ -33,9 +32,7 @@ void main() {
       //print('HeartbeatRestService Endpoint closed');
     });
 
-   
     test('Status', () async {
-
       try {
         var resp = await rest.get(url + '/heartbeat');
 
@@ -45,7 +42,6 @@ void main() {
       } catch (err) {
         expect(err, isNull);
       }
-
     });
   });
 }

@@ -1,8 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
-
-import '../../lib/src/clients/CommandableHttpClient.dart';
+import 'package:pip_services3_rpc/pip_services3_rpc.dart';
 import './IDummyClient.dart';
 import '../Dummy.dart';
 

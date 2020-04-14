@@ -1,31 +1,26 @@
-//  @module auth 
-// const _ = require('lodash');
+import 'dart:async';
+import 'package:angel_framework/angel_framework.dart' as angel;
+import 'package:pip_services3_commons/pip_services3_commons.dart';
+import '../services/HttpResponseSender.dart';
 
-// import { UnauthorizedException } from 'pip-services3-commons-node';
-// import { HttpResponseSender } from '../services/HttpResponseSender';
+class BasicAuthorizer {
+  Future<bool> anybody(
+      angel.RequestContext req, angel.ResponseContext res) async {
+    return true;
+  }
 
-// export class BasicAuthorizer {
-
-//     public anybody(): (req: any, res: any, next: () => void) => void {
-//         return (req, res, next) => {
-//             next();
-//         };
-//     }
-
-//     public signed(): (req: any, res: any, next: () => void) => void {
-//         return (req, res, next) => {
-//             if (req.user == null) {
-//                 HttpResponseSender.sendError(
-//                     req, res,
-//                     new UnauthorizedException(
-//                         null, 'NOT_SIGNED',
-//                         'User must be signed in to perform this operation'
-//                     ).withStatus(401)
-//                 );
-//             } else {
-//                 next();
-//             }
-//         };
-//     }
-
-// }
+  Future<bool> signed(
+      angel.RequestContext req, angel.ResponseContext res, user) async {
+    if (user == null) {
+      HttpResponseSender.sendError(
+          req,
+          res,
+          UnauthorizedException(null, 'NOT_SIGNED',
+                  'User must be signed in to perform this operation')
+              .withStatus(401));
+      return false;
+    } else {
+      return true;
+    }
+  }
+}

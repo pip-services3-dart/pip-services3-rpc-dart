@@ -3,7 +3,7 @@ import './RestClient.dart';
 
 /// Abstract client that calls commandable HTTP service.
 ///
-/// Commandable services are generated automatically for [[https://rawgit.com/pip-services-node/pip-services3-commons-node/master/doc/api/interfaces/commands.icommandable.html ICommandable objects]].
+/// Commandable services are generated automatically for [ICommandable objects].
 /// Each command is exposed as POST operation that receives all parameters
 /// in body object.
 ///
@@ -12,7 +12,7 @@ import './RestClient.dart';
 /// [base_route]:              base route for remote URI
 ///
 /// - [connection](s):
-///   - [discovery_key]:         (optional) a key to retrieve the connection from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]]
+///   - [discovery_key]:         (optional) a key to retrieve the connection from [IDiscovery]
 ///   - [protocol]:              connection protocol: http or https
 ///   - [host]:                  host name or IP address
 ///   - [port]:                  port number
@@ -24,20 +24,22 @@ import './RestClient.dart';
 ///
 /// ### References ###
 ///
-/// - \*:logger:\*:\*:1.0         (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/log.ilogger.html ILogger]] components to pass log messages
-/// - \*:counters:\*:\*:1.0         (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/count.icounters.html ICounters]] components to pass collected measurements
-/// - \*:discovery:\*:\*:1.0        (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]] services to resolve connection
+/// - \*:logger:\*:\*:1.0         (optional) [ILogger] components to pass log messages
+/// - \*:counters:\*:\*:1.0         (optional) [ICounters] components to pass collected measurements
+/// - \*:discovery:\*:\*:1.0        (optional) [IDiscovery] services to resolve connection
 ///
 /// ### Example ###
 ///
 ///     class MyCommandableHttpClient extends CommandableHttpClient implements IMyClient {
 ///        ...
 ///
-///        Future<MyData> getData(String correlationId, String id) {
-///            return callCommand(
+///        Future<MyData> getData(String correlationId, String id) async {
+///            var result = await callCommand(
 ///                "get_data",
 ///                correlationId,
-///                { id: id });
+///                { 'id': id });
+///           if (result == null) return null;
+///           return MyData.fromJson(json.decode(result));
 ///         }
 ///         ...
 ///     }
@@ -55,8 +57,7 @@ import './RestClient.dart';
 class CommandableHttpClient extends RestClient {
   /// Creates a new instance of the client.
   ///
-  /// - baseRoute     a base route for remote service.
-
+  /// - [baseRoute]     a base route for remote service.
   CommandableHttpClient(String baseRoute) : super() {
     this.baseRoute = baseRoute;
   }

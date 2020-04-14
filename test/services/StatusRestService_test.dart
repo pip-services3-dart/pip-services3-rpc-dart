@@ -1,10 +1,8 @@
 import 'package:http/http.dart' as http;
 import 'package:test/test.dart';
-
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_components/pip_services3_components.dart';
-
-import '../../lib/src/services/StatusRestService.dart';
+import 'package:pip_services3_rpc/pip_services3_rpc.dart';
 
 void main() {
   var restConfig = ConfigParams.fromTuples([

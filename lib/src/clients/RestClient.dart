@@ -11,7 +11,7 @@ import '../connect/HttpConnectionResolver.dart';
 ///
 /// - [base_route]:              base route for remote URI
 /// - [connection](s):
-///   - [discovery_key]:         (optional) a key to retrieve the connection from [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]]
+///   - [discovery_key]:         (optional) a key to retrieve the connection from [IDiscovery]
 ///   - [protocol]:              connection protocol: http or https
 ///   - [host]:                  host name or IP address
 ///   - [port]:                  port number
@@ -23,25 +23,27 @@ import '../connect/HttpConnectionResolver.dart';
 ///
 /// ### References ###
 ///
-/// - \*:logger:\*:\*:1.0         (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/log.ilogger.html ILogger]] components to pass log messages
-/// - \*:counters:\*:\*:1.0         (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/count.icounters.html ICounters]] components to pass collected measurements
-/// - \*:discovery:\*:\*:1.0        (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/connect.idiscovery.html IDiscovery]] services to resolve connection
+/// - \*:logger:\*:\*:1.0         (optional) [ILogger] components to pass log messages
+/// - \*:counters:\*:\*:1.0         (optional) [ICounters] components to pass collected measurements
+/// - \*:discovery:\*:\*:1.0        (optional) [IDiscovery] services to resolve connection
 ///
-/// See [[RestService]]
-/// See [[CommandableHttpService]]
+/// See [RestService]
+/// See [CommandableHttpService]
 ///
 /// ### Example ###
 ///
 ///     class MyRestClient extends RestClient implements IMyClient {
 ///        ...
 ///
-///         getData(String correlationId, String id,
-///            callback: (err: any, result: MyData) => void): void {
-///
+///         Future<MyData> getData(String correlationId, String id) async {
 ///            var timing = instrument(correlationId, 'myclient.get_data');
-///            this.call('get', '/get_data' correlationId, { id: id }, null, (err, result) => {
+///           try{
+///             var result = await call('get', '/get_data' correlationId, { id: id }, null);
+///             timing.endTiming();
+///             return result;
+///           } catch (err) {
 ///                timing.endTiming();
-///                callback(err, result);
+///                rethrow;
 ///            });
 ///        }
 ///        ...
@@ -54,9 +56,8 @@ import '../connect/HttpConnectionResolver.dart';
 ///         'connection.port', 8080
 ///     ]));
 ///
-///     client.getData('123', '1', (err, result) => {
+///     var result = await client.getData('123', '1');
 ///       ...
-///     });
 
 abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   static final _defaultConfig = ConfigParams.fromTuples([
@@ -155,11 +156,11 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// - [name]              a method name.
   /// - [err]               an occured error
-  /// - [result]            (optional) an execution result
   void instrumentError(String correlationId, String name, err,
       [bool reerror = false]) {
     if (err != null) {
-      logger.error(correlationId, ApplicationException().wrap(err), 'Failed to call %s method', [name]);
+      logger.error(correlationId, ApplicationException().wrap(err),
+          'Failed to call %s method', [name]);
       counters.incrementOne(name + '.call_errors');
       if (reerror != null && reerror == true) {
         throw err;
@@ -168,7 +169,6 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   }
 
   /// Checks if the component is opened.
-  ///
   /// Returns true if the component has been opened and false otherwise.
   @override
   bool isOpen() {
@@ -215,7 +215,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
 
   /// Closes component and frees used resources.
   ///
-  /// - correlationId 	(optional) transaction id to trace execution through call chain.
+  /// - [correlationId] 	(optional) transaction id to trace execution through call chain.
   /// Return			Future that receives null no errors occured.
   /// Throws error
   @override
@@ -239,7 +239,6 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// - [params]            invocation parameters.
   /// - [correlationId]     (optional) a correlation id to be added.
   /// Returns invocation parameters with added correlation id.
-
   Map<String, String> addCorrelationId(
       Map<String, String> params, String correlationId) {
     // Automatically generate short ids for now
@@ -323,8 +322,9 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// - [data]              (optional) body object.
   /// Returns          Future that receives result object
   /// Throw error.
-
-  Future call(String method, String route, String correlationId, Map<String, String> params, [data]) async {
+  Future call(String method, String route, String correlationId,
+      Map<String, String> params,
+      [data]) async {
     method = method.toLowerCase();
 
     route = createRequestRoute(route);
@@ -337,7 +337,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     http.Response response;
 
     var retriesCount = retries;
-    
+
     for (; retries > 0;) {
       try {
         if (method == 'get') {
@@ -345,9 +345,11 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
         } else if (method == 'head') {
           response = await client.head(route); //headers: headers
         } else if (method == 'post') {
-          response = await client.post(route, headers: headers, body: json.encode(data));
+          response = await client.post(route,
+              headers: headers, body: json.encode(data));
         } else if (method == 'put') {
-          response = await client.put(route, headers: headers, body: json.encode(data));
+          response = await client.put(route,
+              headers: headers, body: json.encode(data));
         } else if (method == 'delete') {
           response = await client.delete(route); //headers: headers
         } else {
@@ -366,7 +368,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
         }
       }
     }
-    
+
     if (response == null) {
       throw ApplicationExceptionFactory.create(ErrorDescriptionFactory.create(
           UnknownException(correlationId,

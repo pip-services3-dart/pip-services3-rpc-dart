@@ -10,46 +10,47 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 ///
 /// ### Configuration parameters ###
 ///
-/// - dependencies:
-///   - controller:            override controller descriptor
+/// - [dependencies]:
+///   - [controller]:            override controller descriptor
 ///
 /// ### References ###
 ///
-/// - [\*:logger:\*:\*:1.0]         (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/log.ilogger.html ILogger]] components to pass log messages
-/// - [\*:counters:\*:\*:1.0]       (optional) [[https://rawgit.com/pip-services-node/pip-services3-components-node/master/doc/api/interfaces/count.icounters.html ICounters]] components to pass collected measurements
+/// - [\*:logger:\*:\*:1.0]         (optional) [ILogger] components to pass log messages
+/// - [\*:counters:\*:\*:1.0]       (optional) [ICounters] components to pass collected measurements
 /// - [\*:controller:\*:\*:1.0]     controller to call business methods
 ///
 /// ### Example ###
 ///
 ///     class MyDirectClient extends DirectClient<IMyController> implements IMyClient {
 ///
-///         public constructor() {
-///           super();
-///           this.dependencyResolver.put('controller', new Descriptor(
+///         public MyDirectClient(): super() {
+///
+///           dependencyResolver.put('controller', Descriptor(
 ///               "mygroup", "controller", "*", "*", "*"));
 ///         }
 ///         ...
 ///
-///         public getData(String correlationId, id: string,
-///           callback: (err: any, result: MyData) => void): void {
-///
-///           var timing = this.instrument(correlationId, 'myclient.get_data');
-///           this.controller.getData(correlationId, id, (err, result) => {
+///         Future<MyData> getData(String correlationId, String id) async {
+///           var timing = instrument(correlationId, 'myclient.get_data');
+///           try {
+///           var result = await controller.getData(correlationId, id)
+///           timing.endTiming();
+///           return result;
+///           } catch (err){
 ///              timing.endTiming();
-///              this.instrumentError(correlationId, 'myclient.get_data', err, result, callback);
+///              instrumentError(correlationId, 'myclient.get_data', err, reerror=true);
 ///           });
 ///         }
 ///         ...
 ///     }
 ///
-///     var client = new MyDirectClient();
-///     client.setReferences(References.fromTuples(
-///         new Descriptor("mygroup","controller","default","default","1.0"), controller
-///     ));
+///     var client = MyDirectClient();
+///     client.setReferences(References.fromTuples([
+///          Descriptor("mygroup","controller","default","default","1.0"), controller
+///     ]));
 ///
-///     client.getData("123", "1", (err, result) => {
+///     var result = await client.getData("123", "1")
 ///       ...
-///     });
 
 abstract class DirectClient<T>
     implements IConfigurable, IReferenceable, IOpenable {
@@ -69,7 +70,6 @@ abstract class DirectClient<T>
   var dependencyResolver = DependencyResolver();
 
   /// Creates a new instance of the client.
-
   DirectClient() {
     dependencyResolver.put('controller', 'none');
   }
@@ -115,7 +115,8 @@ abstract class DirectClient<T>
   void instrumentError(String correlationId, String name, err,
       [bool reerror = false]) {
     if (err != null) {
-      logger.error(correlationId, ApplicationException().wrap(err), 'Failed to call %s method', [name]);
+      logger.error(correlationId, ApplicationException().wrap(err),
+          'Failed to call %s method', [name]);
       counters.incrementOne(name + '.call_errors');
       if (reerror != null && reerror == true) {
         throw err;
