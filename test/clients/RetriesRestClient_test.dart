@@ -1,5 +1,4 @@
 import 'package:test/test.dart';
-import 'package:http/http.dart' as http;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import './DummyRestClient.dart';
 

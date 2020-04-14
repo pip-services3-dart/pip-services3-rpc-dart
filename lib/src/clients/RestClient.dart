@@ -183,7 +183,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   @override
   Future open(String correlationId) async {
     if (isOpen()) {
-      return null;
+      return;
     }
 
     var connection = await connectionResolver.resolve(correlationId);
@@ -311,7 +311,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     }
     builder += route;
 
-    return builder;
+    return uri + builder;
   }
 
   /// Calls a remote method via HTTP/REST protocol.
@@ -324,19 +324,12 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// Returns          Future that receives result object
   /// Throw error.
 
-  Future call(String method, String route, String correlationId, Map params,
-      [data]) async {
+  Future call(String method, String route, String correlationId, Map<String, String> params, [data]) async {
     method = method.toLowerCase();
-
-    // if (data != null && data is Function) {
-    //     callback = data;
-    //     data = {};
-    // }
 
     route = createRequestRoute(route);
     params = addCorrelationId(params, correlationId);
     if (params.isNotEmpty) {
-      //   route += '?' + querystring.stringify(params);
       var uri = Uri(queryParameters: params);
       route += uri.toString();
     }
@@ -344,7 +337,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     http.Response response;
 
     var retriesCount = retries;
-
+    
     for (; retries > 0;) {
       try {
         if (method == 'get') {
@@ -366,7 +359,6 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
       } catch (ex) {
         retriesCount--;
         if (retriesCount == 0) {
-          //client.close();
           rethrow;
         } else {
           logger.trace(
@@ -374,16 +366,15 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
         }
       }
     }
-
-    if (response.statusCode == 204) {
-      return null;
-    }
-
-    //client.close();
+    
     if (response == null) {
       throw ApplicationExceptionFactory.create(ErrorDescriptionFactory.create(
           UnknownException(correlationId,
               'Unable to get a result from uri ${uri} with method ${method}')));
+    }
+
+    if (response.statusCode == 204) {
+      return null;
     }
 
     return response.body;
