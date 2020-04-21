@@ -9,7 +9,7 @@ class DummyRestClient extends RestClient implements IDummyClient {
   @override
   Future<DataPage<Dummy>> getDummies(
       String correlationId, FilterParams filter, PagingParams paging) async {
-    var params = {};
+    var params = <String, String>{};
     addFilterParams(params, filter);
     addPagingParams(params, paging);
 

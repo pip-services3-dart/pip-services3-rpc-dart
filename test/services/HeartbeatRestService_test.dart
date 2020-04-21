@@ -29,7 +29,6 @@ void main() {
 
     tearDownAll(() async {
       await service.close(null);
-      //print('HeartbeatRestService Endpoint closed');
     });
 
     test('Status', () async {

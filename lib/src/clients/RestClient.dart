@@ -335,8 +335,13 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     }
 
     http.Response response;
-
     var retriesCount = retries;
+
+    if (data != null) {
+      headers['Content-Type'] ='application/json';
+    } else {
+      headers.remove('Content-Type');
+    }
 
     for (; retries > 0;) {
       try {
@@ -358,6 +363,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
               .withDetails('verb', method);
           throw error;
         }
+        break;
       } catch (ex) {
         retriesCount--;
         if (retriesCount == 0) {

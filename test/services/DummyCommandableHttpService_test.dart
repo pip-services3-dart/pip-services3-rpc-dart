@@ -57,86 +57,59 @@ void main() {
     });
 
     test('CRUD Operations', () async {
-      var dummy1, dummy2;
+      var dummy1;
 
       // Create one dummy
-      try {
-        var resp = await rest.post(url + '/dummy/create_dummy',
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode({'dummy': _dummy1}));
-        var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
-        expect(dummy, isNotNull);
-        expect(dummy.content, _dummy1.content);
-        expect(dummy.key, _dummy1.key);
+      var resp = await rest.post(url + '/dummy/create_dummy',
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({'dummy': _dummy1}));
+      var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
+      expect(dummy, isNotNull);
+      expect(dummy.content, _dummy1.content);
+      expect(dummy.key, _dummy1.key);
 
-        dummy1 = dummy;
-      } catch (err) {
-        expect(err, isNull);
-      }
+      dummy1 = dummy;
 
       // Create another dummy
-      try {
-        var resp = await rest.post(url + '/dummy/create_dummy',
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode({'dummy': _dummy2}));
-        var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
-        expect(dummy, isNotNull);
-        expect(dummy.content, _dummy2.content);
-        expect(dummy.key, _dummy2.key);
-
-        dummy2 = dummy;
-      } catch (err) {
-        expect(err, isNull);
-      }
+      resp = await rest.post(url + '/dummy/create_dummy',
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({'dummy': _dummy2}));
+      dummy = Dummy.fromJson(json.decode(resp.body.toString()));
+      expect(dummy, isNotNull);
+      expect(dummy.content, _dummy2.content);
+      expect(dummy.key, _dummy2.key);
 
       // Get all dummies
-      try {
-        var resp = await rest.post(url + '/dummy/get_dummies');
-        var dummies = DataPage<Dummy>.fromJson(
-            json.decode(resp.body.toString()), (item) => Dummy.fromJson(item));
-        expect(dummies, isNotNull);
-        expect(dummies.data.length, 2);
-      } catch (err) {
-        expect(err, isNull);
-      }
+      resp = await rest.post(url + '/dummy/get_dummies');
+      var dummies = DataPage<Dummy>.fromJson(
+          json.decode(resp.body.toString()), (item) => Dummy.fromJson(item));
+      expect(dummies, isNotNull);
+      expect(dummies.data.length, 2);
 
       // Update the dummy
-
       dummy1.content = 'Updated Content 1';
-      try {
-        var resp = await rest.post(url + '/dummy/update_dummy',
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode({'dummy': dummy1}));
-        var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
-        expect(dummy, isNotNull);
-        expect(dummy.content, 'Updated Content 1');
-        expect(dummy.key, dummy1.key);
+      resp = await rest.post(url + '/dummy/update_dummy',
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({'dummy': dummy1}));
+      dummy = Dummy.fromJson(json.decode(resp.body.toString()));
+      expect(dummy, isNotNull);
+      expect(dummy.content, 'Updated Content 1');
+      expect(dummy.key, dummy1.key);
 
-        dummy1 = dummy;
-      } catch (err) {
-        expect(err, isNull);
-      }
+      dummy1 = dummy;
 
       // Delete dummy
-      try {
-        var resp = await rest.post(url + '/dummy/delete_dummy',
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode({'dummy_id': dummy1.id}));
-        var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
-        expect(dummy.id, dummy1.id);
-      } catch (err) {
-        expect(err, isNull);
-      }
+      resp = await rest.post(url + '/dummy/delete_dummy',
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({'dummy_id': dummy1.id}));
+      dummy = Dummy.fromJson(json.decode(resp.body.toString()));
+      expect(dummy.id, dummy1.id);
 
       // Try to get delete dummy
-      try {
-        var resp = await rest.post(url + '/dummy/get_dummy_by_id',
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode({'dummy_id': dummy1.id}));
-        expect(resp.body, isEmpty);
-      } catch (err) {
-        expect(err, isNull);
-      }
+      resp = await rest.post(url + '/dummy/get_dummy_by_id',
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode({'dummy_id': dummy1.id}));
+      expect(resp.body, isEmpty);
     });
   });
 }

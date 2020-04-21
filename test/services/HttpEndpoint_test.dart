@@ -56,19 +56,13 @@ void main() {
     });
 
     test('CRUD Operations', () async {
-      try {
-        var resp = await rest.get(url + '/api/v1/dummies');
-
-        var dummies =
-            DataPage.fromJson(json.decode(resp.body.toString()), (itemsJson) {
-          return Map.from(itemsJson).cast<String, String>();
-        });
-
-        expect(dummies, isNotNull);
-        expect(dummies.data.length, 0);
-      } catch (ex) {
-        expect(ex, isNull);
-      }
+      var resp = await rest.get(url + '/api/v1/dummies');
+      var dummies =
+          DataPage.fromJson(json.decode(resp.body.toString()), (itemsJson) {
+        return Map.from(itemsJson).cast<String, String>();
+      });
+      expect(dummies, isNotNull);
+      expect(dummies.data.length, 0);
     });
   });
 }

@@ -46,7 +46,6 @@ void main() {
 
     tearDownAll(() async {
       await service.close(null);
-      //print('DummyRestService Endpoint closed');
     });
 
     setUp(() {
@@ -55,81 +54,55 @@ void main() {
     });
 
     test('CRUD Operations', () async {
-      var dummy1, dummy2;
+      var dummy1;
 
       // Create one dummy
-      try {
-        var resp = await rest.post(url + '/dummies',
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode(_dummy1.toJson()));
-        var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
-        expect(dummy, isNotNull);
-        expect(dummy.content, _dummy1.content);
-        expect(dummy.key, _dummy1.key);
-        dummy1 = dummy;
-      } catch (err) {
-        expect(err, isNull);
-      }
+      var resp = await rest.post(url + '/dummies',
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(_dummy1.toJson()));
+      var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
+      expect(dummy, isNotNull);
+      expect(dummy.content, _dummy1.content);
+      expect(dummy.key, _dummy1.key);
+      dummy1 = dummy;
 
       // Create another dummy
-      try {
-        var resp = await rest.post(url + '/dummies',
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode(_dummy2.toJson()));
-        var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
-        expect(dummy, isNotNull);
-        expect(dummy.content, _dummy2.content);
-        expect(dummy.key, _dummy2.key);
-        dummy2 = dummy;
-      } catch (err) {
-        expect(err, isNull);
-      }
+      resp = await rest.post(url + '/dummies',
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(_dummy2.toJson()));
+      dummy = Dummy.fromJson(json.decode(resp.body.toString()));
+      expect(dummy, isNotNull);
+      expect(dummy.content, _dummy2.content);
+      expect(dummy.key, _dummy2.key);
 
       // Get all dummies
-      try {
-        var resp = await rest.get(url + '/dummies');
-        var dummies =
-            DataPage.fromJson(json.decode(resp.body.toString()), (item) {
-          return item;
-        });
-        expect(dummies, isNotNull);
-        expect(dummies.data.length, 2);
-      } catch (err) {
-        expect(err, isNull);
-      }
+      resp = await rest.get(url + '/dummies');
+      var dummies =
+          DataPage.fromJson(json.decode(resp.body.toString()), (item) {
+        return item;
+      });
+      expect(dummies, isNotNull);
+      expect(dummies.data.length, 2);
 
       // Update the dummy
-
       dummy1.content = 'Updated Content 1';
-      try {
-        var resp = await rest.put(url + '/dummies',
-            headers: {'Content-Type': 'application/json'},
-            body: json.encode(dummy1.toJson()));
-        var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
-        expect(dummy, isNotNull);
-        expect(dummy.content, 'Updated Content 1');
-        expect(dummy.key, _dummy1.key);
 
-        dummy1 = dummy;
-      } catch (err) {
-        expect(err, isNull);
-      }
+      resp = await rest.put(url + '/dummies',
+          headers: {'Content-Type': 'application/json'},
+          body: json.encode(dummy1.toJson()));
+      dummy = Dummy.fromJson(json.decode(resp.body.toString()));
+      expect(dummy, isNotNull);
+      expect(dummy.content, 'Updated Content 1');
+      expect(dummy.key, _dummy1.key);
+
+      dummy1 = dummy;
 
       // Delete dummy
-      try {
-        await rest.delete(url + '/dummies/' + dummy1.id);
-      } catch (err) {
-        expect(err, isNull);
-      }
+      await rest.delete(url + '/dummies/' + dummy1.id);
 
       // Try to get delete dummy
-      try {
-        var resp = await rest.get(url + '/dummies/' + dummy1.id);
-        expect(resp.body, isEmpty);
-      } catch (err) {
-        expect(err, isNull);
-        // expect.isObject(dummy);
-      }
+      resp = await rest.get(url + '/dummies/' + dummy1.id);
+      expect(resp.body, isEmpty);
     });
   });
 }

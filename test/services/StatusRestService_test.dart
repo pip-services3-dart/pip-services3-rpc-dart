@@ -43,7 +43,6 @@ void main() {
 
     tearDownAll(() async {
       await service.close(null);
-      //print('StatusRestService Endpoint closed');
     });
 
     test('Status', () async {

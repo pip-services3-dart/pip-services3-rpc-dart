@@ -14,9 +14,7 @@ void main() {
 
     setUpAll(() async {
       var ctrl = DummyController();
-
       client = DummyDirectClient();
-
       var references = References.fromTuples([
         Descriptor(
             'pip-services-dummies', 'controller', 'default', 'default', '1.0'),
@@ -37,70 +35,44 @@ void main() {
     });
 
     test('CRUD Operations', () async {
-      var dummy1, dummy2;
+      var dummy1;
 
       // Create one dummy
-      try {
-        var dummy = await client.createDummy(null, _dummy1);
-        expect(dummy, isNotNull);
-        expect(dummy.content, _dummy1.content);
-        expect(dummy.key, _dummy1.key);
+      var dummy = await client.createDummy(null, _dummy1);
+      expect(dummy, isNotNull);
+      expect(dummy.content, _dummy1.content);
+      expect(dummy.key, _dummy1.key);
 
-        dummy1 = dummy;
-      } catch (err) {
-        expect(err, isNull);
-      }
+      dummy1 = dummy;
 
       // Create another dummy
-      try {
-        var dummy = await client.createDummy(null, _dummy2);
-        expect(dummy, isNotNull);
-        expect(dummy.content, _dummy2.content);
-        expect(dummy.key, _dummy2.key);
-
-        dummy2 = dummy;
-      } catch (err) {
-        expect(err, isNull);
-      }
+      dummy = await client.createDummy(null, _dummy2);
+      expect(dummy, isNotNull);
+      expect(dummy.content, _dummy2.content);
+      expect(dummy.key, _dummy2.key);
 
       // Get all dummies
-      try {
-        var dummies = await client.getDummies(
-            null, FilterParams(), PagingParams(0, 5, false));
+      var dummies = await client.getDummies(
+          null, FilterParams(), PagingParams(0, 5, false));
 
-        expect(dummies, isNotNull);
-        expect(dummies.data.length >= 2, isTrue);
-      } catch (err) {
-        expect(err, isNull);
-      }
+      expect(dummies, isNotNull);
+      expect(dummies.data.length >= 2, isTrue);
 
       // Update the dummy
-      try {
-        dummy1.content = 'Updated Content 1';
-        var dummy = await client.updateDummy(null, dummy1);
-        expect(dummy, isNotNull);
-        expect(dummy.content, 'Updated Content 1');
-        expect(dummy.key, _dummy1.key);
+      dummy1.content = 'Updated Content 1';
+      dummy = await client.updateDummy(null, dummy1);
+      expect(dummy, isNotNull);
+      expect(dummy.content, 'Updated Content 1');
+      expect(dummy.key, _dummy1.key);
 
-        dummy1 = dummy;
-      } catch (err) {
-        expect(err, isNull);
-      }
+      dummy1 = dummy;
 
       // Delete dummy
-      try {
-        await client.deleteDummy(null, dummy1.id);
-      } catch (err) {
-        expect(err, isNull);
-      }
+      await client.deleteDummy(null, dummy1.id);
 
       // Try to get delete dummy
-      try {
-        var dummy = await client.getDummyById(null, dummy1.id);
-        expect(dummy, isNull);
-      } catch (err) {
-        expect(err, isNull);
-      }
+      dummy = await client.getDummyById(null, dummy1.id);
+      expect(dummy, isNull);
     });
   });
 }

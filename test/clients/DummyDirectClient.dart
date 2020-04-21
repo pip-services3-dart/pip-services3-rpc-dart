@@ -23,6 +23,7 @@ class DummyDirectClient extends DirectClient<IDummyController>
     return result;
   }
 
+  @override
   Future<Dummy> getDummyById(String correlationId, String dummyId) async {
     var timing = instrument(correlationId, 'dummy.get_one_by_id');
     var result = await controller.getOneById(correlationId, dummyId);
