@@ -53,7 +53,7 @@ void main() {
       await client.open(null);
     });
 
-    test('CRUD Operations', () async{
+    test('CRUD Operations', () async {
       await fixture.testCrudOperations();
     });
   });
