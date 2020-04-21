@@ -338,7 +338,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     var retriesCount = retries;
 
     if (data != null) {
-      headers['Content-Type'] ='application/json';
+      headers['Content-Type'] = 'application/json';
     } else {
       headers.remove('Content-Type');
     }
