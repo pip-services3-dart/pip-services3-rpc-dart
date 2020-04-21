@@ -273,6 +273,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
       _middleware.remove(_noCache);
       _middleware.remove(_doMaintenance);
       _server = null;
+      _app = null;
       _uri = null;
     }
   }

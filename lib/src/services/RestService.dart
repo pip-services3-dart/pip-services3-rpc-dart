@@ -224,6 +224,7 @@ abstract class RestService
     if (_localEndpoint) {
       await endpoint.open(correlationId);
     }
+    _opened = true;
     return null;
   }
 

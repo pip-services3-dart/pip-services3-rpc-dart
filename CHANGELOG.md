@@ -6,4 +6,8 @@
 
 ## 1.0.1
 
-- Fix loop in Call method of RestClient, clean code in tests, created by Dmitry Levichev
+- Fix loop in Call method of RestClient, clean code in tests.
+
+## 1.0.2
+
+- Fix close methods of RestService and HttpEndpoint.
