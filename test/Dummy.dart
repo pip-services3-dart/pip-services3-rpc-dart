@@ -6,11 +6,13 @@ class Dummy implements IStringIdentifiable, ICloneable {
   String key;
   String content;
 
-  Dummy();
+  Dummy({String id, String key, String content})
+      : id = id,
+        key = key,
+        content = content;
 
-  Dummy.from(this.id, this.key, this.content);
   factory Dummy.fromJson(Map<String, dynamic> json) {
-    return Dummy.from(json['id'], json['key'], json['content']);
+    return Dummy(id: json['id'], key: json['key'], content: json['content']);
   }
 
   Map<String, dynamic> toJson() {
@@ -25,6 +27,6 @@ class Dummy implements IStringIdentifiable, ICloneable {
 
   @override
   Dummy clone() {
-    return Dummy.from(id, key, content);
+    return Dummy(id: id, key: key, content: content);
   }
 }

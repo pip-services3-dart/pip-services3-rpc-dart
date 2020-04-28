@@ -7,3 +7,5 @@
 /docker
 /*.sh
 /*.ps1
+/*.md
+/example
