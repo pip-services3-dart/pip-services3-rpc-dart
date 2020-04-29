@@ -25,7 +25,7 @@ To work with GitHub code repository you need to install Git from: https://git-sc
 
 After your environment is ready you can check out source code from the Github repository:
 ```bash
-git clone git@github.com/pip-services3-dart/pip-services3-commons-dart.git
+git clone git@github.com/pip-services3-dart/pip-services3-rpc-dart.git
 ```
 
 Then go to the project folder and install dependent modules:
