@@ -30,8 +30,8 @@ void main() {
     });
 
     setUp(() {
-      _dummy1 = Dummy(id:null, key:'Key 1', content:'Content 1');
-      _dummy2 = Dummy(id:null, key:'Key 2', content:'Content 2');
+      _dummy1 = Dummy(id: null, key: 'Key 1', content: 'Content 1');
+      _dummy2 = Dummy(id: null, key: 'Key 2', content: 'Content 2');
     });
 
     test('CRUD Operations', () async {

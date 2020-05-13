@@ -106,7 +106,8 @@ class StatusRestService extends RestService {
     var id = _contextInfo != null ? _contextInfo.contextId : '';
     var name = _contextInfo != null ? _contextInfo.name : 'Unknown';
     var description = _contextInfo != null ? _contextInfo.description : '';
-    var uptime = DateTime.now().toUtc()
+    var uptime = DateTime.now()
+        .toUtc()
         .subtract(Duration(milliseconds: _startTime.millisecondsSinceEpoch));
     var properties = _contextInfo != null ? _contextInfo.properties : '';
 

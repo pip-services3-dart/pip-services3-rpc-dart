@@ -11,8 +11,8 @@ class DummyClientFixture {
   }
 
   void testCrudOperations() async {
-    var dummy1 = Dummy(id:null, key:'Key 1', content:'Content 1');
-    var dummy2 = Dummy(id:null, key:'Key 2', content:'Content 2');
+    var dummy1 = Dummy(id: null, key: 'Key 1', content: 'Content 1');
+    var dummy2 = Dummy(id: null, key: 'Key 2', content: 'Content 2');
 
     // Create one dummy
     var dummy = await _client.createDummy(null, dummy1);
