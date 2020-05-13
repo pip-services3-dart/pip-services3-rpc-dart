@@ -5,7 +5,7 @@ import 'package:pip_services3_commons/pip_services3_commons.dart';
 import './RestOperations.dart';
 
 class StatusOperations extends RestOperations {
-  final _startTime = DateTime.now();
+  final _startTime = DateTime.now().toUtc();
   IReferences _references2;
   ContextInfo _contextInfo;
 
@@ -41,7 +41,7 @@ class StatusOperations extends RestOperations {
     var id = _contextInfo != null ? _contextInfo.contextId : '';
     var name = _contextInfo != null ? _contextInfo.name : 'Unknown';
     var description = _contextInfo != null ? _contextInfo.description : '';
-    var uptime = DateTime.now()
+    var uptime = DateTime.now().toUtc()
         .subtract(Duration(milliseconds: _startTime.millisecondsSinceEpoch));
     var properties = _contextInfo != null ? _contextInfo.properties : '';
 
@@ -57,7 +57,7 @@ class StatusOperations extends RestOperations {
       'name': name,
       'description': description,
       'start_time': StringConverter.toString2(_startTime),
-      'current_time': StringConverter.toString2(DateTime.now()),
+      'current_time': StringConverter.toString2(DateTime.now().toUtc()),
       'uptime': uptime.toIso8601String(),
       'properties': properties,
       'components': components

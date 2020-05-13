@@ -47,7 +47,7 @@ class AboutOperations extends RestOperations {
         'properties': _contextInfo != null ? _contextInfo.properties : null,
         'uptime': _contextInfo != null ? _contextInfo.uptime : null,
         'start_time': _contextInfo != null ? _contextInfo.startTime : null,
-        'current_time': DateTime.now().toIso8601String(),
+        'current_time': DateTime.now().toUtc().toIso8601String(),
         'protocol': req.protocol,
         'host': HttpRequestDetector.detectServerHost(req),
         'addresses': _getNetworkAddresses(),

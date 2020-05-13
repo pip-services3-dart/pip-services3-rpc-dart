@@ -11,3 +11,7 @@
 ## 1.0.2
 
 - Fix close methods of RestService and HttpEndpoint.
+
+## 1.0.3
+
+- Fix work with time, convert to UTC

@@ -56,7 +56,7 @@ import './RestService.dart';
 ///
 
 class StatusRestService extends RestService {
-  final _startTime = DateTime.now();
+  final _startTime = DateTime.now().toUtc();
   IReferences _references2;
   ContextInfo _contextInfo;
   String _route = 'status';
@@ -106,7 +106,7 @@ class StatusRestService extends RestService {
     var id = _contextInfo != null ? _contextInfo.contextId : '';
     var name = _contextInfo != null ? _contextInfo.name : 'Unknown';
     var description = _contextInfo != null ? _contextInfo.description : '';
-    var uptime = DateTime.now()
+    var uptime = DateTime.now().toUtc()
         .subtract(Duration(milliseconds: _startTime.millisecondsSinceEpoch));
     var properties = _contextInfo != null ? _contextInfo.properties : '';
 
@@ -122,7 +122,7 @@ class StatusRestService extends RestService {
       'name': name,
       'description': description,
       'start_time': StringConverter.toString2(_startTime),
-      'current_time': StringConverter.toString2(DateTime.now()),
+      'current_time': StringConverter.toString2(DateTime.now().toUtc()),
       'uptime': uptime.toIso8601String(),
       'properties': properties,
       'components': components

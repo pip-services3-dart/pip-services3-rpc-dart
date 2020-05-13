@@ -12,6 +12,6 @@ class HeartbeatOperations extends RestOperations {
   }
 
   void heartbeat(angel.RequestContext req, angel.ResponseContext res) {
-    sendResult(req, res, null, DateTime.now().toIso8601String());
+    sendResult(req, res, null, DateTime.now().toUtc().toIso8601String());
   }
 }
