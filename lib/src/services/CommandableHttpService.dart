@@ -87,7 +87,7 @@ abstract class CommandableHttpService extends RestService {
           (angel.RequestContext req, angel.ResponseContext res) async {
         var params = {};
 
-        if (req.contentType != null) {
+        if (req.contentType != null && req.headers.contentLength > 0) {
           await req.parseBody();
           params = req.bodyAsMap ?? {};
         }
