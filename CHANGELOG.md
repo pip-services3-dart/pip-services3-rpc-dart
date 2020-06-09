@@ -15,3 +15,11 @@
 ## 1.0.3
 
 - Fix work with time, convert to UTC
+
+## 1.0.4
+
+- Add instrument functions in RestOperations
+
+## 1.0.5
+
+- Add safe invocation method in RestOperations

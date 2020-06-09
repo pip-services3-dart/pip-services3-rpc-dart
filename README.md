@@ -20,6 +20,7 @@ Quick Links:
 The Dart version of Pip.Services is created and maintained by:
 - **Sergey Seroukhov**
 - **Levichev Dmitry**
+- **Aleksey Dvoykin**
 
 The documentation is written by:
 - **Mark Makarychev**

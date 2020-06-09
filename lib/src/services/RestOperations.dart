@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:angel_framework/angel_framework.dart' as angel;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_components/pip_services3_components.dart';
@@ -9,7 +11,13 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
   var counters = CompositeCounters();
   var dependencyResolver = DependencyResolver();
 
+  String componentName;
+
   RestOperations();
+  
+  RestOperations.withName(String name) {
+    componentName = name;
+  }
 
   @override
   void configure(ConfigParams config) {
@@ -21,6 +29,24 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
     logger.setReferences(references);
     counters.setReferences(references);
     dependencyResolver.setReferences(references);
+  }
+
+  Timing instrument(String correlationId, String name) {
+    logger.trace(correlationId, 'Executing %s method', [name]);
+    counters.incrementOne(name + '.exec_count');
+    return counters.beginTiming(name + '.exec_time');
+  }
+
+  void instrumentError(String correlationId, String name, err,
+      [bool reerror = false]) {
+    if (err != null) {
+      logger.error(correlationId, ApplicationException().wrap(err),
+          'Failed to execute %s method', [name]);
+      counters.incrementOne(name + '.exec_errors');
+      if (reerror != null && reerror == true) {
+        throw err;
+      }
+    }
   }
 
   dynamic getCorrelationId(angel.RequestContext req) {
@@ -129,5 +155,20 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
       throw Exception('RestOperations: Need wrote Invoke method!!!');
       //this. ['operation'](req, res);
     };
+  }
+
+  Future safeInvoke(angel.RequestContext req, angel.ResponseContext res, String name, Function() operation, Function(Exception err) error) async {
+    var correlationId = getCorrelationId(req);
+    
+    var timing = instrument(correlationId, name);
+    try {
+      await operation();
+    } catch (err) {
+      instrumentError(correlationId, name, err);
+
+      await error(err);
+    } finally {
+      timing.endTiming();
+    }
   }
 }
