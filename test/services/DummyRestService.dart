@@ -12,17 +12,12 @@ class DummyRestService extends RestService {
   IDummyController controller;
   int _numberOfCalls = 0;
 
-  DummyRestService() : super() {
-    // dependencyResolver.put('controller',
-    //     Descriptor('pip-services-dummies', 'controller', 'default', '*', '*'));
-  }
+  DummyRestService() : super() { }
 
   @override
   void setReferences(IReferences references) {
     super.setReferences(references);
     operations.setReferences(references);
-    // controller =
-    //     dependencyResolver.getOneRequired<IDummyController>('controller');
   }
 
   int getNumberOfCalls() {
@@ -34,61 +29,6 @@ class DummyRestService extends RestService {
     _numberOfCalls++;
     return true;
   }
-
-  // void _getPageByFilter(
-  //     angel.RequestContext req, angel.ResponseContext res) async {
-  //   try {
-  //     var page = await controller.getPageByFilter(
-  //         req.queryParameters['correlation_id'],
-  //         FilterParams(req.queryParameters),
-  //         PagingParams(req.queryParameters));
-  //     sendResult(req, res, null, page);
-  //   } catch (ex) {
-  //     sendError(req, res, ex);
-  //   }
-  // }
-
-  // void _getOneById(angel.RequestContext req, angel.ResponseContext res) async {
-  //   try {
-  //     var dummy = await controller.getOneById(
-  //         req.queryParameters['correlation_id'], req.params['dummy_id']);
-  //     sendResult(req, res, null, dummy);
-  //   } catch (ex) {
-  //     sendError(req, res, ex);
-  //   }
-  // }
-
-  // void _create(angel.RequestContext req, angel.ResponseContext res) async {
-  //   try {
-  //     await req.parseBody();
-  //     var item = Dummy.fromJson(req.bodyAsMap);
-  //     var dummy = await controller.create(req.params['correlation_id'], item);
-  //     sendCreatedResult(req, res, null, dummy);
-  //   } catch (ex) {
-  //     sendError(req, res, ex);
-  //   }
-  // }
-
-  // void _update(angel.RequestContext req, angel.ResponseContext res) async {
-  //   try {
-  //     await req.parseBody();
-  //     var item = Dummy.fromJson(req.bodyAsMap);
-  //     var dummy = await controller.update(req.params['correlation_id'], item);
-  //     sendResult(req, res, null, dummy);
-  //   } catch (ex) {
-  //     sendError(req, res, ex);
-  //   }
-  // }
-
-  // void _deleteById(angel.RequestContext req, angel.ResponseContext res) async {
-  //   try {
-  //     var dummy = await controller.deleteById(
-  //         req.queryParameters['correlation_id'], req.params['dummy_id']);
-  //     sendCreatedResult(req, res, null, dummy);
-  //   } catch (ex) {
-  //     sendError(req, res, ex);
-  //   }
-  // }
 
   @override
   void register() {
