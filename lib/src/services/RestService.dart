@@ -350,14 +350,7 @@ abstract class RestService
 
     route = _appendBaseRoute(route);
 
-    endpoint.registerRouteWithAuth(method, route, schema,
-        (angel.RequestContext req, angel.ResponseContext res, next()) {
-      if (authorize != null) {
-        authorize(req, res, next);
-      } else {
-        next();
-      }
-    }, action);
+    endpoint.registerRouteWithAuth(method, route, schema, authorize, action);
   }
 
   /// Registers a middleware for a given route in HTTP endpoint.

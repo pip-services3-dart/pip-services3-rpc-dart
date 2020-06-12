@@ -23,3 +23,7 @@
 ## 1.0.5
 
 - Add safe invocation method in RestOperations
+
+## 1.0.6
+
+- Fix asynchronous authorization issues

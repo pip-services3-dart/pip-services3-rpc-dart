@@ -205,7 +205,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
   Future _addCompatibility(
       angel.RequestContext req, angel.ResponseContext res) async {
-    //TODO: need write the method
+    // TODO: need write the method
     // req.param = (name) => {
     //     if (req.query) {
     //         var param = req.query[name];
@@ -367,9 +367,9 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
       action(angel.RequestContext req, angel.ResponseContext res)) {
     if (authorize != null) {
       var nextAction = action;
-      action = (req, res) {
-        authorize(req, res, () {
-          nextAction(req, res);
+      action = (req, res) async {
+        await authorize(req, res, () async {
+          await nextAction(req, res);
         });
       };
     }

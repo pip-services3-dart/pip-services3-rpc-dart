@@ -12,7 +12,7 @@ class DummyRestService extends RestService {
   IDummyController controller;
   int _numberOfCalls = 0;
 
-  DummyRestService() : super() { }
+  DummyRestService() : super() {}
 
   @override
   void setReferences(IReferences references) {

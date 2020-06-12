@@ -14,7 +14,7 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
   String componentName;
 
   RestOperations();
-  
+
   RestOperations.withName(String name) {
     componentName = name;
   }
@@ -157,9 +157,10 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
     };
   }
 
-  Future safeInvoke(angel.RequestContext req, angel.ResponseContext res, String name, Function() operation, Function(Exception err) error) async {
+  Future safeInvoke(angel.RequestContext req, angel.ResponseContext res,
+      String name, Function() operation, Function(Exception err) error) async {
     var correlationId = getCorrelationId(req);
-    
+
     var timing = instrument(correlationId, name);
     try {
       await operation();
