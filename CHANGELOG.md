@@ -27,3 +27,7 @@
 ## 1.0.6
 
 - Fix asynchronous authorization issues
+
+## 1.0.7
+
+- Fix service interceptor call issues

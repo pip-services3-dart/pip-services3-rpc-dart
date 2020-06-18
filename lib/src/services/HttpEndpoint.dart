@@ -387,7 +387,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
     _middleware
         .add((angel.RequestContext req, angel.ResponseContext res) async {
-      if (route != null && route != '' && !req.path.startsWith(route)) {
+      if (route != null && route != '' && !req.uri.path.startsWith(route)) {
         return true;
       } else {
         return action(req, res);

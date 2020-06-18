@@ -103,6 +103,9 @@ void main() {
       // Try to get delete dummy
       resp = await rest.get(url + '/dummies/' + dummy1.id);
       expect(resp.body, isEmpty);
+      
+      // check interceptors
+      expect(service.getNumberOfCalls(), 6);
     });
   });
 }
