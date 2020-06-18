@@ -30,4 +30,4 @@
 
 ## 1.0.7
 
-- Fix service interceptor call issues
+- Fix service interceptor call and error responding issues

@@ -167,7 +167,7 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
     } catch (err) {
       instrumentError(correlationId, name, err);
 
-      await error(err);
+      await error(ApplicationException().wrap(err));
     } finally {
       timing.endTiming();
     }
