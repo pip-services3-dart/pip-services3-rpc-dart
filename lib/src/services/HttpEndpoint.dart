@@ -14,23 +14,23 @@ import './IRegisterable.dart';
 ///
 /// ### Configuration parameters ###
 ///
-/// Parameters to pass to the [[configure]] method for component configuration:
+/// Parameters to pass to the [configure] method for component configuration:
 ///
-/// - [connection](s) - the connection resolver's connections:
+/// - [connection(s)] - the connection resolver's connections:
 ///     - '[connection.discovery_key]' - the key to use for connection resolving in a discovery service;
 ///     - '[connection.protocol]' - the connection's protocol;
 ///     - '[connection.host]' - the target host;
 ///     - '[connection.port]' - the target port;
 ///     - '[connection.uri]' - the target URI.
 /// - [credential] - the HTTPS credentials:
-///     - '[credential.ssl_key_fil]e' - the SSL private key in PEM
+///     - '[credential.ssl_key_file]' - the SSL private key in PEM
 ///     - '[credential.ssl_crt_file]' - the SSL certificate in PEM
 ///     - '[credential.ssl_ca_file]' - the certificate authorities (root cerfiticates) in PEM
 ///
 /// ### References ###
 ///
 /// A logger, counters, and a connection resolver can be referenced by passing the
-/// following references to the object's [[setReferences]] method:
+/// following references to the object's [setReferences] method:
 ///
 /// - logger: ['\*:logger:\*:\*:1.0'];
 /// - counters: ['\*:counters:\*:\*:1.0'];
@@ -281,7 +281,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   ///
   /// - [registration]      the IRegisterable registration to add.
   ///
-  /// See [[IRegisterable]]
+  /// See [IRegisterable]
   void register(IRegisterable registration) {
     _registrations.add(registration);
   }
@@ -291,7 +291,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   ///
   /// - [registration]      the IRegisterable registration to remove.
   ///
-  /// See [[IRegisterable]]
+  /// See [IRegisterable]
   void unregister(IRegisterable registration) {
     _registrations.remove(registration);
   }

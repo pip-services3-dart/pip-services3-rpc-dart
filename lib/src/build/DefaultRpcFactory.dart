@@ -6,9 +6,9 @@ import '../services/StatusRestService.dart';
 
 /// Creates RPC components by their descriptors.
 ///
-/// See [[HttpEndpoint]]
-/// See [[HeartbeatRestService]]
-/// See [[StatusRestService]]
+/// See [HttpEndpoint]
+/// See [HeartbeatRestService]
+/// See [StatusRestService]
 
 class DefaultRpcFactory extends Factory {
   static final descriptor =

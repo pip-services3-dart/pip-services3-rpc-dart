@@ -34,7 +34,7 @@ import './HttpResponseSender.dart';
 /// - [\*:discovery:\*:\*:1.0]            (optional) [IDiscovery]] services to resolve connection
 /// - [\*:endpoint:http:\*:1.0]          (optional) [HttpEndpoint] reference
 ///
-/// See [[RestClient]]
+/// See [RestClient]
 ///
 /// ### Example ###
 ///
