@@ -105,7 +105,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   ///
   /// - [config]    configuration parameters, containing a 'connection(s)' section.
   ///
-  /// See [ConfigParams] (in the PipServices 'Commons' package)
+  /// See [ConfigParams](https://pub.dev/documentation/pip_services3_commons/latest/pip_services3_commons/ConfigParams-class.html) (in the PipServices 'Commons' package)
 
   @override
   void configure(ConfigParams config) {
@@ -130,7 +130,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// - references    an IReferences object, containing references to a logger, counters,
   ///                      and a connection resolver.
   ///
-  /// See [IReferences] (in the PipServices 'Commons' package)
+  /// See [IReferences](https://pub.dev/documentation/pip_services3_commons/latest/pip_services3_commons/IReferences-class.html) (in the PipServices 'Commons' package)
   @override
   void setReferences(IReferences references) {
     _logger.setReferences(references);

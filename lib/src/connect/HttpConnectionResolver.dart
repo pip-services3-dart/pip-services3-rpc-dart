@@ -10,7 +10,7 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 /// ### Configuration parameters ###
 ///
 /// - [connection]:
-///   - [discovery_key]:               (optional) a key to retrieve the connection from [IDiscovery]
+///   - [discovery_key]:               (optional) a key to retrieve the connection from [IDiscovery](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html)
 ///   - ...                          other connection parameters
 ///
 /// - [connections]:                   alternative to connection
@@ -21,10 +21,10 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 ///
 /// ### References ###
 ///
-/// - [\*:discovery:\*:\*:1.0]            (optional) [IDiscovery]] services
+/// - [\*:discovery:\*:\*:1.0]            (optional) [IDiscovery](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html) services
 ///
-/// See [ConnectionParams]
-/// See [ConnectionResolver]
+/// See [ConnectionParams](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ConnectionParams-class.html)
+/// See [ConnectionResolver](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ConnectionResolver-class.html)
 ///
 /// ### Example ###
 ///

@@ -11,7 +11,7 @@ import '../connect/HttpConnectionResolver.dart';
 ///
 /// - [base_route]:              base route for remote URI
 /// - [connection](s):
-///   - [discovery_key]:         (optional) a key to retrieve the connection from [IDiscovery]
+///   - [discovery_key]:         (optional) a key to retrieve the connection from [IDiscovery](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html)
 ///   - [protocol]:              connection protocol: http or https
 ///   - [host]:                  host name or IP address
 ///   - [port]:                  port number
@@ -23,9 +23,9 @@ import '../connect/HttpConnectionResolver.dart';
 ///
 /// ### References ###
 ///
-/// - \*:logger:\*:\*:1.0         (optional) [ILogger] components to pass log messages
-/// - \*:counters:\*:\*:1.0         (optional) [ICounters] components to pass collected measurements
-/// - \*:discovery:\*:\*:1.0        (optional) [IDiscovery] services to resolve connection
+/// - \*:logger:\*:\*:1.0         (optional) [ILogger](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ILogger-class.html) components to pass log messages
+/// - \*:counters:\*:\*:1.0         (optional) [ICounters](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ICounters-class.html) components to pass collected measurements
+/// - \*:discovery:\*:\*:1.0        (optional) [IDiscovery](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html) services to resolve connection
 ///
 /// See [RestService]
 /// See [CommandableHttpService]
