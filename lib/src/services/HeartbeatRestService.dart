@@ -12,16 +12,16 @@ import './RestService.dart';
 ///
 /// ### Configuration parameters ###
 ///
-/// - base_route:              base route for remote URI (default: '')
-/// - route:                   route to heartbeat operation (default: 'heartbeat')
-/// - dependencies:
-///   - endpoint:              override for HTTP Endpoint dependency
-/// - connection(s):
-///   - discovery_key:         (optional) a key to retrieve the connection from [IDiscovery](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html)
-///   - protocol:              connection protocol: http or https
-///   - host:                  host name or IP address
-///   - port:                  port number
-///   - uri:                   resource URI or connection string with all parameters in it
+/// - [base_route]:              base route for remote URI (default: '')
+/// - [route]:                   route to heartbeat operation (default: 'heartbeat')
+/// - [dependencies]:
+///   - [endpoint]:              override for HTTP Endpoint dependency
+/// - [connection(s)]:
+///   - [discovery_key]:         (optional) a key to retrieve the connection from [IDiscovery](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html)
+///   - [protocol]:              connection protocol: http or https
+///   - [host]:                  host name or IP address
+///   - [port]:                  port number
+///   - [uri]:                   resource URI or connection string with all parameters in it
 ///
 /// ### References ###
 ///
