@@ -1,0 +1,520 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, height=device-height, initial-scale=1, user-scalable=no">
+  <meta name="description" content="API docs for the CommandableHttpClient class from the pip_services3_rpc library, for the Dart programming language.">
+  <title>CommandableHttpClient class - pip_services3_rpc library - Dart API</title>
+
+  
+  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <link rel="stylesheet" href="../static-assets/github.css">
+  <link rel="stylesheet" href="../static-assets/styles.css">
+  <link rel="icon" href="../static-assets/favicon.png">
+
+</head>
+
+<body data-base-href="../"
+      data-using-base-href="false">
+
+<div id="overlay-under-drawer"></div>
+
+<header id="title">
+  <button id="sidenav-left-toggle" type="button">&nbsp;</button>
+  <ol class="breadcrumbs gt-separated dark hidden-xs">
+    <li><a href="../index.html">pip_services3_rpc</a></li>
+    <li><a href="../pip_services3_rpc/pip_services3_rpc-library.html">pip_services3_rpc</a></li>
+    <li class="self-crumb">CommandableHttpClient class</li>
+  </ol>
+  <div class="self-name">CommandableHttpClient</div>
+  <form class="search navbar-right" role="search">
+    <input type="text" id="search-box" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<main>
+
+  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+      <form class="search-sidebar" role="search">
+        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+      </form>
+    </header>
+    
+    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+      <li><a href="../index.html">pip_services3_rpc</a></li>
+      <li><a href="../pip_services3_rpc/pip_services3_rpc-library.html">pip_services3_rpc</a></li>
+      <li class="self-crumb">CommandableHttpClient class</li>
+    </ol>
+    
+    <h5>pip_services3_rpc library</h5>
+    <ol>
+      <li class="section-title"><a href="../pip_services3_rpc/pip_services3_rpc-library.html#classes">Classes</a></li>
+      <li><a href="../pip_services3_rpc/AboutOperations-class.html">AboutOperations</a></li>
+      <li><a href="../pip_services3_rpc/BasicAuthorizer-class.html">BasicAuthorizer</a></li>
+      <li><a href="../pip_services3_rpc/CommandableHttpClient-class.html">CommandableHttpClient</a></li>
+      <li><a href="../pip_services3_rpc/CommandableHttpService-class.html">CommandableHttpService</a></li>
+      <li><a href="../pip_services3_rpc/DefaultRpcFactory-class.html">DefaultRpcFactory</a></li>
+      <li><a href="../pip_services3_rpc/DirectClient-class.html">DirectClient</a></li>
+      <li><a href="../pip_services3_rpc/HeartbeatOperations-class.html">HeartbeatOperations</a></li>
+      <li><a href="../pip_services3_rpc/HeartbeatRestService-class.html">HeartbeatRestService</a></li>
+      <li><a href="../pip_services3_rpc/HttpConnectionResolver-class.html">HttpConnectionResolver</a></li>
+      <li><a href="../pip_services3_rpc/HttpEndpoint-class.html">HttpEndpoint</a></li>
+      <li><a href="../pip_services3_rpc/HttpRequestDetector-class.html">HttpRequestDetector</a></li>
+      <li><a href="../pip_services3_rpc/HttpResponseSender-class.html">HttpResponseSender</a></li>
+      <li><a href="../pip_services3_rpc/OwnerAuthorizer-class.html">OwnerAuthorizer</a></li>
+      <li><a href="../pip_services3_rpc/RestClient-class.html">RestClient</a></li>
+      <li><a href="../pip_services3_rpc/RestOperations-class.html">RestOperations</a></li>
+      <li><a href="../pip_services3_rpc/RestService-class.html">RestService</a></li>
+      <li><a href="../pip_services3_rpc/RoleAuthorizer-class.html">RoleAuthorizer</a></li>
+      <li><a href="../pip_services3_rpc/StatusOperations-class.html">StatusOperations</a></li>
+      <li><a href="../pip_services3_rpc/StatusRestService-class.html">StatusRestService</a></li>
+    
+    
+    
+    
+    
+    
+    
+    
+    </ol>
+  </div>
+
+  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
+      <div><h1><span class="kind-class">CommandableHttpClient</span> class  </h1></div>
+
+    <section class="desc markdown">
+      <p>Abstract client that calls commandable HTTP service.</p>
+<p>Commandable services are generated automatically for <a href="https://pub.dev/documentation/pip_services3_commons/latest/pip_services3_commons/ICommandable-class.html">ICommandable objects</a>.
+Each command is exposed as POST operation that receives all parameters
+in body object.</p>
+<h3 id="configuration-parameters">Configuration parameters</h3>
+<p><code>base_route</code>:              base route for remote URI</p>
+<ul>
+<li><a href="s">connection</a>:
+<ul>
+<li><code>discovery_key</code>:         (optional) a key to retrieve the connection from <a href="https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html">IDiscovery</a></li>
+<li><code>protocol</code>:              connection protocol: http or https</li>
+<li><code>host</code>:                  host name or IP address</li>
+<li><code>port</code>:                  port number</li>
+<li><a href="../pip_services3_rpc/RestClient/uri.html">uri</a>:                   resource URI or connection string with all parameters in it</li>
+</ul>
+</li>
+<li><a href="../pip_services3_rpc/RestClient/options.html">options</a>:
+<ul>
+<li><a href="../pip_services3_rpc/RestClient/retries.html">retries</a>:               number of retries (default: 3)</li>
+<li><code>connect_timeout</code>:       connection timeout in milliseconds (default: 10 sec)</li>
+<li><a href="../pip_services3_rpc/RestClient/timeout.html">timeout</a>:               invocation timeout in milliseconds (default: 10 sec)</li>
+</ul>
+</li>
+</ul>
+<h3 id="references">References</h3>
+<ul>
+<li>*:logger:*:*:1.0         (optional) <a href="https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ILogger-class.html">ILogger</a> components to pass log messages</li>
+<li>*:counters:*:*:1.0         (optional) <a href="https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ICounters-class.html">ICounters</a> components to pass collected measurements</li>
+<li>*:discovery:*:*:1.0        (optional) <a href="https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html">IDiscovery</a> services to resolve connection</li>
+</ul>
+<h3 id="example">Example</h3>
+<pre class="language-dart"><code>class MyCommandableHttpClient extends CommandableHttpClient implements IMyClient {
+   ...
+
+   Future&lt;MyData&gt; getData(String correlationId, String id) async {
+       var result = await callCommand(
+           "get_data",
+           correlationId,
+           { 'id': id });
+      if (result == null) return null;
+      return MyData.fromJson(json.decode(result));
+    }
+    ...
+}
+
+var client = MyCommandableHttpClient();
+client.configure(ConfigParams.fromTuples([
+    "connection.protocol", "http",
+    "connection.host", "localhost",
+    "connection.port", 8080
+]));
+
+var result = await client.getData("123", "1")
+...
+</code></pre>
+    </section>
+    
+    <section>
+      <dl class="dl-horizontal">
+        <dt>Inheritance</dt>
+        <dd><ul class="gt-separated dark clazz-relationships">
+          <li><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object-class.html">Object</a></li>
+          <li><a href="../pip_services3_rpc/RestClient-class.html">RestClient</a></li>
+          <li>CommandableHttpClient</li>
+        </ul></dd>
+
+
+
+
+
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="constructors">
+      <h2>Constructors</h2>
+
+      <dl class="constructor-summary-list">
+        <dt id="CommandableHttpClient" class="callable">
+          <span class="name"><a href="../pip_services3_rpc/CommandableHttpClient/CommandableHttpClient.html">CommandableHttpClient</a></span><span class="signature">(<span class="parameter" id="-param-baseRoute"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">baseRoute</span></span>)</span>
+        </dt>
+        <dd>
+          Creates a new instance of the client. <a href="../pip_services3_rpc/CommandableHttpClient/CommandableHttpClient.html">[...]</a>
+        </dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor inherited" id="instance-properties">
+      <h2>Properties</h2>
+
+      <dl class="properties">
+        <dt id="baseRoute" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/baseRoute.html">baseRoute</a></span>
+          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>         
+        </dt>
+        <dd class="inherited">
+          The base route. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+        <dt id="client" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/client.html">client</a></span>
+          <span class="signature">&#8596; <a href="https://pub.dev/documentation/http/0.12.2/http/Client-class.html">Client</a></span>         
+        </dt>
+        <dd class="inherited">
+          The HTTP client. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+        <dt id="connectionResolver" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/connectionResolver.html">connectionResolver</a></span>
+          <span class="signature">&#8596; <a href="../pip_services3_rpc/HttpConnectionResolver-class.html">HttpConnectionResolver</a></span>         
+        </dt>
+        <dd class="inherited">
+          The connection resolver. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+        <dt id="connectTimeout" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/connectTimeout.html">connectTimeout</a></span>
+          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.4/dart-core/int-class.html">int</a></span>         
+        </dt>
+        <dd class="inherited">
+          The connection timeout in milliseconds. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+        <dt id="counters" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/counters.html">counters</a></span>
+          <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_components/1.0.6/pip_services3_components/CompositeCounters-class.html">CompositeCounters</a></span>         
+        </dt>
+        <dd class="inherited">
+          The performance counters. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+        <dt id="hashCode" class="property inherited">
+          <span class="name"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/hashCode.html">hashCode</a></span>
+          <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/int-class.html">int</a></span>         
+        </dt>
+        <dd class="inherited">
+          The hash code for this object. <a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/hashCode.html">[...]</a>
+                  <div class="features">read-only, inherited</div>
+</dd>
+        <dt id="headers" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/headers.html">headers</a></span>
+          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>&gt;</span></span>         
+        </dt>
+        <dd class="inherited">
+          The default headers to be added to every request. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+        <dt id="logger" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/logger.html">logger</a></span>
+          <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_components/1.0.6/pip_services3_components/CompositeLogger-class.html">CompositeLogger</a></span>         
+        </dt>
+        <dd class="inherited">
+          The logger. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+        <dt id="options" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/options.html">options</a></span>
+          <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/ConfigParams-class.html">ConfigParams</a></span>         
+        </dt>
+        <dd class="inherited">
+          The configuration options. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+        <dt id="retries" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/retries.html">retries</a></span>
+          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.4/dart-core/int-class.html">int</a></span>         
+        </dt>
+        <dd class="inherited">
+          The number of retries. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+        <dt id="runtimeType" class="property inherited">
+          <span class="name"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/runtimeType.html">runtimeType</a></span>
+          <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/Type-class.html">Type</a></span>         
+        </dt>
+        <dd class="inherited">
+          A representation of the runtime type of the object. 
+                  <div class="features">read-only, inherited</div>
+</dd>
+        <dt id="timeout" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/timeout.html">timeout</a></span>
+          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.4/dart-core/int-class.html">int</a></span>         
+        </dt>
+        <dd class="inherited">
+          The invocation timeout in milliseconds. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+        <dt id="uri" class="property inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/uri.html">uri</a></span>
+          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>         
+        </dt>
+        <dd class="inherited">
+          The remote service uri which is calculated on open. 
+                  <div class="features">read / write, inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor" id="instance-methods">
+      <h2>Methods</h2>
+      <dl class="callables">
+        <dt id="addCorrelationId" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/addCorrelationId.html">addCorrelationId</a></span><span class="signature">(<wbr><span class="parameter" id="addCorrelationId-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">params</span>, </span><span class="parameter" id="addCorrelationId-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Adds a correlation id (correlation_id) to invocation parameter map. <a href="../pip_services3_rpc/RestClient/addCorrelationId.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="addFilterParams" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/addFilterParams.html">addFilterParams</a></span><span class="signature">(<wbr><span class="parameter" id="addFilterParams-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">params</span>, </span><span class="parameter" id="addFilterParams-param-filter"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/FilterParams-class.html">FilterParams</a></span> <span class="parameter-name">filter</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Adds filter parameters (with the same name as they defined)
+to invocation parameter map. <a href="../pip_services3_rpc/RestClient/addFilterParams.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="addPagingParams" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/addPagingParams.html">addPagingParams</a></span><span class="signature">(<wbr><span class="parameter" id="addPagingParams-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">params</span>, </span><span class="parameter" id="addPagingParams-param-paging"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/PagingParams-class.html">PagingParams</a></span> <span class="parameter-name">paging</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>&gt;</span></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Adds paging parameters (skip, take, total) to invocation parameter map. <a href="../pip_services3_rpc/RestClient/addPagingParams.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="call" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/call.html">call</a></span><span class="signature">(<wbr><span class="parameter" id="call-param-method"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="call-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span>, </span><span class="parameter" id="call-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="call-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">params</span>, </span><span class="parameter" id="call-param-data">[<span class="type-annotation">dynamic</span> <span class="parameter-name">data</span>]</span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Calls a remote method via HTTP/REST protocol. <a href="../pip_services3_rpc/RestClient/call.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="callCommand" class="callable">
+          <span class="name"><a href="../pip_services3_rpc/CommandableHttpClient/callCommand.html">callCommand</a></span><span class="signature">(<wbr><span class="parameter" id="callCommand-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span><span class="parameter" id="callCommand-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="callCommand-param-params"><span class="type-annotation">dynamic</span> <span class="parameter-name">params</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a></span>
+          </span>
+                  </dt>
+        <dd>
+          Calls a remote method via HTTP commadable protocol.
+The call is made via POST operation and all parameters are sent in body object.
+The complete route to remote method is defined as baseRoute + "/" + name. <a href="../pip_services3_rpc/CommandableHttpClient/callCommand.html">[...]</a>
+                  
+</dd>
+        <dt id="close" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/close.html">close</a></span><span class="signature">(<wbr><span class="parameter" id="close-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Closes component and frees used resources. <a href="../pip_services3_rpc/RestClient/close.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="configure" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/configure.html">configure</a></span><span class="signature">(<wbr><span class="parameter" id="configure-param-config"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/ConfigParams-class.html">ConfigParams</a></span> <span class="parameter-name">config</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Configures component by passing configuration parameters. <a href="../pip_services3_rpc/RestClient/configure.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="createRequestRoute" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/createRequestRoute.html">createRequestRoute</a></span><span class="signature">(<wbr><span class="parameter" id="createRequestRoute-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+           
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="instrument" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/instrument.html">instrument</a></span><span class="signature">(<wbr><span class="parameter" id="instrument-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="instrument-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/pip_services3_components/1.0.6/pip_services3_components/Timing-class.html">Timing</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Adds instrumentation to log calls and measure call time.
+It returns a Timing object that is used to end the time measurement. <a href="../pip_services3_rpc/RestClient/instrument.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="instrumentError" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/instrumentError.html">instrumentError</a></span><span class="signature">(<wbr><span class="parameter" id="instrumentError-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="instrumentError-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span><span class="parameter" id="instrumentError-param-err"><span class="type-annotation">dynamic</span> <span class="parameter-name">err</span>, </span><span class="parameter" id="instrumentError-param-reerror">[<span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">reerror</span> = <span class="default-value">false</span>]</span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Adds instrumentation to error handling. <a href="../pip_services3_rpc/RestClient/instrumentError.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="isOpen" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/isOpen.html">isOpen</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/bool-class.html">bool</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Checks if the component is opened.
+Returns true if the component has been opened and false otherwise. 
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="noSuchMethod" class="callable inherited">
+          <span class="name"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+            <span class="returntype parameter">&#8594; dynamic</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Invoked when a non-existent method or property is accessed. <a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/noSuchMethod.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="open" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/open.html">open</a></span><span class="signature">(<wbr><span class="parameter" id="open-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-async/Future-class.html">Future</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Opens the component. <a href="../pip_services3_rpc/RestClient/open.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="setReferences" class="callable inherited">
+          <span class="name"><a href="../pip_services3_rpc/RestClient/setReferences.html">setReferences</a></span><span class="signature">(<wbr><span class="parameter" id="setReferences-param-references"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.11/pip_services3_commons/IReferences-class.html">IReferences</a></span> <span class="parameter-name">references</span></span>)
+            <span class="returntype parameter">&#8594; void</span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Sets references to dependent components. <a href="../pip_services3_rpc/RestClient/setReferences.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+        <dt id="toString" class="callable inherited">
+          <span class="name"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/String-class.html">String</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          Returns a string representation of this object. 
+                  <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+    <section class="summary offset-anchor inherited" id="operators">
+      <h2>Operators</h2>
+      <dl class="callables">
+        <dt id="operator ==" class="callable inherited">
+          <span class="name"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.4/dart-core/bool-class.html">bool</a></span>
+          </span>
+                  </dt>
+        <dd class="inherited">
+          The equality operator. <a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/operator_equals.html">[...]</a>
+                  <div class="features">inherited</div>
+</dd>
+      </dl>
+    </section>
+
+
+
+
+  </div> <!-- /.main-content -->
+
+  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+    <ol>
+    
+      <li class="section-title"><a href="../pip_services3_rpc/CommandableHttpClient-class.html#constructors">Constructors</a></li>
+      <li><a href="../pip_services3_rpc/CommandableHttpClient/CommandableHttpClient.html">CommandableHttpClient</a></li>
+    
+      <li class="section-title inherited">
+        <a href="../pip_services3_rpc/CommandableHttpClient-class.html#instance-properties">Properties</a>
+      </li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/baseRoute.html">baseRoute</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/client.html">client</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/connectionResolver.html">connectionResolver</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/connectTimeout.html">connectTimeout</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/counters.html">counters</a></li>
+      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/hashCode.html">hashCode</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/headers.html">headers</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/logger.html">logger</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/options.html">options</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/retries.html">retries</a></li>
+      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/runtimeType.html">runtimeType</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/timeout.html">timeout</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/uri.html">uri</a></li>
+    
+      <li class="section-title"><a href="../pip_services3_rpc/CommandableHttpClient-class.html#instance-methods">Methods</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/addCorrelationId.html">addCorrelationId</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/addFilterParams.html">addFilterParams</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/addPagingParams.html">addPagingParams</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/call.html">call</a></li>
+      <li><a href="../pip_services3_rpc/CommandableHttpClient/callCommand.html">callCommand</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/close.html">close</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/configure.html">configure</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/createRequestRoute.html">createRequestRoute</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/instrument.html">instrument</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/instrumentError.html">instrumentError</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/isOpen.html">isOpen</a></li>
+      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/open.html">open</a></li>
+      <li class="inherited"><a href="../pip_services3_rpc/RestClient/setReferences.html">setReferences</a></li>
+      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/toString.html">toString</a></li>
+    
+      <li class="section-title inherited"><a href="../pip_services3_rpc/CommandableHttpClient-class.html#operators">Operators</a></li>
+      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.4/dart-core/Object/operator_equals.html">operator ==</a></li>
+    
+    
+    
+    
+    </ol>
+  </div><!--/.sidebar-offcanvas-->
+
+</main>
+
+<footer>
+  <span class="no-break">
+    pip_services3_rpc
+      1.0.7
+  </span>
+
+</footer>
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+<script src="../static-assets/typeahead.bundle.min.js"></script>
+<script src="../static-assets/highlight.pack.js"></script>
+<script src="../static-assets/URI.js"></script>
+<script src="../static-assets/script.js"></script>
+
+
+</body>
+
+</html>
