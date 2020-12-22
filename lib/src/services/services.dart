@@ -10,3 +10,6 @@ export './RestOperations.dart';
 export './AboutOperations.dart';
 export './HeartbeatOperations.dart';
 export './StatusOperations.dart';
+
+export './ISwaggerService.dart';
+export './CommandableSwaggerDocument.dart';

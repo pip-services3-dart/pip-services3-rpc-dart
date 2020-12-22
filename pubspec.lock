@@ -315,7 +315,7 @@ packages:
       name: pip_services3_commons
       url: "https://pub.dartlang.org"
     source: hosted
-    version: "1.0.4"
+    version: "1.0.12"
   pip_services3_components:
     dependency: "direct main"
     description:

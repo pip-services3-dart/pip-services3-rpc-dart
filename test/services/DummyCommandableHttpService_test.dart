@@ -14,7 +14,9 @@ var restConfig = ConfigParams.fromTuples([
   'connection.host',
   'localhost',
   'connection.port',
-  3000
+  3000,
+  'swagger.enable',
+  'true'
 ]);
 
 void main() {
@@ -110,6 +112,37 @@ void main() {
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'dummy_id': dummy1.id}));
       expect(resp.body, isEmpty);
+    });
+
+    test('Get OpenApi Spec', () async {
+      var resp = await rest.get(url + '/dummy/swagger');
+      expect(resp.body.contains('openapi:'), true);
+    });
+
+    test('OpenApi Spec Override', () async {
+      var openApiContent = 'swagger yaml content';
+
+      // recreate service with new configuration
+      await service.close('');
+
+      var config = restConfig
+          .setDefaults(ConfigParams.fromTuples(['swagger.auto', false]));
+
+      var ctrl = DummyController();
+      service = DummyCommandableHttpService();
+      service.configure(config);
+
+      var references = References.fromTuples([
+        Descriptor(
+            'pip-services-dummies', 'controller', 'default', 'default', '1.0'),
+        ctrl,
+        Descriptor('pip-services-dummies', 'service', 'http', 'default', '1.0'),
+        service
+      ]);
+      service.setReferences(references);
+      await service.open('');
+      var resp = await rest.get(url + '/dummy/swagger');
+      expect(openApiContent, resp.body);
     });
   });
 }

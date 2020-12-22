@@ -1,4 +1,5 @@
 import 'dart:async';
+import 'dart:io';
 
 import 'package:angel_framework/angel_framework.dart' as angel;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
@@ -88,7 +89,7 @@ abstract class RestService
   static final _defaultConfig = ConfigParams.fromTuples(
       ['base_route', null, 'dependencies.endpoint', '*:endpoint:http:*:1.0']);
 
-  ConfigParams _config;
+  ConfigParams config;
   IReferences _references;
   bool _localEndpoint = false;
   bool _opened = false;
@@ -108,15 +109,21 @@ abstract class RestService
   /// The performance counters.
   var counters = CompositeCounters();
 
+  bool swaggerEnable = false;
+  String swaggerRoute = 'swagger';
+
   /// Configures component by passing configuration parameters.
   ///
   /// - [config]    configuration parameters to be set.
   @override
   void configure(ConfigParams config) {
     config = config.setDefaults(RestService._defaultConfig);
-    _config = config;
+    this.config = config;
     dependencyResolver.configure(config);
     baseRoute = config.getAsStringWithDefault('base_route', baseRoute);
+    swaggerEnable =
+        config.getAsBooleanWithDefault('swagger.enable', swaggerEnable);
+    swaggerRoute = config.getAsStringWithDefault('swagger.route', swaggerRoute);
   }
 
   /// Sets references to dependent components.
@@ -156,8 +163,8 @@ abstract class RestService
   HttpEndpoint _createEndpoint() {
     var endpoint = HttpEndpoint();
 
-    if (_config != null) {
-      endpoint.configure(_config);
+    if (config != null) {
+      endpoint.configure(config);
     }
 
     if (_references != null) {
@@ -309,14 +316,20 @@ abstract class RestService
   }
 
   String _appendBaseRoute(String route) {
-    route ??= '';
-
+    route ??= '/';
     if (baseRoute != null && baseRoute.isNotEmpty) {
       var baseRoute = this.baseRoute;
-      if (baseRoute[0] != '/') baseRoute = '/' + baseRoute;
+      if (route.isEmpty) {
+        route = '/';
+      }
+      if (route[0] != '/') {
+        route = '/' + route;
+      }
+      if (baseRoute[0] != '/') {
+        baseRoute = '/' + baseRoute;
+      }
       route = baseRoute + route;
     }
-
     return route;
   }
 
@@ -370,4 +383,25 @@ abstract class RestService
   /// in child classes.
   @override
   void register();
+
+  void registerOpenApiSpecFromFile(String path) async {
+    var file = File(path);
+    var content = await file.readAsString();
+    registerOpenApiSpec(content);
+  }
+
+  void registerOpenApiSpec(String content) {
+    if (swaggerEnable) {
+      registerRoute('get', swaggerRoute, null,
+          (angel.RequestContext req, angel.ResponseContext res) {
+        res.headers.addAll({
+          'Content-Length': content.length.toString(),
+          'Content-Type': 'application/x-yaml'
+        });
+        res.write(content);
+        res.statusCode = 200;
+        res.close();
+      });
+    }
+  }
 }

@@ -31,3 +31,7 @@
 ## 1.0.7
 
 - Fix service interceptor call and error responding issues
+
+## 1.0.8
+
+- Add swagger OpenAPI support

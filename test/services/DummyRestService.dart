@@ -4,13 +4,14 @@ import 'package:pip_services3_commons/pip_services3_commons.dart';
 import '../DummySchema.dart';
 import 'package:pip_services3_rpc/pip_services3_rpc.dart';
 import '../IDummyController.dart';
-import '../Dummy.dart';
 import 'DummyRestOperations.dart';
 
 class DummyRestService extends RestService {
   DummyRestOperations operations = DummyRestOperations();
   IDummyController controller;
   int _numberOfCalls = 0;
+  String _openApiContent;
+  String _openApiFile;
 
   DummyRestService() : super() {}
 
@@ -18,6 +19,14 @@ class DummyRestService extends RestService {
   void setReferences(IReferences references) {
     super.setReferences(references);
     operations.setReferences(references);
+  }
+
+  @override
+  void configure(ConfigParams config) {
+    super.configure(config);
+
+    _openApiContent = config.getAsNullableString('openapi_content');
+    _openApiFile = config.getAsNullableString('openapi_file');
   }
 
   int getNumberOfCalls() {
@@ -67,5 +76,8 @@ class DummyRestService extends RestService {
         '/dummies/:dummy_id',
         ObjectSchema(true).withRequiredProperty('dummy_id', TypeCode.String),
         operations.deleteById);
+
+    if (_openApiContent != null) registerOpenApiSpec(_openApiContent);
+    if (_openApiFile != null) registerOpenApiSpecFromFile(_openApiFile);
   }
 }

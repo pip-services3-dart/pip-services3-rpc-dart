@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:io';
 import 'package:test/test.dart';
 import 'package:http/http.dart' as http;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
@@ -13,7 +14,9 @@ void main() {
     'connection.host',
     'localhost',
     'connection.port',
-    3000
+    3000,
+    'openapi_content', 'swagger yaml or json content', // for test only
+    'swagger.enable', 'true'
   ]);
 
   group('DummyRestService', () {
@@ -97,15 +100,59 @@ void main() {
 
       dummy1 = dummy;
 
-      // Delete dummy
+      // Devare dummy
       await rest.delete(url + '/dummies/' + dummy1.id);
 
-      // Try to get delete dummy
+      // Try to get devare dummy
       resp = await rest.get(url + '/dummies/' + dummy1.id);
       expect(resp.body, isEmpty);
-      
+
       // check interceptors
       expect(service.getNumberOfCalls(), 6);
+    });
+
+    test('Get OpenApi Spec From String', () async {
+      var resp = await rest.get(url + '/swagger');
+      var openApiContent = restConfig.getAsString('openapi_content');
+      expect(openApiContent, resp.body);
+    });
+
+    test('Get OpenApi Spec From File', () async {
+      var openApiContent = 'swagger yaml content from file';
+      var filename = 'dummy_' + IdGenerator.nextLong() + '.tmp';
+
+      // create temp file
+      var file = File(filename);
+      await file.writeAsString(openApiContent);
+      // recreate service with new configuration
+      await service.close('');
+
+      var serviceConfig = ConfigParams.fromTuples([
+        'connection.protocol', 'http',
+        'connection.host', 'localhost',
+        'connection.port', 3000,
+        'openapi_file', filename, // for test only
+        'swagger.enable', 'true'
+      ]);
+
+      var ctrl = DummyController();
+
+      service = DummyRestService();
+      service.configure(serviceConfig);
+
+      var references = References.fromTuples([
+        Descriptor(
+            'pip-services-dummies', 'controller', 'default', 'default', '1.0'),
+        ctrl,
+        Descriptor('pip-services-dummies', 'service', 'rest', 'default', '1.0'),
+        service
+      ]);
+      service.setReferences(references);
+      await service.open(null);
+      var resp = await rest.get(url + '/swagger');
+      expect(openApiContent, resp.body);
+      // delete temp file
+      await file.delete();
     });
   });
 }

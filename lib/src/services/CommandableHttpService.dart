@@ -1,6 +1,7 @@
 import 'package:angel_framework/angel_framework.dart' as angel;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import './RestService.dart';
+import 'CommandableSwaggerDocument.dart';
 
 /// Abstract service that receives remove calls via HTTP/REST protocol
 /// to operations automatically generated for commands defined in [ICommandable components](https://pub.dev/documentation/pip_services3_commons/latest/pip_services3_commons/ICommandable-class.html).
@@ -59,6 +60,7 @@ import './RestService.dart';
 
 abstract class CommandableHttpService extends RestService {
   CommandSet _commandSet;
+  bool swaggerAuto = true;
 
   /// Creates a new instance of the service.
   ///
@@ -66,6 +68,15 @@ abstract class CommandableHttpService extends RestService {
   CommandableHttpService(String baseRoute) : super() {
     this.baseRoute = baseRoute;
     dependencyResolver.put('controller', 'none');
+  }
+
+  ///  Configures component by passing configuration parameters.
+  ///
+  ///  - config    configuration parameters to be set.
+  @override
+  void configure(ConfigParams config) {
+    super.configure(config);
+    swaggerAuto = config.getAsBooleanWithDefault('swagger.auto', swaggerAuto);
   }
 
   /// Registers all service routes in HTTP endpoint.
@@ -105,6 +116,12 @@ abstract class CommandableHttpService extends RestService {
           sendResult(req, res, ApplicationException().wrap(err), null);
         }
       });
+    }
+    if (swaggerAuto) {
+      var swaggerConfig = config.getSection('swagger');
+
+      var doc = CommandableSwaggerDocument(baseRoute, swaggerConfig, commands);
+      registerOpenApiSpec(doc.toString());
     }
   }
 }
