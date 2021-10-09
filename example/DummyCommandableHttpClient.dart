@@ -11,7 +11,7 @@ class DummyCommandableHttpClient extends CommandableHttpClient
 
   @override
   Future<DataPage<Dummy>> getDummies(
-      String correlationId, FilterParams filter, PagingParams paging) async {
+      String? correlationId, FilterParams? filter, PagingParams? paging) async {
     var result = await callCommand(
         'get_dummies', correlationId, {'filter': filter, 'paging': paging});
     return DataPage<Dummy>.fromJson(
@@ -19,7 +19,7 @@ class DummyCommandableHttpClient extends CommandableHttpClient
   }
 
   @override
-  Future<Dummy> getDummyById(String correlationId, String dummyId) async {
+  Future<Dummy?> getDummyById(String? correlationId, String dummyId) async {
     var result = await callCommand(
         'get_dummy_by_id', correlationId, {'dummy_id': dummyId});
     if (result == null) return null;
@@ -27,7 +27,7 @@ class DummyCommandableHttpClient extends CommandableHttpClient
   }
 
   @override
-  Future<Dummy> createDummy(String correlationId, Dummy dummy) async {
+  Future<Dummy?> createDummy(String? correlationId, Dummy dummy) async {
     var result =
         await callCommand('create_dummy', correlationId, {'dummy': dummy});
     if (result == null) return null;
@@ -35,7 +35,7 @@ class DummyCommandableHttpClient extends CommandableHttpClient
   }
 
   @override
-  Future<Dummy> updateDummy(String correlationId, Dummy dummy) async {
+  Future<Dummy?> updateDummy(String? correlationId, Dummy dummy) async {
     var result =
         await callCommand('update_dummy', correlationId, {'dummy': dummy});
     if (result == null) return null;
@@ -43,7 +43,7 @@ class DummyCommandableHttpClient extends CommandableHttpClient
   }
 
   @override
-  Future<Dummy> deleteDummy(String correlationId, String dummyId) async {
+  Future<Dummy?> deleteDummy(String? correlationId, String dummyId) async {
     var result =
         await callCommand('delete_dummy', correlationId, {'dummy_id': dummyId});
     if (result == null) return null;

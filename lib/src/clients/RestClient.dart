@@ -3,6 +3,8 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_components/pip_services3_components.dart';
+import 'package:pip_services3_components/src/trace/CompositeTracer.dart';
+import '../../pip_services3_rpc.dart';
 import '../connect/HttpConnectionResolver.dart';
 
 /// Abstract client that calls remove endpoints using HTTP/REST protocol.
@@ -18,13 +20,15 @@ import '../connect/HttpConnectionResolver.dart';
 ///   - [uri]:                   resource URI or connection string with all parameters in it
 /// - [options]:
 ///   - [retries]:               number of retries (default: 3)
-///   - [connecttimeout]:       connection timeout in milliseconds (default: 10 sec)
+///   - [connect_timeout]:       connection timeout in milliseconds (default: 10 sec)
 ///   - [timeout]:               invocation timeout in milliseconds (default: 10 sec)
+///   - [correlation_id]         place for adding correalationId, query - in query string, headers - in headers, both - in query and headers (default: query)
 ///
 /// ### References ###
 ///
 /// - \*:logger:\*:\*:1.0         (optional) [ILogger](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ILogger-class.html) components to pass log messages
 /// - \*:counters:\*:\*:1.0         (optional) [ICounters](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ICounters-class.html) components to pass collected measurements
+/// - \*:tracer:\*:\*:1.0         (optional) [ICounters](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ITracer-class.html) components to pass collected measurements
 /// - \*:discovery:\*:\*:1.0        (optional) [IDiscovery](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html) services to resolve connection
 ///
 /// See [RestService]
@@ -35,7 +39,7 @@ import '../connect/HttpConnectionResolver.dart';
 ///     class MyRestClient extends RestClient implements IMyClient {
 ///        ...
 ///
-///         Future<MyData> getData(String correlationId, String id) async {
+///         Future<MyData> getData(String? correlationId, String id) async {
 ///            var timing = instrument(correlationId, 'myclient.get_data');
 ///           try{
 ///             var result = await call('get', '/get_data' correlationId, { id: id }, null);
@@ -69,7 +73,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     3000,
     'options.request_max_size',
     1024 * 1024,
-    'options.connecttimeout',
+    'options.connect_timeout',
     10000,
     'options.timeout',
     10000,
@@ -80,7 +84,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   ]);
 
   /// The HTTP client.
-  http.Client client;
+  http.Client? client;
 
   /// The connection resolver.
   var connectionResolver = HttpConnectionResolver();
@@ -91,11 +95,14 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// The performance counters.
   var counters = CompositeCounters();
 
+  /// The tracer.
+  var tracer = CompositeTracer(null);
+
   /// The configuration options.
   var options = ConfigParams();
 
   /// The base route.
-  String baseRoute;
+  String? baseRoute;
 
   /// The number of retries.
   int retries = 1;
@@ -110,7 +117,9 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   int timeout = 10000;
 
   /// The remote service uri which is calculated on open.
-  String uri;
+  String? uri;
+
+  String correlationIdLocation = 'query';
 
   /// Configures component by passing configuration parameters.
   ///
@@ -123,10 +132,14 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
 
     retries = config.getAsIntegerWithDefault('options.retries', retries);
     connectTimeout = config.getAsIntegerWithDefault(
-        'options.connecttimeout', connectTimeout);
+        'options.connect_timeout', connectTimeout);
     timeout = config.getAsIntegerWithDefault('options.timeout', timeout);
 
-    baseRoute = config.getAsStringWithDefault('base_route', baseRoute);
+    baseRoute = config.getAsStringWithDefault('base_route', baseRoute ?? '');
+    correlationIdLocation = config.getAsStringWithDefault(
+        'options.correlation_id_place', correlationIdLocation);
+    correlationIdLocation = config.getAsStringWithDefault(
+        'options.correlation_id', correlationIdLocation);
   }
 
   /// Sets references to dependent components.
@@ -136,6 +149,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   void setReferences(IReferences references) {
     logger.setReferences(references);
     counters.setReferences(references);
+    tracer.setReferences(references);
     connectionResolver.setReferences(references);
   }
 
@@ -144,11 +158,16 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   ///
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// - [name]              a method name.
-  /// Returns Timing object to end the time measurement.
-  Timing instrument(String correlationId, String name) {
-    logger.trace(correlationId, 'Calling %s method', [name]);
-    counters.incrementOne(name + '.call_count');
-    return counters.beginTiming(name + '.call_time');
+  /// Returns               [InstrumentTiming] object to end the time measurement.
+  InstrumentTiming instrument(String? correlationId, String name) {
+    logger.trace(correlationId, 'Executing %s method', [name]);
+    counters.incrementOne(name + '.exec_count');
+
+    var counterTiming = counters.beginTiming(name + '.exec_time');
+    var traceTiming = tracer.beginTrace(correlationId, name, '');
+
+    return InstrumentTiming(correlationId, name, 'exec', logger, counters,
+        counterTiming, traceTiming);
   }
 
   /// Adds instrumentation to error handling.
@@ -156,8 +175,8 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// - [name]              a method name.
   /// - [err]               an occured error
-  void instrumentError(String correlationId, String name, err,
-      [bool reerror = false]) {
+  void instrumentError(String? correlationId, String name, err,
+      [bool? reerror = false]) {
     if (err != null) {
       logger.error(correlationId, ApplicationException().wrap(err),
           'Failed to call %s method', [name]);
@@ -181,7 +200,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// Return 			Future that receives null no errors occured.
   /// Throws error
   @override
-  Future open(String correlationId) async {
+  Future open(String? correlationId) async {
     if (isOpen()) {
       return;
     }
@@ -189,7 +208,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     var connection = await connectionResolver.resolve(correlationId);
 
     try {
-      uri = connection.getUri();
+      uri = connection?.getAsString('uri');
       client = http.Client();
       // this.client = restify.createJsonClient({
       //     url: this.uri,
@@ -203,7 +222,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
       //     },
       //     version: '*'
       // });
-
+      logger.debug(correlationId, 'Connected via REST to %s', [uri]);
     } catch (err) {
       client = null;
       throw ConnectionException(correlationId, 'CANNOT_CONNECT',
@@ -219,14 +238,15 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// Return			Future that receives null no errors occured.
   /// Throws error
   @override
-  Future close(String correlationId) async {
+  Future close(String? correlationId) async {
     if (client != null) {
       // Eat exceptions
       try {
-        client.close();
+        client!.close();
         logger.debug(correlationId, 'Closed REST service at %s', [uri]);
       } catch (ex) {
-        logger.warn(correlationId, 'Failed while closing REST service: %s', ex);
+        logger
+            .warn(correlationId, 'Failed while closing REST service: %s', [ex]);
       }
 
       client = null;
@@ -240,13 +260,14 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// - [correlationId]     (optional) a correlation id to be added.
   /// Returns invocation parameters with added correlation id.
   Map<String, String> addCorrelationId(
-      Map<String, String> params, String correlationId) {
+      Map<String, String>? params, String? correlationId) {
+    params = params ?? {};
+
     // Automatically generate short ids for now
     if (correlationId == null) {
       return params;
     }
 
-    params = params ?? {};
     params['correlation_id'] = correlationId;
     return params;
   }
@@ -258,13 +279,15 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// - [filter]        (optional) filter parameters
   /// Returns invocation parameters with added filter parameters.
   Map<String, String> addFilterParams(
-      Map<String, String> params, FilterParams filter) {
+      Map<String, String>? params, FilterParams? filter) {
     params = params ?? {};
 
     if (filter != null) {
       for (var prop in filter.values) {
         //if (filter.hasOwnProperty(prop))
-        params[prop] = filter[prop];
+        if (prop != null) {
+          params[prop] = filter[prop]!;
+        }
       }
     }
 
@@ -277,17 +300,17 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// - [paging]        (optional) paging parameters
   /// Returns invocation parameters with added paging parameters.
   Map<String, String> addPagingParams(
-      Map<String, String> params, PagingParams paging) {
+      Map<String, String>? params, PagingParams? paging) {
     params = params ?? {};
 
     if (paging != null) {
       if (paging.total) {
         params['total'] = paging.total.toString();
       }
-      if (paging.skip > 0) {
+      if (paging.skip != null && paging.skip! > 0) {
         params['skip'] = paging.skip.toString();
       }
-      if (paging.take > 0) {
+      if (paging.take != null && paging.take! > 0) {
         params['take'] = paging.take.toString();
       }
     }
@@ -298,11 +321,11 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   String createRequestRoute(String route) {
     var builder = '';
 
-    if (baseRoute != null && baseRoute.isNotEmpty) {
-      if (baseRoute[0] != '/') {
+    if (baseRoute != null && baseRoute!.isNotEmpty) {
+      if (baseRoute![0] != '/') {
         builder += '/';
       }
-      builder += baseRoute;
+      builder += baseRoute!;
     }
 
     if (route[0] != '/') {
@@ -310,7 +333,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     }
     builder += route;
 
-    return uri + builder;
+    return (uri ?? '') + builder;
   }
 
   /// Calls a remote method via HTTP/REST protocol.
@@ -322,7 +345,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
   /// - [data]              (optional) body object.
   /// Returns          Future that receives result object
   /// Throw error.
-  Future call(String method, String route, String correlationId,
+  Future call(String method, String route, String? correlationId,
       Map<String, String> params,
       [data]) async {
     method = method.toLowerCase();
@@ -334,7 +357,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
       route += uri.toString();
     }
 
-    http.Response response;
+    http.Response? response;
     var retriesCount = retries;
 
     if (data != null) {
@@ -342,21 +365,21 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     } else {
       headers.remove('Content-Type');
     }
-
+    var routeUri = Uri.parse(route);
     for (; retries > 0;) {
       try {
         if (method == 'get') {
-          response = await client.get(route); //headers: headers
+          response = await client!.get(routeUri); //headers: headers
         } else if (method == 'head') {
-          response = await client.head(route); //headers: headers
+          response = await client!.head(routeUri); //headers: headers
         } else if (method == 'post') {
-          response = await client.post(route,
-              headers: headers, body: json.encode(data));
+          response = await client!
+              .post(routeUri, headers: headers, body: json.encode(data));
         } else if (method == 'put') {
-          response = await client.put(route,
-              headers: headers, body: json.encode(data));
+          response = await client!
+              .put(routeUri, headers: headers, body: json.encode(data));
         } else if (method == 'delete') {
-          response = await client.delete(route); //headers: headers
+          response = await client!.delete(routeUri); //headers: headers
         } else {
           var error = UnknownException(correlationId, 'UNSUPPORTED_METHOD',
                   'Method is not supported by REST client')
@@ -370,7 +393,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
           rethrow;
         } else {
           logger.trace(
-              correlationId, "Connection failed to uri '${uri}'. Retrying...");
+              correlationId, "Connection failed to uri '$uri'. Retrying...");
         }
       }
     }
@@ -378,7 +401,7 @@ abstract class RestClient implements IOpenable, IConfigurable, IReferenceable {
     if (response == null) {
       throw ApplicationExceptionFactory.create(ErrorDescriptionFactory.create(
           UnknownException(correlationId,
-              'Unable to get a result from uri ${uri} with method ${method}')));
+              'Unable to get a result from uri $uri with method $method')));
     }
 
     if (response.statusCode == 204) {

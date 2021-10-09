@@ -1,5 +1,7 @@
-import 'package:angel_framework/angel_framework.dart' as angel;
+import 'dart:convert';
+
 import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:shelf/shelf.dart';
 import './RestService.dart';
 import 'CommandableSwaggerDocument.dart';
 
@@ -59,7 +61,7 @@ import 'CommandableSwaggerDocument.dart';
 ///
 
 abstract class CommandableHttpService extends RestService {
-  CommandSet _commandSet;
+  CommandSet? _commandSet;
   bool swaggerAuto = true;
 
   /// Creates a new instance of the service.
@@ -86,41 +88,42 @@ abstract class CommandableHttpService extends RestService {
         dependencyResolver.getOneRequired<ICommandable>('controller');
     _commandSet = controller.getCommandSet();
 
-    var commands = _commandSet.getCommands();
+    var commands = _commandSet?.getCommands() ?? [];
     for (var index = 0; index < commands.length; index++) {
       var command = commands[index];
 
       var route = command.getName();
       route = route[0] != '/' ? '/' + route : route;
 
-      registerRoute('post', route, null,
-          (angel.RequestContext req, angel.ResponseContext res) async {
+      registerRoute('post', route, null, (Request req) async {
         var params = {};
 
-        if (req.contentType != null && req.headers.contentLength > 0) {
-          await req.parseBody();
-          params = req.bodyAsMap ?? {};
+        if (req.headers['Content-Type'] != null && req.headers.isNotEmpty) {
+          var body = await req.readAsString();
+          params = json.decode(body) ?? {};
+          req = req.change(body: body);
         }
 
-        var correlationId = req.params['correlation_id'];
+        var correlationId = getCorrelationId(req);
         var args = Parameters.fromValue(params);
-        var timing =
-            instrument(correlationId, baseRoute + '.' + command.getName());
+        var timing = instrument(
+            correlationId, (baseRoute ?? '') + '.' + command.getName());
         try {
           var result = await command.execute(correlationId, args);
           timing.endTiming();
-          sendResult(req, res, null, result);
+          return await sendResult(req, result);
         } catch (err) {
           instrumentError(
-              correlationId, baseRoute + '.' + command.getName(), err);
-          sendResult(req, res, ApplicationException().wrap(err), null);
+              correlationId, (baseRoute ?? '') + '.' + command.getName(), err);
+          return await sendError(req, ApplicationException().wrap(err));
         }
       });
     }
     if (swaggerAuto) {
-      var swaggerConfig = config.getSection('swagger');
+      var swaggerConfig = config!.getSection('swagger');
 
-      var doc = CommandableSwaggerDocument(baseRoute, swaggerConfig, commands);
+      var doc =
+          CommandableSwaggerDocument(baseRoute ?? '', swaggerConfig, commands);
       registerOpenApiSpec(doc.toString());
     }
   }

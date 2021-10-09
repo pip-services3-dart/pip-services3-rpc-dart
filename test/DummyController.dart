@@ -5,18 +5,18 @@ import './DummyCommandSet.dart';
 import './Dummy.dart';
 
 class DummyController implements IDummyController, ICommandable {
-  DummyCommandSet _commandSet;
+  DummyCommandSet? _commandSet;
   final _entities = <Dummy>[];
 
   @override
   CommandSet getCommandSet() {
     _commandSet ??= DummyCommandSet(this);
-    return _commandSet;
+    return _commandSet!;
   }
 
   @override
   Future<DataPage<Dummy>> getPageByFilter(
-      String correlationId, FilterParams filter, PagingParams paging) async {
+      String? correlationId, FilterParams? filter, PagingParams? paging) async {
     filter ??= FilterParams();
     var key = filter.getAsNullableString('key');
 
@@ -44,7 +44,7 @@ class DummyController implements IDummyController, ICommandable {
   }
 
   @override
-  Future<Dummy> getOneById(String correlationId, String id) async {
+  Future<Dummy?> getOneById(String? correlationId, String id) async {
     for (var i = 0; i < _entities.length; i++) {
       var entity = _entities[i];
       if (id == entity.id) {
@@ -55,16 +55,14 @@ class DummyController implements IDummyController, ICommandable {
   }
 
   @override
-  Future<Dummy> create(String correlationId, Dummy entity) async {
-    if (entity.id == null) {
-      entity.id = IdGenerator.nextLong();
-      _entities.add(entity);
-    }
+  Future<Dummy?> create(String? correlationId, Dummy entity) async {
+    entity.id ??= IdGenerator.nextLong();
+    _entities.add(entity);
     return entity;
   }
 
   @override
-  Future<Dummy> update(String correlationId, Dummy newEntity) async {
+  Future<Dummy?> update(String? correlationId, Dummy newEntity) async {
     for (var index = 0; index < _entities.length; index++) {
       var entity = _entities[index];
       if (entity.id == newEntity.id) {
@@ -76,7 +74,7 @@ class DummyController implements IDummyController, ICommandable {
   }
 
   @override
-  Future<Dummy> deleteById(String correlationId, String id) async {
+  Future<Dummy?> deleteById(String? correlationId, String id) async {
     for (var index = 0; index < _entities.length; index++) {
       var entity = _entities[index];
       if (entity.id == id) {
@@ -85,5 +83,10 @@ class DummyController implements IDummyController, ICommandable {
       }
     }
     return null;
+  }
+
+  @override
+  Future<String?> checkCorrelationId(String? correlationId) async {
+    return correlationId;
   }
 }

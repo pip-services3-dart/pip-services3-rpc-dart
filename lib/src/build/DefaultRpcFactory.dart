@@ -6,13 +6,12 @@ import '../services/StatusRestService.dart';
 
 /// Creates RPC components by their descriptors.
 ///
+/// See [Factory]
 /// See [HttpEndpoint]
 /// See [HeartbeatRestService]
 /// See [StatusRestService]
 
 class DefaultRpcFactory extends Factory {
-  static final descriptor =
-      Descriptor('pip-services', 'factory', 'rpc', 'default', '1.0');
   static final HttpEndpointDescriptor =
       Descriptor('pip-services', 'endpoint', 'http', '*', '1.0');
   static final StatusServiceDescriptor =

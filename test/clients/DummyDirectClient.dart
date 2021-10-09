@@ -14,45 +14,75 @@ class DummyDirectClient extends DirectClient<IDummyController>
   }
 
   @override
-  Future<DataPage<Dummy>> getDummies(
-      String correlationId, FilterParams filter, PagingParams paging) async {
+  Future<DataPage<Dummy>?> getDummies(
+      String? correlationId, FilterParams? filter, PagingParams? paging) async {
     var timing = instrument(correlationId, 'dummy.get_page_by_filter');
-    var result =
-        await controller.getPageByFilter(correlationId, filter, paging);
-    timing.endTiming();
-    return result;
+    try {
+      return await controller.getPageByFilter(correlationId, filter, paging);
+    } catch (ex) {
+      timing.endFailure(ex as Exception);
+    } finally {
+      timing.endTiming();
+    }
   }
 
   @override
-  Future<Dummy> getDummyById(String correlationId, String dummyId) async {
+  Future<Dummy?> getDummyById(String? correlationId, String dummyId) async {
     var timing = instrument(correlationId, 'dummy.get_one_by_id');
-    var result = await controller.getOneById(correlationId, dummyId);
-
-    timing.endTiming();
-    return result;
+    try {
+      return await controller.getOneById(correlationId, dummyId);
+    } catch (ex) {
+      timing.endFailure(ex as Exception);
+    } finally {
+      timing.endTiming();
+    }
   }
 
   @override
-  Future<Dummy> createDummy(String correlationId, Dummy dummy) async {
+  Future<Dummy?> createDummy(String? correlationId, Dummy dummy) async {
     var timing = instrument(correlationId, 'dummy.create');
-    var result = await controller.create(correlationId, dummy);
-    timing.endTiming();
-    return result;
+    try {
+      return await controller.create(correlationId, dummy);
+    } catch (ex) {
+      timing.endFailure(ex as Exception);
+    } finally {
+      timing.endTiming();
+    }
   }
 
   @override
-  Future<Dummy> updateDummy(String correlationId, Dummy dummy) async {
+  Future<Dummy?> updateDummy(String? correlationId, Dummy dummy) async {
     var timing = instrument(correlationId, 'dummy.update');
-    var result = await controller.update(correlationId, dummy);
-    timing.endTiming();
-    return result;
+    try {
+      return await controller.update(correlationId, dummy);
+    } catch (ex) {
+      timing.endFailure(ex as Exception);
+    } finally {
+      timing.endTiming();
+    }
   }
 
   @override
-  Future<Dummy> deleteDummy(String correlationId, String dummyId) async {
+  Future<Dummy?> deleteDummy(String? correlationId, String dummyId) async {
     var timing = instrument(correlationId, 'dummy.delete_by_id');
-    var result = await controller.deleteById(correlationId, dummyId);
-    timing.endTiming();
-    return result;
+    try {
+      return await controller.deleteById(correlationId, dummyId);
+    } catch (ex) {
+      timing.endFailure(ex as Exception);
+    } finally {
+      timing.endTiming();
+    }
+  }
+
+  @override
+  Future<String?> checkCorrelationId(String? correlationId) async {
+    var timing = instrument(correlationId, 'dummy.check_correlation_id');
+    try {
+      return await controller.checkCorrelationId(correlationId);
+    } catch (ex) {
+      timing.endFailure(ex as Exception);
+    } finally {
+      timing.endTiming();
+    }
   }
 }

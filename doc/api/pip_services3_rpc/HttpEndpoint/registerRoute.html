@@ -7,14 +7,19 @@
   <meta name="description" content="API docs for the registerRoute method from the HttpEndpoint class, for the Dart programming language.">
   <title>registerRoute method - HttpEndpoint class - pip_services3_rpc library - Dart API</title>
 
-  
-  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="../../static-assets/github.css">
-  <link rel="stylesheet" href="../../static-assets/styles.css">
-  <link rel="icon" href="../../static-assets/favicon.png">
 
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../../static-assets/styles.css?v1">
+  <link rel="icon" href="../../static-assets/favicon.png?v1">
+
+  
 </head>
+
 
 <body data-base-href="../../"
       data-using-base-href="false">
@@ -37,87 +42,100 @@
 
 <main>
 
-  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
-    <header id="header-search-sidebar" class="hidden-l">
-      <form class="search-sidebar" role="search">
-        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
-      </form>
-    </header>
-    
-    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
-      <li><a href="../../index.html">pip_services3_rpc</a></li>
-      <li><a href="../../pip_services3_rpc/pip_services3_rpc-library.html">pip_services3_rpc</a></li>
-      <li><a href="../../pip_services3_rpc/HttpEndpoint-class.html">HttpEndpoint</a></li>
-      <li class="self-crumb">registerRoute method</li>
-    </ol>
-    
-    <h5>HttpEndpoint class</h5>
-    <ol>
-    
-        <li class="section-title"><a href="../../pip_services3_rpc/HttpEndpoint-class.html#constructors">Constructors</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/HttpEndpoint.html">HttpEndpoint</a></li>
-    
-        <li class="section-title inherited">
-            <a href="../../pip_services3_rpc/HttpEndpoint-class.html#instance-properties">Properties</a>
-        </li>
-        <li class="inherited"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/hashCode.html">hashCode</a></li>
-        <li class="inherited"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/runtimeType.html">runtimeType</a></li>
-    
-        <li class="section-title"><a href="../../pip_services3_rpc/HttpEndpoint-class.html#instance-methods">Methods</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/close.html">close</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/configure.html">configure</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/isOpen.html">isOpen</a></li>
-        <li class="inherited"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/open.html">open</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/register.html">register</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/registerInterceptor.html">registerInterceptor</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/registerRoute.html">registerRoute</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/registerRouteWithAuth.html">registerRouteWithAuth</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/setReferences.html">setReferences</a></li>
-        <li class="inherited"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/toString.html">toString</a></li>
-        <li><a href="../../pip_services3_rpc/HttpEndpoint/unregister.html">unregister</a></li>
-    
-        <li class="section-title inherited"><a href="../../pip_services3_rpc/HttpEndpoint-class.html#operators">Operators</a></li>
-        <li class="inherited"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/operator_equals.html">operator ==</a></li>
-    
-    
-    
-    
-    
-    </ol>
-  </div><!--/.sidebar-offcanvas-->
 
-  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-method">registerRoute</span> method </h1></div>
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-method">registerRoute</span> method 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+</h1></div>
 
     <section class="multi-line-signature">
-      <span class="returntype">void</span>
-            <span class="name ">registerRoute</span>
-(<wbr><ol class="parameter-list"><li><span class="parameter" id="registerRoute-param-method"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span></li>
-<li><span class="parameter" id="registerRoute-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span>, </span></li>
-<li><span class="parameter" id="registerRoute-param-schema"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.12/pip_services3_commons/Schema-class.html">Schema</a></span> <span class="parameter-name">schema</span>, </span></li>
-<li><span class="parameter" id="registerRoute-param-action"><span class="type-annotation">dynamic</span> <span class="parameter-name">action</span>(<ol class="parameter-list"><li><span class="parameter" id="param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/angel_framework/2.1.1/angel_framework/RequestContext-class.html">RequestContext</a></span> <span class="parameter-name">req</span>, </span></li>
-<li><span class="parameter" id="param-res"><span class="type-annotation"><a href="https://pub.dev/documentation/angel_framework/2.1.1/angel_framework/ResponseContext-class.html">ResponseContext</a></span> <span class="parameter-name">res</span></span></li>
+      
+
+<span class="returntype">void</span>
+<span class="name ">registerRoute</span>(<wbr><ol class="parameter-list"><li><span class="parameter" id="registerRoute-param-method"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span></li>
+<li><span class="parameter" id="registerRoute-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span>, </span></li>
+<li><span class="parameter" id="registerRoute-param-schema"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/Schema-class.html">Schema</a>?</span> <span class="parameter-name">schema</span>, </span></li>
+<li><span class="parameter" id="registerRoute-param-action"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Response-class.html">Response</a></span>&gt;</span></span> <span class="parameter-name">action</span>(<ol class="parameter-list"><li><span class="parameter" id="param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Request-class.html">Request</a></span> <span class="parameter-name">req</span></span></li>
 </ol>
 )</span></li>
 </ol>)
+
       
+
     </section>
-    <section class="desc markdown">
-      <p>Registers an action in this objects REST server (service) by the given method and route.</p>
+    
+<section class="desc markdown">
+  <p>Registers an action in this objects REST server (service) by the given method and route.</p>
 <ul>
 <li><code>method</code>        the HTTP method of the route.</li>
 <li><code>route</code>         the route to register in this object's REST server (service).</li>
 <li><code>schema</code>        the schema to use for parameter validation.</li>
 <li><code>action</code>        the action to perform at the given route.</li>
 </ul>
-    </section>
+</section>
+
+
     
-    
+
 
   </div> <!-- /.main-content -->
 
-  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../../index.html">pip_services3_rpc</a></li>
+  <li><a href="../../pip_services3_rpc/pip_services3_rpc-library.html">pip_services3_rpc</a></li>
+  <li><a href="../../pip_services3_rpc/HttpEndpoint-class.html">HttpEndpoint</a></li>
+  <li class="self-crumb">registerRoute method</li>
+</ol>
+
+
+    <h5>HttpEndpoint class</h5>
+    <ol>
+
+    <li class="section-title"><a href="../../pip_services3_rpc/HttpEndpoint-class.html#constructors">Constructors</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/HttpEndpoint.html">HttpEndpoint</a></li>
+
+
+    <li class="section-title inherited">
+      <a href="../../pip_services3_rpc/HttpEndpoint-class.html#instance-properties">Properties</a>
+    </li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/runtimeType.html">runtimeType</a></li>
+
+    <li class="section-title"><a href="../../pip_services3_rpc/HttpEndpoint-class.html#instance-methods">Methods</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/close.html">close</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/configure.html">configure</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/getCorrelationId.html">getCorrelationId</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/getServer.html">getServer</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/isOpen.html">isOpen</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/open.html">open</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/register.html">register</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/registerInterceptor.html">registerInterceptor</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/registerRoute.html">registerRoute</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/registerRouteWithAuth.html">registerRouteWithAuth</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/setReferences.html">setReferences</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/toString.html">toString</a></li>
+    <li><a href="../../pip_services3_rpc/HttpEndpoint/unregister.html">unregister</a></li>
+
+    <li class="section-title inherited"><a href="../../pip_services3_rpc/HttpEndpoint-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
+  </div><!--/.sidebar-offcanvas-->
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
   </div><!--/.sidebar-offcanvas-->
 
 </main>
@@ -125,18 +143,20 @@
 <footer>
   <span class="no-break">
     pip_services3_rpc
-      1.0.8
+      1.1.0
   </span>
 
+  
 </footer>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="../../static-assets/typeahead.bundle.min.js"></script>
-<script src="../../static-assets/highlight.pack.js"></script>
-<script src="../../static-assets/URI.js"></script>
-<script src="../../static-assets/script.js"></script>
+
+
+<script src="../../static-assets/highlight.pack.js?v1"></script>
+<script src="../../static-assets/script.js?v1"></script>
+
 
 
 </body>
 
 </html>
+

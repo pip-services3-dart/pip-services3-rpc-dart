@@ -15,16 +15,16 @@ void main() {
     'localhost',
     'connection.port',
     3000,
-    'openapi_content', 'swagger yaml or json content', // for test only
+    'swagger.content', 'swagger yaml or json content', // for test only
     'swagger.enable', 'true'
   ]);
 
   group('DummyRestService', () {
-    Dummy _dummy1;
-    Dummy _dummy2;
-    DummyRestService service;
-    http.Client rest;
-    String url;
+    late Dummy _dummy1;
+    late Dummy _dummy2;
+    late DummyRestService service;
+    late http.Client rest;
+    late String url;
 
     setUpAll(() async {
       var ctrl = DummyController();
@@ -60,7 +60,7 @@ void main() {
       var dummy1;
 
       // Create one dummy
-      var resp = await rest.post(url + '/dummies',
+      var resp = await rest.post(Uri.parse(url + '/dummies'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(_dummy1.toJson()));
       var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
@@ -70,7 +70,7 @@ void main() {
       dummy1 = dummy;
 
       // Create another dummy
-      resp = await rest.post(url + '/dummies',
+      resp = await rest.post(Uri.parse(url + '/dummies'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(_dummy2.toJson()));
       dummy = Dummy.fromJson(json.decode(resp.body.toString()));
@@ -79,7 +79,7 @@ void main() {
       expect(dummy.key, _dummy2.key);
 
       // Get all dummies
-      resp = await rest.get(url + '/dummies');
+      resp = await rest.get(Uri.parse(url + '/dummies'));
       var dummies =
           DataPage.fromJson(json.decode(resp.body.toString()), (item) {
         return item;
@@ -90,7 +90,7 @@ void main() {
       // Update the dummy
       dummy1.content = 'Updated Content 1';
 
-      resp = await rest.put(url + '/dummies',
+      resp = await rest.put(Uri.parse(url + '/dummies'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode(dummy1.toJson()));
       dummy = Dummy.fromJson(json.decode(resp.body.toString()));
@@ -100,20 +100,32 @@ void main() {
 
       dummy1 = dummy;
 
-      // Devare dummy
-      await rest.delete(url + '/dummies/' + dummy1.id);
+      // Delete dummy
+      await rest.delete(Uri.parse(url + '/dummies/' + dummy1.id));
 
-      // Try to get devare dummy
-      resp = await rest.get(url + '/dummies/' + dummy1.id);
+      // Try to get delete dummy
+      resp = await rest.get(Uri.parse(url + '/dummies/' + dummy1.id));
       expect(resp.body, isEmpty);
 
       // check interceptors
       expect(service.getNumberOfCalls(), 6);
     });
 
+    test('Check correlationId', () async {
+      // check transmit correllationId over params
+      var resp = await rest.get(Uri.parse(
+          url + '/dummies/check/correlation_id?correlation_id=test_cor_id'));
+      expect(json.decode(resp.body)['correlation_id'], 'test_cor_id');
+
+      // check transmit correllationId over header
+      resp = await rest.get(Uri.parse(url + '/dummies/check/correlation_id'),
+          headers: {'correlation_id': 'test_cor_id_header'});
+      expect(json.decode(resp.body)['correlation_id'], 'test_cor_id_header');
+    });
+
     test('Get OpenApi Spec From String', () async {
-      var resp = await rest.get(url + '/swagger');
-      var openApiContent = restConfig.getAsString('openapi_content');
+      var resp = await rest.get(Uri.parse(url + '/swagger'));
+      var openApiContent = restConfig.getAsString('swagger.content');
       expect(openApiContent, resp.body);
     });
 
@@ -124,14 +136,15 @@ void main() {
       // create temp file
       var file = File(filename);
       await file.writeAsString(openApiContent);
+
       // recreate service with new configuration
-      await service.close('');
+      await service.close(null);
 
       var serviceConfig = ConfigParams.fromTuples([
         'connection.protocol', 'http',
         'connection.host', 'localhost',
         'connection.port', 3000,
-        'openapi_file', filename, // for test only
+        'swagger.path', filename, // for test only
         'swagger.enable', 'true'
       ]);
 
@@ -149,8 +162,9 @@ void main() {
       ]);
       service.setReferences(references);
       await service.open(null);
-      var resp = await rest.get(url + '/swagger');
+      var resp = await rest.get(Uri.parse(url + '/swagger'));
       expect(openApiContent, resp.body);
+
       // delete temp file
       await file.delete();
     });

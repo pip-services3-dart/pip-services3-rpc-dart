@@ -1,10 +1,12 @@
 import 'dart:async';
 import 'dart:io';
 
-import 'package:angel_framework/angel_framework.dart' as angel;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_components/pip_services3_components.dart';
+import 'package:pip_services3_components/src/trace/CompositeTracer.dart';
+import 'package:shelf/shelf.dart';
 
+import '../../pip_services3_rpc.dart';
 import './HttpEndpoint.dart';
 import './IRegisterable.dart';
 import './HttpResponseSender.dart';
@@ -59,7 +61,7 @@ import './HttpResponseSender.dart';
 ///                var correlationId = req.param('correlation_id');
 ///                var id = req.param('id');
 ///                var result = await _controller.getMyData(correlationId, id);
-///                sendResult(req, res, null, result);
+///                sendResult(req,  null, result);
 ///            });
 ///            ...
 ///        }
@@ -89,16 +91,16 @@ abstract class RestService
   static final _defaultConfig = ConfigParams.fromTuples(
       ['base_route', null, 'dependencies.endpoint', '*:endpoint:http:*:1.0']);
 
-  ConfigParams config;
-  IReferences _references;
+  ConfigParams? config;
+  IReferences? _references;
   bool _localEndpoint = false;
   bool _opened = false;
 
   /// The base route.
-  String baseRoute;
+  String? baseRoute;
 
   /// The HTTP endpoint that exposes this service.
-  HttpEndpoint endpoint;
+  HttpEndpoint? endpoint;
 
   /// The dependency resolver.
   var dependencyResolver = DependencyResolver(RestService._defaultConfig);
@@ -108,6 +110,9 @@ abstract class RestService
 
   /// The performance counters.
   var counters = CompositeCounters();
+
+  // The tracer.
+  var tracer = CompositeTracer();
 
   bool swaggerEnable = false;
   String swaggerRoute = 'swagger';
@@ -120,7 +125,7 @@ abstract class RestService
     config = config.setDefaults(RestService._defaultConfig);
     this.config = config;
     dependencyResolver.configure(config);
-    baseRoute = config.getAsStringWithDefault('base_route', baseRoute);
+    baseRoute = config.getAsStringWithDefault('base_route', baseRoute ?? '');
     swaggerEnable =
         config.getAsBooleanWithDefault('swagger.enable', swaggerEnable);
     swaggerRoute = config.getAsStringWithDefault('swagger.route', swaggerRoute);
@@ -147,7 +152,7 @@ abstract class RestService
       _localEndpoint = false;
     }
     // Add registration callback to the endpoint
-    endpoint.register(this);
+    endpoint!.register(this);
   }
 
   /// Unsets (clears) previously set references to dependent components.
@@ -155,7 +160,7 @@ abstract class RestService
   void unsetReferences() {
     // Remove registration callback from endpoint
     if (endpoint != null) {
-      endpoint.unregister(this);
+      endpoint!.unregister(this);
       endpoint = null;
     }
   }
@@ -164,11 +169,11 @@ abstract class RestService
     var endpoint = HttpEndpoint();
 
     if (config != null) {
-      endpoint.configure(config);
+      endpoint.configure(config!);
     }
 
     if (_references != null) {
-      endpoint.setReferences(_references);
+      endpoint.setReferences(_references!);
     }
 
     return endpoint;
@@ -179,11 +184,16 @@ abstract class RestService
   ///
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// - [name]              a method name.
-  /// Returns               [Timing](https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/Timing-class.html) object to end the time measurement.
-  Timing instrument(String correlationId, String name) {
+  /// Returns               [InstrumentTiming] object to end the time measurement.
+  InstrumentTiming instrument(String? correlationId, String name) {
     logger.trace(correlationId, 'Executing %s method', [name]);
     counters.incrementOne(name + '.exec_count');
-    return counters.beginTiming(name + '.exec_time');
+
+    var counterTiming = counters.beginTiming(name + '.exec_time');
+    var traceTiming = tracer.beginTrace(correlationId, name, '');
+
+    return InstrumentTiming(correlationId, name, 'exec', logger, counters,
+        counterTiming, traceTiming);
   }
 
   /// Adds instrumentation to error handling.
@@ -191,8 +201,8 @@ abstract class RestService
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// - [name]              a method name.
   /// - [err]               an occured error
-  void instrumentError(String correlationId, String name, err,
-      [bool reerror = false]) {
+  void instrumentError(String? correlationId, String name, err,
+      [bool? reerror = false]) {
     if (err != null) {
       logger.error(correlationId, ApplicationException().wrap(err),
           'Failed to execute %s method', [name]);
@@ -217,19 +227,19 @@ abstract class RestService
   /// Return 			Future that receives null no errors occured.
   /// Throws error
   @override
-  Future open(String correlationId) async {
+  Future open(String? correlationId) async {
     if (_opened) {
       return null;
     }
 
     if (endpoint == null) {
       endpoint = _createEndpoint();
-      endpoint.register(this);
+      endpoint!.register(this);
       _localEndpoint = true;
     }
 
     if (_localEndpoint) {
-      await endpoint.open(correlationId);
+      await endpoint!.open(correlationId);
     }
     _opened = true;
     return null;
@@ -242,7 +252,7 @@ abstract class RestService
   /// throws error
   ///
   @override
-  Future close(String correlationId) async {
+  Future close(String? correlationId) async {
     if (!_opened) {
       return null;
     }
@@ -253,7 +263,7 @@ abstract class RestService
     }
 
     if (_localEndpoint) {
-      await endpoint.close(correlationId);
+      await endpoint!.close(correlationId);
     }
     _opened = false;
     return null;
@@ -268,10 +278,8 @@ abstract class RestService
   /// If error occur it sends ErrorDescription with approproate status code.
   ///
   /// - [req]       a HTTP request object.
-  /// - [res]       a HTTP response object.
-  void sendResult(
-      angel.RequestContext req, angel.ResponseContext res, err, result) {
-    HttpResponseSender.sendResult(req, res, err, result);
+  FutureOr<Response> sendResult(Request req, result) async {
+    return await HttpResponseSender.sendResult(req, result);
   }
 
   /// Creates function that sends newly created object as JSON.
@@ -283,10 +291,8 @@ abstract class RestService
   /// If error occur it sends ErrorDescription with approproate status code.
   ///
   /// - [req]       a HTTP request object.
-  /// - [res]       a HTTP response object.
-  void sendCreatedResult(
-      angel.RequestContext req, angel.ResponseContext res, err, result) {
-    HttpResponseSender.sendCreatedResult(req, res, err, result);
+  FutureOr<Response> sendCreatedResult(Request req, result) async {
+    return await HttpResponseSender.sendCreatedResult(req, result);
   }
 
   /// Creates a function that sends deleted object as JSON.
@@ -298,10 +304,9 @@ abstract class RestService
   /// If error occur it sends ErrorDescription with approproate status code.
   ///
   /// - [req]       a HTTP request object.
-  /// - [res]       a HTTP response object.
-  void sendDeletedResult(
-      angel.RequestContext req, angel.ResponseContext res, err, result) {
-    HttpResponseSender.sendDeletedResult(req, res, err, result);
+  /// - [result]       a result object.
+  FutureOr<Response> sendDeletedResult(Request req, result) async {
+    return await HttpResponseSender.sendDeletedResult(req, result);
   }
 
   /// Sends error serialized as ErrorDescription object
@@ -311,13 +316,13 @@ abstract class RestService
   /// - [req]       a HTTP request object.
   /// - [res]       a HTTP response object.
   /// - [error]     an error object to be sent.
-  void sendError(angel.RequestContext req, angel.ResponseContext res, error) {
-    HttpResponseSender.sendError(req, res, error);
+  FutureOr<Response> sendError(Request req, error) async {
+    return await HttpResponseSender.sendError(req, error);
   }
 
-  String _appendBaseRoute(String route) {
+  String _appendBaseRoute(String? route) {
     route ??= '/';
-    if (baseRoute != null && baseRoute.isNotEmpty) {
+    if (baseRoute != null && baseRoute!.isNotEmpty) {
       var baseRoute = this.baseRoute;
       if (route.isEmpty) {
         route = '/';
@@ -325,7 +330,7 @@ abstract class RestService
       if (route[0] != '/') {
         route = '/' + route;
       }
-      if (baseRoute[0] != '/') {
+      if (baseRoute![0] != '/') {
         baseRoute = '/' + baseRoute;
       }
       route = baseRoute + route;
@@ -339,11 +344,11 @@ abstract class RestService
   /// - [route]         a command route. Base route will be added to this route
   /// - [schema]        a validation schema to validate received parameters.
   /// - [action]        an action function that is called when operation is invoked.
-  void registerRoute(String method, String route, Schema schema,
-      action(angel.RequestContext req, angel.ResponseContext res)) {
+  void registerRoute(String method, String route, Schema? schema,
+      FutureOr<Response> Function(Request req) action) {
     if (endpoint == null) return;
     route = _appendBaseRoute(route);
-    endpoint.registerRoute(method, route, schema, action);
+    endpoint!.registerRoute(method, route, schema, action);
   }
 
   /// Registers a route with authorization in HTTP endpoint.
@@ -357,24 +362,23 @@ abstract class RestService
       String method,
       String route,
       Schema schema,
-      authorize(angel.RequestContext req, angel.ResponseContext res, next()),
-      action(angel.RequestContext req, angel.ResponseContext res)) {
+      Future Function(Request req, Function next) authorize,
+      Future Function(Request req) action) {
     if (endpoint == null) return;
 
     route = _appendBaseRoute(route);
 
-    endpoint.registerRouteWithAuth(method, route, schema, authorize, action);
+    endpoint!.registerRouteWithAuth(method, route, schema, authorize, action);
   }
 
   /// Registers a middleware for a given route in HTTP endpoint.
   ///
   /// - [route]         a command route. Base route will be added to this route
   /// - [action]        an action function that is called when middleware is invoked.
-  void registerInterceptor(String route,
-      action(angel.RequestContext req, angel.ResponseContext res)) {
+  void registerInterceptor(String route, Function(Request req) action) {
     if (endpoint == null) return;
     route = _appendBaseRoute(route);
-    endpoint.registerInterceptor(route, action);
+    endpoint!.registerInterceptor(route, action);
   }
 
   /// Registers all service routes in HTTP endpoint.
@@ -392,16 +396,23 @@ abstract class RestService
 
   void registerOpenApiSpec(String content) {
     if (swaggerEnable) {
-      registerRoute('get', swaggerRoute, null,
-          (angel.RequestContext req, angel.ResponseContext res) {
-        res.headers.addAll({
+      registerRoute('get', swaggerRoute, null, (Request req) {
+        return Response(200, body: content, headers: {
           'Content-Length': content.length.toString(),
           'Content-Type': 'application/x-yaml'
         });
-        res.write(content);
-        res.statusCode = 200;
-        res.close();
       });
     }
+  }
+
+  /// Returns correlationId from request
+  /// - [req] -  http request
+  /// Returns Returns correlationId from request
+  String? getCorrelationId(Request req) {
+    var correlationId = req.url.queryParameters['correlation_id'];
+    if (correlationId == null || correlationId == '') {
+      correlationId = req.headers['correlation_id'];
+    }
+    return correlationId;
   }
 }

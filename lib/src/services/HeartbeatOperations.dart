@@ -1,17 +1,19 @@
-import 'package:angel_framework/angel_framework.dart' as angel;
+import 'dart:async';
+
+import 'package:shelf/shelf.dart';
 import './RestOperations.dart';
 
 class HeartbeatOperations extends RestOperations {
   HeartbeatOperations() : super();
 
-  Function(angel.RequestContext req, angel.ResponseContext res)
-      getHeartbeatOperation() {
-    return (angel.RequestContext req, angel.ResponseContext res) {
-      heartbeat(req, res);
+  Function(Request req) getHeartbeatOperation() {
+    return (Request req) async {
+      return await heartbeat(req);
     };
   }
 
-  void heartbeat(angel.RequestContext req, angel.ResponseContext res) {
-    sendResult(req, res, null, DateTime.now().toUtc().toIso8601String());
+  FutureOr<Response> heartbeat(Request req) async {
+    return await sendResult(
+        req, null, DateTime.now().toUtc().toIso8601String());
   }
 }

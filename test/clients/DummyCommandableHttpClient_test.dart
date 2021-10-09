@@ -17,10 +17,10 @@ var restConfig = ConfigParams.fromTuples([
 
 void main() {
   group('DummyCommandableHttpClient', () {
-    DummyCommandableHttpService service;
-    DummyCommandableHttpClient client;
+    late DummyCommandableHttpService service;
+    late DummyCommandableHttpClient client;
 
-    DummyClientFixture fixture;
+    late DummyClientFixture fixture;
 
     setUpAll(() async {
       var ctrl = DummyController();

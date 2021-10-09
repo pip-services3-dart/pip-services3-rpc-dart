@@ -1,12 +1,16 @@
-import 'package:angel_framework/angel_framework.dart' as angel;
+import 'dart:async';
+import 'dart:convert';
+
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_rpc/pip_services3_rpc.dart';
+import 'package:shelf/shelf.dart';
+import 'package:shelf_router/shelf_router.dart';
 
 import '../Dummy.dart';
 import '../IDummyController.dart';
 
 class DummyRestOperations extends RestOperations {
-  IDummyController controller;
+  late IDummyController controller;
 
   DummyRestOperations() : super.withName('dummy') {
     dependencyResolver.put('controller',
@@ -20,58 +24,60 @@ class DummyRestOperations extends RestOperations {
         dependencyResolver.getOneRequired<IDummyController>('controller');
   }
 
-  void getPageByFilter(
-      angel.RequestContext req, angel.ResponseContext res) async {
-    await safeInvoke(req, res, componentName + '._getPageByFilter', () async {
+  FutureOr<Response> getPageByFilter(Request req) async {
+    return await safeInvoke(req, componentName! + '.getPageByFilter', () async {
       var page = await controller.getPageByFilter(
-          req.queryParameters['correlation_id'],
-          FilterParams(req.queryParameters),
-          PagingParams(req.queryParameters));
-      sendResult(req, res, null, page);
+          req.url.queryParameters['correlation_id'],
+          FilterParams(req.url.queryParameters),
+          PagingParams(req.url.queryParameters));
+      return await sendResult(req, null, page);
     }, (ex) async {
-      sendError(req, res, ex);
+      return await sendError(req, ex);
     });
   }
 
-  void getOneById(angel.RequestContext req, angel.ResponseContext res) async {
-    await safeInvoke(req, res, componentName + '._getOneById', () async {
+  FutureOr<Response> getOneById(Request req) async {
+    return await safeInvoke(req, componentName! + '.getOneById', () async {
       var dummy = await controller.getOneById(
-          req.queryParameters['correlation_id'], req.params['dummy_id']);
-      sendResult(req, res, null, dummy);
+          req.url.queryParameters['correlation_id'], req.params['dummy_id']!);
+      return await sendResult(req, null, dummy);
     }, (ex) async {
-      sendError(req, res, ex);
+      return await sendError(req, ex);
     });
   }
 
-  void create(angel.RequestContext req, angel.ResponseContext res) async {
-    await safeInvoke(req, res, componentName + '._create', () async {
-      await req.parseBody();
-      var item = Dummy.fromJson(req.bodyAsMap);
-      var dummy = await controller.create(req.params['correlation_id'], item);
-      sendCreatedResult(req, res, null, dummy);
+  FutureOr<Response> create(Request req) async {
+    return await safeInvoke(req, componentName! + '.create', () async {
+      var it = await req.readAsString();
+      var item = Dummy.fromJson(json.decode(it));
+      var dummy = await controller.create(
+          req.url.queryParameters['correlation_id'], item);
+      return await sendCreatedResult(req, null, dummy);
     }, (ex) async {
-      sendError(req, res, ex);
+      return await sendError(req, ex);
     });
   }
 
-  void update(angel.RequestContext req, angel.ResponseContext res) async {
-    await safeInvoke(req, res, componentName + '._update', () async {
-      await req.parseBody();
-      var item = Dummy.fromJson(req.bodyAsMap);
-      var dummy = await controller.update(req.params['correlation_id'], item);
-      sendResult(req, res, null, dummy);
+  FutureOr<Response> update(Request req) async {
+    return await safeInvoke(req, componentName! + '.update', () async {
+      var item = Dummy.fromJson(json.decode(await req.readAsString()));
+      var dummy = await controller.update(
+          req.url.queryParameters['correlation_id'],
+          item); //req.uparams['correlation_id'], item);
+      return await sendResult(req, null, dummy);
     }, (ex) async {
-      sendError(req, res, ex);
+      return await sendError(req, ex);
     });
   }
 
-  void deleteById(angel.RequestContext req, angel.ResponseContext res) async {
-    await safeInvoke(req, res, componentName + '._deleteById', () async {
+  FutureOr<Response> deleteById(Request req) async {
+    return await safeInvoke(req, componentName! + '.deleteById', () async {
       var dummy = await controller.deleteById(
-          req.queryParameters['correlation_id'], req.params['dummy_id']);
-      sendCreatedResult(req, res, null, dummy);
+          req.url.queryParameters['correlation_id'],
+          req.params['dummy_id']!); //req.params['dummy_id']);
+      return await sendCreatedResult(req, null, dummy);
     }, (ex) async {
-      sendError(req, res, ex);
+      return await sendError(req, ex);
     });
   }
 }

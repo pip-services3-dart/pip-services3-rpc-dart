@@ -1,6 +1,7 @@
+import 'dart:async';
 import 'dart:convert';
-import 'package:angel_framework/angel_framework.dart' as angel;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:shelf/shelf.dart';
 
 /// Helper class that handles HTTP-based responses.
 
@@ -10,14 +11,12 @@ class HttpResponseSender {
   /// If status code is not defined, it uses 500 status code.
   ///
   /// - [req]       a HTTP request object.
-  /// - [res]       a HTTP response object.
   /// - [error]     an error object to be sent.
-  static void sendError(
-      angel.RequestContext req, angel.ResponseContext res, error) {
+  static FutureOr<Response> sendError(Request req, error) {
     error = error ?? <String, String>{};
     error = ApplicationException.unwrapError(error);
-    res.statusCode = error.status;
-    res.write(json.encode(error));
+
+    return Response(error.status, body: json.encode(error));
   }
 
   /// Creates a function that sends result as JSON object.
@@ -29,19 +28,12 @@ class HttpResponseSender {
   /// If error occur it sends ErrorDescription with approproate status code.
   ///
   /// - [req]       a HTTP request object.
-  /// - [res]       a HTTP response object.
-  static void sendResult(
-      angel.RequestContext req, angel.ResponseContext res, err, result) {
-    if (err != null) {
-      HttpResponseSender.sendError(req, res, err);
-      return;
-    }
+  /// - [result]       a result object.
+  static FutureOr<Response> sendResult(Request req, result) {
     if (result == null) {
-      res.statusCode = 204;
-      res.close();
+      return Response(204);
     } else {
-      res.write(json.encode(result));
-      res.close();
+      return Response(200, body: json.encode(result));
     }
   }
 
@@ -49,15 +41,12 @@ class HttpResponseSender {
   /// If error occur it sends ErrorDescription with approproate status code.
   ///
   /// - [req]       a HTTP request object.
-  /// - [res]       a HTTP response object.
-  static void sendEmptyResult(
-      angel.RequestContext req, angel.ResponseContext res, err) {
+  /// - [err]     an error object to be sent.
+  static FutureOr<Response> sendEmptyResult(Request req, err) {
     if (err != null) {
-      HttpResponseSender.sendError(req, res, err);
-      return;
+      return HttpResponseSender.sendError(req, err);
     }
-    res.statusCode = 204;
-    res.close();
+    return Response(204);
   }
 
   /// Creates a function that sends newly created object as JSON.
@@ -69,18 +58,12 @@ class HttpResponseSender {
   /// If error occur it sends ErrorDescription with approproate status code.
   ///
   /// - [req]       a HTTP request object.
-  /// - [res]       a HTTP response object.
-  static void sendCreatedResult(
-      angel.RequestContext req, angel.ResponseContext res, err, result) {
-    if (err != null) {
-      HttpResponseSender.sendError(req, res, err);
-      return;
-    }
+  /// - [result]       a result object.
+  static FutureOr<Response> sendCreatedResult(Request req, result) {
     if (result == null) {
-      res.statusCode = 204;
+      return Response(204);
     } else {
-      res.statusCode = 201;
-      res.write(json.encode(result));
+      return Response(201, body: json.encode(result));
     }
   }
 
@@ -93,18 +76,12 @@ class HttpResponseSender {
   /// If error occur it sends ErrorDescription with approproate status code.
   ///
   /// - [req]       a HTTP request object.
-  /// - [res]       a HTTP response object.
-  static void sendDeletedResult(
-      angel.RequestContext req, angel.ResponseContext res, err, result) {
-    if (err != null) {
-      HttpResponseSender.sendError(req, res, err);
-      return;
-    }
+  /// - [result]       a result object.
+  static FutureOr<Response> sendDeletedResult(Request req, result) {
     if (result == null) {
-      res.statusCode = 204;
+      return Response(204);
     } else {
-      res.statusCode = 200;
-      res.write(json.encode(result));
+      return Response(200, body: json.encode(result));
     }
   }
 }

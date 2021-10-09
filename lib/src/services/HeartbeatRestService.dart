@@ -1,5 +1,7 @@
-import 'package:angel_framework/angel_framework.dart' as angel;
+import 'dart:async';
+
 import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:shelf/shelf.dart';
 import './RestService.dart';
 
 /// Service returns heartbeat via HTTP/REST protocol.
@@ -66,9 +68,8 @@ class HeartbeatRestService extends RestService {
   /// Registers all service routes in HTTP endpoint.
   @override
   void register() {
-    registerRoute('get', _route, null,
-        (angel.RequestContext req, angel.ResponseContext res) {
-      _heartbeat(req, res);
+    registerRoute('get', _route, null, (Request req) async {
+      return await _heartbeat(req);
     });
   }
 
@@ -76,7 +77,7 @@ class HeartbeatRestService extends RestService {
   ///
   /// - [req]   an HTTP RequestContext
   /// - [res]   an HTTP ResponseContext
-  void _heartbeat(angel.RequestContext req, angel.ResponseContext res) {
-    sendResult(req, res, null, DateTime.now().toUtc().toIso8601String());
+  FutureOr<Response> _heartbeat(Request req) async {
+    return await sendResult(req, DateTime.now().toUtc().toIso8601String());
   }
 }

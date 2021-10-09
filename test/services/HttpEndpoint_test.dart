@@ -20,8 +20,8 @@ void main() {
     HttpEndpoint endpoint;
     DummyRestService service;
 
-    http.Client rest;
-    String url;
+    late http.Client rest;
+    late String url;
 
     var ctrl = DummyController();
 
@@ -56,7 +56,7 @@ void main() {
     });
 
     test('CRUD Operations', () async {
-      var resp = await rest.get(url + '/api/v1/dummies');
+      var resp = await rest.get(Uri.parse(url + '/api/v1/dummies'));
       var dummies =
           DataPage.fromJson(json.decode(resp.body.toString()), (itemsJson) {
         return Map.from(itemsJson).cast<String, String>();

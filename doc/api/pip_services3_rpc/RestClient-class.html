@@ -7,14 +7,19 @@
   <meta name="description" content="API docs for the RestClient class from the pip_services3_rpc library, for the Dart programming language.">
   <title>RestClient class - pip_services3_rpc library - Dart API</title>
 
-  
-  <link href="https://fonts.googleapis.com/css?family=Source+Code+Pro:500,400i,400,300|Source+Sans+Pro:400,300,700" rel="stylesheet">
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <link rel="stylesheet" href="../static-assets/github.css">
-  <link rel="stylesheet" href="../static-assets/styles.css">
-  <link rel="icon" href="../static-assets/favicon.png">
 
+  
+  <link rel="preconnect" href="https://fonts.gstatic.com">
+  <link href="https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,300;0,400;0,500;0,700;1,400&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  
+  <link rel="stylesheet" href="../static-assets/github.css?v1">
+  <link rel="stylesheet" href="../static-assets/styles.css?v1">
+  <link rel="icon" href="../static-assets/favicon.png?v1">
+
+  
 </head>
+
 
 <body data-base-href="../"
       data-using-base-href="false">
@@ -36,59 +41,17 @@
 
 <main>
 
-  <div id="dartdoc-sidebar-left" class="col-xs-6 col-sm-3 col-md-2 sidebar sidebar-offcanvas-left">
-    <header id="header-search-sidebar" class="hidden-l">
-      <form class="search-sidebar" role="search">
-        <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
-      </form>
-    </header>
-    
-    <ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
-      <li><a href="../index.html">pip_services3_rpc</a></li>
-      <li><a href="../pip_services3_rpc/pip_services3_rpc-library.html">pip_services3_rpc</a></li>
-      <li class="self-crumb">RestClient abstract class</li>
-    </ol>
-    
-    <h5>pip_services3_rpc library</h5>
-    <ol>
-      <li class="section-title"><a href="../pip_services3_rpc/pip_services3_rpc-library.html#classes">Classes</a></li>
-      <li><a href="../pip_services3_rpc/AboutOperations-class.html">AboutOperations</a></li>
-      <li><a href="../pip_services3_rpc/BasicAuthorizer-class.html">BasicAuthorizer</a></li>
-      <li><a href="../pip_services3_rpc/CommandableHttpClient-class.html">CommandableHttpClient</a></li>
-      <li><a href="../pip_services3_rpc/CommandableHttpService-class.html">CommandableHttpService</a></li>
-      <li><a href="../pip_services3_rpc/CommandableSwaggerDocument-class.html">CommandableSwaggerDocument</a></li>
-      <li><a href="../pip_services3_rpc/DefaultRpcFactory-class.html">DefaultRpcFactory</a></li>
-      <li><a href="../pip_services3_rpc/DirectClient-class.html">DirectClient</a></li>
-      <li><a href="../pip_services3_rpc/HeartbeatOperations-class.html">HeartbeatOperations</a></li>
-      <li><a href="../pip_services3_rpc/HeartbeatRestService-class.html">HeartbeatRestService</a></li>
-      <li><a href="../pip_services3_rpc/HttpConnectionResolver-class.html">HttpConnectionResolver</a></li>
-      <li><a href="../pip_services3_rpc/HttpEndpoint-class.html">HttpEndpoint</a></li>
-      <li><a href="../pip_services3_rpc/HttpRequestDetector-class.html">HttpRequestDetector</a></li>
-      <li><a href="../pip_services3_rpc/HttpResponseSender-class.html">HttpResponseSender</a></li>
-      <li><a href="../pip_services3_rpc/ISwaggerService-class.html">ISwaggerService</a></li>
-      <li><a href="../pip_services3_rpc/OwnerAuthorizer-class.html">OwnerAuthorizer</a></li>
-      <li><a href="../pip_services3_rpc/RestClient-class.html">RestClient</a></li>
-      <li><a href="../pip_services3_rpc/RestOperations-class.html">RestOperations</a></li>
-      <li><a href="../pip_services3_rpc/RestService-class.html">RestService</a></li>
-      <li><a href="../pip_services3_rpc/RoleAuthorizer-class.html">RoleAuthorizer</a></li>
-      <li><a href="../pip_services3_rpc/StatusOperations-class.html">StatusOperations</a></li>
-      <li><a href="../pip_services3_rpc/StatusRestService-class.html">StatusRestService</a></li>
-    
-    
-    
-    
-    
-    
-    
-    
-    </ol>
-  </div>
 
-  <div id="dartdoc-main-content" class="col-xs-12 col-sm-9 col-md-8 main-content">
-      <div><h1><span class="kind-class">RestClient</span> class  </h1></div>
+  <div id="dartdoc-main-content" class="main-content">
+      <div>
+<h1><span class="kind-class">RestClient</span> class 
+    <a href="https://dart.dev/null-safety" class="feature feature-null-safety" title="Supports the null safety language feature.">Null safety</a>
+ 
+</h1></div>
 
-    <section class="desc markdown">
-      <p>Abstract client that calls remove endpoints using HTTP/REST protocol.</p>
+    
+<section class="desc markdown">
+  <p>Abstract client that calls remove endpoints using HTTP/REST protocol.</p>
 <h3 id="configuration-parameters">Configuration parameters</h3>
 <ul>
 <li><code>base_route</code>:              base route for remote URI</li>
@@ -104,8 +67,9 @@
 <li><a href="../pip_services3_rpc/RestClient/options.html">options</a>:
 <ul>
 <li><a href="../pip_services3_rpc/RestClient/retries.html">retries</a>:               number of retries (default: 3)</li>
-<li><code>connecttimeout</code>:       connection timeout in milliseconds (default: 10 sec)</li>
+<li><code>connect_timeout</code>:       connection timeout in milliseconds (default: 10 sec)</li>
 <li><a href="../pip_services3_rpc/RestClient/timeout.html">timeout</a>:               invocation timeout in milliseconds (default: 10 sec)</li>
+<li><code>correlation_id</code>         place for adding correalationId, query - in query string, headers - in headers, both - in query and headers (default: query)</li>
 </ul>
 </li>
 </ul>
@@ -113,6 +77,7 @@
 <ul>
 <li>*:logger:*:*:1.0         (optional) <a href="https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ILogger-class.html">ILogger</a> components to pass log messages</li>
 <li>*:counters:*:*:1.0         (optional) <a href="https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ICounters-class.html">ICounters</a> components to pass collected measurements</li>
+<li>*:tracer:*:*:1.0         (optional) <a href="https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/ITracer-class.html">ICounters</a> components to pass collected measurements</li>
 <li>*:discovery:*:*:1.0        (optional) <a href="https://pub.dev/documentation/pip_services3_components/latest/pip_services3_components/IDiscovery-class.html">IDiscovery</a> services to resolve connection</li>
 </ul>
 <p>See <a href="../pip_services3_rpc/RestService-class.html">RestService</a>
@@ -121,7 +86,7 @@ See <a href="../pip_services3_rpc/CommandableHttpService-class.html">Commandable
 <pre class="language-dart"><code>class MyRestClient extends RestClient implements IMyClient {
    ...
 
-    Future&lt;MyData&gt; getData(String correlationId, String id) async {
+    Future&lt;MyData&gt; getData(String? correlationId, String id) async {
        var timing = instrument(correlationId, 'myclient.get_data');
       try{
         var result = await call('get', '/get_data' correlationId, { id: id }, null);
@@ -145,17 +110,18 @@ client.configure(ConfigParams.fromTuples([
 var result = await client.getData('123', '1');
   ...
 </code></pre>
-    </section>
-    
+</section>
+
+
     <section>
       <dl class="dl-horizontal">
 
         <dt>Implemented types</dt>
         <dd>
           <ul class="comma-separated clazz-relationships">
-            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.0.12/pip_services3_commons/IOpenable-class.html">IOpenable</a></li>
-            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.0.12/pip_services3_commons/IConfigurable-class.html">IConfigurable</a></li>
-            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.0.12/pip_services3_commons/IReferenceable-class.html">IReferenceable</a></li>
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/IOpenable-class.html">IOpenable</a></li>
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/IConfigurable-class.html">IConfigurable</a></li>
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/IReferenceable-class.html">IReferenceable</a></li>
           </ul>
         </dd>
 
@@ -187,109 +153,170 @@ var result = await client.getData('123', '1');
 
       <dl class="properties">
         <dt id="baseRoute" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/baseRoute.html">baseRoute</a></span>
-          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>         
-        </dt>
-        <dd>
-          The base route. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/baseRoute.html">baseRoute</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> 
+
+</dt>
+<dd>
+  The base route. 
+  <div class="features">read / write</div>
+
 </dd>
+
         <dt id="client" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/client.html">client</a></span>
-          <span class="signature">&#8596; <a href="https://pub.dev/documentation/http/0.12.0+4/http/Client-class.html">Client</a></span>         
-        </dt>
-        <dd>
-          The HTTP client. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/client.html">client</a></span>
+  <span class="signature">&#8596; <a href="https://pub.dev/documentation/http/0.13.4/http/Client-class.html">Client</a>?</span> 
+
+</dt>
+<dd>
+  The HTTP client. 
+  <div class="features">read / write</div>
+
 </dd>
+
         <dt id="connectionResolver" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/connectionResolver.html">connectionResolver</a></span>
-          <span class="signature">&#8596; <a href="../pip_services3_rpc/HttpConnectionResolver-class.html">HttpConnectionResolver</a></span>         
-        </dt>
-        <dd>
-          The connection resolver. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/connectionResolver.html">connectionResolver</a></span>
+  <span class="signature">&#8596; <a href="../pip_services3_rpc/HttpConnectionResolver-class.html">HttpConnectionResolver</a></span> 
+
+</dt>
+<dd>
+  The connection resolver. 
+  <div class="features">read / write</div>
+
 </dd>
+
         <dt id="connectTimeout" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/connectTimeout.html">connectTimeout</a></span>
-          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.1/dart-core/int-class.html">int</a></span>         
-        </dt>
-        <dd>
-          The connection timeout in milliseconds. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/connectTimeout.html">connectTimeout</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.14.3/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd>
+  The connection timeout in milliseconds. 
+  <div class="features">read / write</div>
+
 </dd>
+
+        <dt id="correlationIdLocation" class="property">
+  <span class="name"><a href="../pip_services3_rpc/RestClient/correlationIdLocation.html">correlationIdLocation</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> 
+
+</dt>
+<dd>
+   
+  <div class="features">read / write</div>
+
+</dd>
+
         <dt id="counters" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/counters.html">counters</a></span>
-          <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_components/1.0.2/pip_services3_components/CompositeCounters-class.html">CompositeCounters</a></span>         
-        </dt>
-        <dd>
-          The performance counters. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/counters.html">counters</a></span>
+  <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_components/1.1.2/pip_services3_components/CompositeCounters-class.html">CompositeCounters</a></span> 
+
+</dt>
+<dd>
+  The performance counters. 
+  <div class="features">read / write</div>
+
 </dd>
+
         <dt id="hashCode" class="property inherited">
-          <span class="name"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/hashCode.html">hashCode</a></span>
-          <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-core/int-class.html">int</a></span>         
-        </dt>
-        <dd class="inherited">
-          The hash code for this object. <a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/hashCode.html">[...]</a>
-                  <div class="features">read-only, inherited</div>
+  <span class="name"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd class="inherited">
+  The hash code for this object. <a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/hashCode.html">[...]</a>
+  <div class="features">read-only, inherited</div>
+
 </dd>
+
         <dt id="headers" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/headers.html">headers</a></span>
-          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.1/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>&gt;</span></span>         
-        </dt>
-        <dd>
-          The default headers to be added to every request. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/headers.html">headers</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.14.3/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>&gt;</span></span> 
+
+</dt>
+<dd>
+  The default headers to be added to every request. 
+  <div class="features">read / write</div>
+
 </dd>
+
         <dt id="logger" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/logger.html">logger</a></span>
-          <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_components/1.0.2/pip_services3_components/CompositeLogger-class.html">CompositeLogger</a></span>         
-        </dt>
-        <dd>
-          The logger. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/logger.html">logger</a></span>
+  <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_components/1.1.2/pip_services3_components/CompositeLogger-class.html">CompositeLogger</a></span> 
+
+</dt>
+<dd>
+  The logger. 
+  <div class="features">read / write</div>
+
 </dd>
+
         <dt id="options" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/options.html">options</a></span>
-          <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_commons/1.0.12/pip_services3_commons/ConfigParams-class.html">ConfigParams</a></span>         
-        </dt>
-        <dd>
-          The configuration options. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/options.html">options</a></span>
+  <span class="signature">&#8596; <a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/ConfigParams-class.html">ConfigParams</a></span> 
+
+</dt>
+<dd>
+  The configuration options. 
+  <div class="features">read / write</div>
+
 </dd>
+
         <dt id="retries" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/retries.html">retries</a></span>
-          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.1/dart-core/int-class.html">int</a></span>         
-        </dt>
-        <dd>
-          The number of retries. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/retries.html">retries</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.14.3/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd>
+  The number of retries. 
+  <div class="features">read / write</div>
+
 </dd>
+
         <dt id="runtimeType" class="property inherited">
-          <span class="name"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/runtimeType.html">runtimeType</a></span>
-          <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-core/Type-class.html">Type</a></span>         
-        </dt>
-        <dd class="inherited">
-          A representation of the runtime type of the object. 
-                  <div class="features">read-only, inherited</div>
+  <span class="name"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/Type-class.html">Type</a></span> 
+
+</dt>
+<dd class="inherited">
+  A representation of the runtime type of the object. 
+  <div class="features">read-only, inherited</div>
+
 </dd>
+
         <dt id="timeout" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/timeout.html">timeout</a></span>
-          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.1/dart-core/int-class.html">int</a></span>         
-        </dt>
-        <dd>
-          The invocation timeout in milliseconds. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/timeout.html">timeout</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.14.3/dart-core/int-class.html">int</a></span> 
+
+</dt>
+<dd>
+  The invocation timeout in milliseconds. 
+  <div class="features">read / write</div>
+
 </dd>
+
+        <dt id="tracer" class="property">
+  <span class="name"><a href="../pip_services3_rpc/RestClient/tracer.html">tracer</a></span>
+  <span class="signature">&#8596; CompositeTracer</span> 
+
+</dt>
+<dd>
+  The tracer. 
+  <div class="features">read / write</div>
+
+</dd>
+
         <dt id="uri" class="property">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/uri.html">uri</a></span>
-          <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>         
-        </dt>
-        <dd>
-          The remote service uri which is calculated on open. 
-                  <div class="features">read / write</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/uri.html">uri</a></span>
+  <span class="signature">&#8596; <a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> 
+
+</dt>
+<dd>
+  The remote service uri which is calculated on open. 
+  <div class="features">read / write</div>
+
 </dd>
+
       </dl>
     </section>
 
@@ -297,134 +324,190 @@ var result = await client.getData('123', '1');
       <h2>Methods</h2>
       <dl class="callables">
         <dt id="addCorrelationId" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/addCorrelationId.html">addCorrelationId</a></span><span class="signature">(<wbr><span class="parameter" id="addCorrelationId-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">params</span>, </span><span class="parameter" id="addCorrelationId-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span></span>)
-            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          Adds a correlation id (correlation_id) to invocation parameter map. <a href="../pip_services3_rpc/RestClient/addCorrelationId.html">[...]</a>
-                  
+  <span class="name"><a href="../pip_services3_rpc/RestClient/addCorrelationId.html">addCorrelationId</a></span><span class="signature">(<wbr><span class="parameter" id="addCorrelationId-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">params</span>, </span><span class="parameter" id="addCorrelationId-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">correlationId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Adds a correlation id (correlation_id) to invocation parameter map. <a href="../pip_services3_rpc/RestClient/addCorrelationId.html">[...]</a>
+  
+
 </dd>
+
         <dt id="addFilterParams" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/addFilterParams.html">addFilterParams</a></span><span class="signature">(<wbr><span class="parameter" id="addFilterParams-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">params</span>, </span><span class="parameter" id="addFilterParams-param-filter"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.12/pip_services3_commons/FilterParams-class.html">FilterParams</a></span> <span class="parameter-name">filter</span></span>)
-            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          Adds filter parameters (with the same name as they defined)
+  <span class="name"><a href="../pip_services3_rpc/RestClient/addFilterParams.html">addFilterParams</a></span><span class="signature">(<wbr><span class="parameter" id="addFilterParams-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">params</span>, </span><span class="parameter" id="addFilterParams-param-filter"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/FilterParams-class.html">FilterParams</a>?</span> <span class="parameter-name">filter</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Adds filter parameters (with the same name as they defined)
 to invocation parameter map. <a href="../pip_services3_rpc/RestClient/addFilterParams.html">[...]</a>
-                  
+  
+
 </dd>
+
         <dt id="addPagingParams" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/addPagingParams.html">addPagingParams</a></span><span class="signature">(<wbr><span class="parameter" id="addPagingParams-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">params</span>, </span><span class="parameter" id="addPagingParams-param-paging"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.12/pip_services3_commons/PagingParams-class.html">PagingParams</a></span> <span class="parameter-name">paging</span></span>)
-            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>&gt;</span></span>
-          </span>
-                  </dt>
-        <dd>
-          Adds paging parameters (skip, take, total) to invocation parameter map. <a href="../pip_services3_rpc/RestClient/addPagingParams.html">[...]</a>
-                  
+  <span class="name"><a href="../pip_services3_rpc/RestClient/addPagingParams.html">addPagingParams</a></span><span class="signature">(<wbr><span class="parameter" id="addPagingParams-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>&gt;</span>?</span> <span class="parameter-name">params</span>, </span><span class="parameter" id="addPagingParams-param-paging"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/PagingParams-class.html">PagingParams</a>?</span> <span class="parameter-name">paging</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>&gt;</span></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Adds paging parameters (skip, take, total) to invocation parameter map. <a href="../pip_services3_rpc/RestClient/addPagingParams.html">[...]</a>
+  
+
 </dd>
+
         <dt id="call" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/call.html">call</a></span><span class="signature">(<wbr><span class="parameter" id="call-param-method"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="call-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span>, </span><span class="parameter" id="call-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="call-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">params</span>, </span><span class="parameter" id="call-param-data">[<span class="type-annotation">dynamic</span> <span class="parameter-name">data</span>]</span>)
-            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-async/Future-class.html">Future</a></span>
-          </span>
-                  </dt>
-        <dd>
-          Calls a remote method via HTTP/REST protocol. <a href="../pip_services3_rpc/RestClient/call.html">[...]</a>
-                  
+  <span class="name"><a href="../pip_services3_rpc/RestClient/call.html">call</a></span><span class="signature">(<wbr><span class="parameter" id="call-param-method"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="call-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span>, </span><span class="parameter" id="call-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="call-param-params"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Map-class.html">Map</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>, <span class="type-parameter"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>&gt;</span></span> <span class="parameter-name">params</span>, </span><span class="parameter" id="call-param-data">[<span class="type-annotation">dynamic</span> <span class="parameter-name">data</span>]</span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-async/Future-class.html">Future</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Calls a remote method via HTTP/REST protocol. <a href="../pip_services3_rpc/RestClient/call.html">[...]</a>
+  
+
 </dd>
+
         <dt id="close" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/close.html">close</a></span><span class="signature">(<wbr><span class="parameter" id="close-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span></span>)
-            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-async/Future-class.html">Future</a></span>
-          </span>
-                  </dt>
-        <dd>
-          Closes component and frees used resources. <a href="../pip_services3_rpc/RestClient/close.html">[...]</a>
-                  <div class="features">override</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/close.html">close</a></span><span class="signature">(<wbr><span class="parameter" id="close-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">correlationId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-async/Future-class.html">Future</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Closes component and frees used resources. <a href="../pip_services3_rpc/RestClient/close.html">[...]</a>
+  <div class="features">override</div>
+
 </dd>
+
         <dt id="configure" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/configure.html">configure</a></span><span class="signature">(<wbr><span class="parameter" id="configure-param-config"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.12/pip_services3_commons/ConfigParams-class.html">ConfigParams</a></span> <span class="parameter-name">config</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-          Configures component by passing configuration parameters. <a href="../pip_services3_rpc/RestClient/configure.html">[...]</a>
-                  <div class="features">override</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/configure.html">configure</a></span><span class="signature">(<wbr><span class="parameter" id="configure-param-config"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/ConfigParams-class.html">ConfigParams</a></span> <span class="parameter-name">config</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Configures component by passing configuration parameters. <a href="../pip_services3_rpc/RestClient/configure.html">[...]</a>
+  <div class="features">override</div>
+
 </dd>
+
         <dt id="createRequestRoute" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/createRequestRoute.html">createRequestRoute</a></span><span class="signature">(<wbr><span class="parameter" id="createRequestRoute-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span></span>)
-            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>
-          </span>
-                  </dt>
-        <dd>
-           
-                  
+  <span class="name"><a href="../pip_services3_rpc/RestClient/createRequestRoute.html">createRequestRoute</a></span><span class="signature">(<wbr><span class="parameter" id="createRequestRoute-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+   
+  
+
 </dd>
+
         <dt id="instrument" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/instrument.html">instrument</a></span><span class="signature">(<wbr><span class="parameter" id="instrument-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="instrument-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span></span>)
-            <span class="returntype parameter">&#8594; <a href="https://pub.dev/documentation/pip_services3_components/1.0.2/pip_services3_components/Timing-class.html">Timing</a></span>
-          </span>
-                  </dt>
-        <dd>
-          Adds instrumentation to log calls and measure call time.
+  <span class="name"><a href="../pip_services3_rpc/RestClient/instrument.html">instrument</a></span><span class="signature">(<wbr><span class="parameter" id="instrument-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="instrument-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span></span>)
+    <span class="returntype parameter">&#8594; <a href="../pip_services3_rpc/InstrumentTiming-class.html">InstrumentTiming</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Adds instrumentation to log calls and measure call time.
 It returns a Timing object that is used to end the time measurement. <a href="../pip_services3_rpc/RestClient/instrument.html">[...]</a>
-                  
+  
+
 </dd>
+
         <dt id="instrumentError" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/instrumentError.html">instrumentError</a></span><span class="signature">(<wbr><span class="parameter" id="instrumentError-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="instrumentError-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span><span class="parameter" id="instrumentError-param-err"><span class="type-annotation">dynamic</span> <span class="parameter-name">err</span>, </span><span class="parameter" id="instrumentError-param-reerror">[<span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/bool-class.html">bool</a></span> <span class="parameter-name">reerror</span> = <span class="default-value">false</span>]</span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-          Adds instrumentation to error handling. <a href="../pip_services3_rpc/RestClient/instrumentError.html">[...]</a>
-                  
+  <span class="name"><a href="../pip_services3_rpc/RestClient/instrumentError.html">instrumentError</a></span><span class="signature">(<wbr><span class="parameter" id="instrumentError-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">correlationId</span>, </span><span class="parameter" id="instrumentError-param-name"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">name</span>, </span><span class="parameter" id="instrumentError-param-err"><span class="type-annotation">dynamic</span> <span class="parameter-name">err</span>, </span><span class="parameter" id="instrumentError-param-reerror">[<span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/bool-class.html">bool</a>?</span> <span class="parameter-name">reerror</span> = <span class="default-value">false</span>]</span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Adds instrumentation to error handling. <a href="../pip_services3_rpc/RestClient/instrumentError.html">[...]</a>
+  
+
 </dd>
+
         <dt id="isOpen" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/isOpen.html">isOpen</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-core/bool-class.html">bool</a></span>
-          </span>
-                  </dt>
-        <dd>
-          Checks if the component is opened.
+  <span class="name"><a href="../pip_services3_rpc/RestClient/isOpen.html">isOpen</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Checks if the component is opened.
 Returns true if the component has been opened and false otherwise. 
-                  <div class="features">override</div>
+  <div class="features">override</div>
+
 </dd>
+
         <dt id="noSuchMethod" class="callable inherited">
-          <span class="name"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
-            <span class="returntype parameter">&#8594; dynamic</span>
-          </span>
-                  </dt>
-        <dd class="inherited">
-          Invoked when a non-existent method or property is accessed. <a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/noSuchMethod.html">[...]</a>
-                  <div class="features">inherited</div>
+  <span class="name"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+    <span class="returntype parameter">&#8594; dynamic</span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  Invoked when a non-existent method or property is accessed. <a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/noSuchMethod.html">[...]</a>
+  <div class="features">inherited</div>
+
 </dd>
+
         <dt id="open" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/open.html">open</a></span><span class="signature">(<wbr><span class="parameter" id="open-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">correlationId</span></span>)
-            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-async/Future-class.html">Future</a></span>
-          </span>
-                  </dt>
-        <dd>
-          Opens the component. <a href="../pip_services3_rpc/RestClient/open.html">[...]</a>
-                  <div class="features">override</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/open.html">open</a></span><span class="signature">(<wbr><span class="parameter" id="open-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">correlationId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-async/Future-class.html">Future</a></span>
+  </span>
+  
+
+</dt>
+<dd>
+  Opens the component. <a href="../pip_services3_rpc/RestClient/open.html">[...]</a>
+  <div class="features">override</div>
+
 </dd>
+
         <dt id="setReferences" class="callable">
-          <span class="name"><a href="../pip_services3_rpc/RestClient/setReferences.html">setReferences</a></span><span class="signature">(<wbr><span class="parameter" id="setReferences-param-references"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.0.12/pip_services3_commons/IReferences-class.html">IReferences</a></span> <span class="parameter-name">references</span></span>)
-            <span class="returntype parameter">&#8594; void</span>
-          </span>
-                  </dt>
-        <dd>
-          Sets references to dependent components. <a href="../pip_services3_rpc/RestClient/setReferences.html">[...]</a>
-                  <div class="features">override</div>
+  <span class="name"><a href="../pip_services3_rpc/RestClient/setReferences.html">setReferences</a></span><span class="signature">(<wbr><span class="parameter" id="setReferences-param-references"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/IReferences-class.html">IReferences</a></span> <span class="parameter-name">references</span></span>)
+    <span class="returntype parameter">&#8594; void</span>
+  </span>
+  
+
+</dt>
+<dd>
+  Sets references to dependent components. <a href="../pip_services3_rpc/RestClient/setReferences.html">[...]</a>
+  <div class="features">override</div>
+
 </dd>
+
         <dt id="toString" class="callable inherited">
-          <span class="name"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
-            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-core/String-class.html">String</a></span>
-          </span>
-                  </dt>
-        <dd class="inherited">
-          Returns a string representation of this object. 
-                  <div class="features">inherited</div>
+  <span class="name"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  A string representation of this object. <a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/toString.html">[...]</a>
+  <div class="features">inherited</div>
+
 </dd>
+
       </dl>
     </section>
 
@@ -432,14 +515,18 @@ Returns true if the component has been opened and false otherwise.
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-          <span class="name"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
-            <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.10.1/dart-core/bool-class.html">bool</a></span>
-          </span>
-                  </dt>
-        <dd class="inherited">
-          The equality operator. <a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/operator_equals.html">[...]</a>
-                  <div class="features">inherited</div>
+  <span class="name"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/bool-class.html">bool</a></span>
+  </span>
+  
+
+</dt>
+<dd class="inherited">
+  The equality operator. <a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/operator_equals.html">[...]</a>
+  <div class="features">inherited</div>
+
 </dd>
+
       </dl>
     </section>
 
@@ -448,52 +535,107 @@ Returns true if the component has been opened and false otherwise.
 
   </div> <!-- /.main-content -->
 
-  <div id="dartdoc-sidebar-right" class="col-xs-6 col-sm-6 col-md-2 sidebar sidebar-offcanvas-right">
+  <div id="dartdoc-sidebar-left" class="sidebar sidebar-offcanvas-left">
+    <header id="header-search-sidebar" class="hidden-l">
+  <form class="search-sidebar" role="search">
+    <input type="text" id="search-sidebar" autocomplete="off" disabled class="form-control typeahead" placeholder="Loading search...">
+  </form>
+</header>
+
+<ol class="breadcrumbs gt-separated dark hidden-l" id="sidebar-nav">
+  <li><a href="../index.html">pip_services3_rpc</a></li>
+  <li><a href="../pip_services3_rpc/pip_services3_rpc-library.html">pip_services3_rpc</a></li>
+  <li class="self-crumb">RestClient abstract class</li>
+</ol>
+
+
+    <h5>pip_services3_rpc library</h5>
     <ol>
-    
-      <li class="section-title"><a href="../pip_services3_rpc/RestClient-class.html#constructors">Constructors</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/RestClient.html">RestClient</a></li>
-    
-      <li class="section-title">
-        <a href="../pip_services3_rpc/RestClient-class.html#instance-properties">Properties</a>
-      </li>
-      <li><a href="../pip_services3_rpc/RestClient/baseRoute.html">baseRoute</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/client.html">client</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/connectionResolver.html">connectionResolver</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/connectTimeout.html">connectTimeout</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/counters.html">counters</a></li>
-      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/hashCode.html">hashCode</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/headers.html">headers</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/logger.html">logger</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/options.html">options</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/retries.html">retries</a></li>
-      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/runtimeType.html">runtimeType</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/timeout.html">timeout</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/uri.html">uri</a></li>
-    
-      <li class="section-title"><a href="../pip_services3_rpc/RestClient-class.html#instance-methods">Methods</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/addCorrelationId.html">addCorrelationId</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/addFilterParams.html">addFilterParams</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/addPagingParams.html">addPagingParams</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/call.html">call</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/close.html">close</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/configure.html">configure</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/createRequestRoute.html">createRequestRoute</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/instrument.html">instrument</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/instrumentError.html">instrumentError</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/isOpen.html">isOpen</a></li>
-      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/open.html">open</a></li>
-      <li><a href="../pip_services3_rpc/RestClient/setReferences.html">setReferences</a></li>
-      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/toString.html">toString</a></li>
-    
-      <li class="section-title inherited"><a href="../pip_services3_rpc/RestClient-class.html#operators">Operators</a></li>
-      <li class="inherited"><a href="https://api.dart.dev/stable/2.10.1/dart-core/Object/operator_equals.html">operator ==</a></li>
-    
-    
-    
-    
-    </ol>
+  <li class="section-title"><a href="../pip_services3_rpc/pip_services3_rpc-library.html#classes">Classes</a></li>
+  <li><a href="../pip_services3_rpc/AboutOperations-class.html">AboutOperations</a></li>
+  <li><a href="../pip_services3_rpc/BasicAuthorizer-class.html">BasicAuthorizer</a></li>
+  <li><a href="../pip_services3_rpc/CommandableHttpClient-class.html">CommandableHttpClient</a></li>
+  <li><a href="../pip_services3_rpc/CommandableHttpService-class.html">CommandableHttpService</a></li>
+  <li><a href="../pip_services3_rpc/CommandableSwaggerDocument-class.html">CommandableSwaggerDocument</a></li>
+  <li><a href="../pip_services3_rpc/DefaultRpcFactory-class.html">DefaultRpcFactory</a></li>
+  <li><a href="../pip_services3_rpc/DirectClient-class.html">DirectClient</a></li>
+  <li><a href="../pip_services3_rpc/HeartbeatOperations-class.html">HeartbeatOperations</a></li>
+  <li><a href="../pip_services3_rpc/HeartbeatRestService-class.html">HeartbeatRestService</a></li>
+  <li><a href="../pip_services3_rpc/HttpConnectionResolver-class.html">HttpConnectionResolver</a></li>
+  <li><a href="../pip_services3_rpc/HttpEndpoint-class.html">HttpEndpoint</a></li>
+  <li><a href="../pip_services3_rpc/HttpRequestDetector-class.html">HttpRequestDetector</a></li>
+  <li><a href="../pip_services3_rpc/HttpResponseSender-class.html">HttpResponseSender</a></li>
+  <li><a href="../pip_services3_rpc/InstrumentTiming-class.html">InstrumentTiming</a></li>
+  <li><a href="../pip_services3_rpc/ISwaggerService-class.html">ISwaggerService</a></li>
+  <li><a href="../pip_services3_rpc/OwnerAuthorizer-class.html">OwnerAuthorizer</a></li>
+  <li><a href="../pip_services3_rpc/RestClient-class.html">RestClient</a></li>
+  <li><a href="../pip_services3_rpc/RestOperations-class.html">RestOperations</a></li>
+  <li><a href="../pip_services3_rpc/RestService-class.html">RestService</a></li>
+  <li><a href="../pip_services3_rpc/RoleAuthorizer-class.html">RoleAuthorizer</a></li>
+  <li><a href="../pip_services3_rpc/StatusOperations-class.html">StatusOperations</a></li>
+  <li><a href="../pip_services3_rpc/StatusRestService-class.html">StatusRestService</a></li>
+
+
+
+
+
+
+
+
+</ol>
+
+  </div>
+
+  <div id="dartdoc-sidebar-right" class="sidebar sidebar-offcanvas-right">
+    <ol>
+
+    <li class="section-title"><a href="../pip_services3_rpc/RestClient-class.html#constructors">Constructors</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/RestClient.html">RestClient</a></li>
+
+
+    <li class="section-title">
+      <a href="../pip_services3_rpc/RestClient-class.html#instance-properties">Properties</a>
+    </li>
+    <li><a href="../pip_services3_rpc/RestClient/baseRoute.html">baseRoute</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/client.html">client</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/connectionResolver.html">connectionResolver</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/connectTimeout.html">connectTimeout</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/correlationIdLocation.html">correlationIdLocation</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/counters.html">counters</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/headers.html">headers</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/logger.html">logger</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/options.html">options</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/retries.html">retries</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/timeout.html">timeout</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/tracer.html">tracer</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/uri.html">uri</a></li>
+
+    <li class="section-title"><a href="../pip_services3_rpc/RestClient-class.html#instance-methods">Methods</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/addCorrelationId.html">addCorrelationId</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/addFilterParams.html">addFilterParams</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/addPagingParams.html">addPagingParams</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/call.html">call</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/close.html">close</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/configure.html">configure</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/createRequestRoute.html">createRequestRoute</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/instrument.html">instrument</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/instrumentError.html">instrumentError</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/isOpen.html">isOpen</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/open.html">open</a></li>
+    <li><a href="../pip_services3_rpc/RestClient/setReferences.html">setReferences</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/toString.html">toString</a></li>
+
+    <li class="section-title inherited"><a href="../pip_services3_rpc/RestClient-class.html#operators">Operators</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/operator_equals.html">operator ==</a></li>
+
+
+
+
+</ol>
+
   </div><!--/.sidebar-offcanvas-->
 
 </main>
@@ -501,18 +643,20 @@ Returns true if the component has been opened and false otherwise.
 <footer>
   <span class="no-break">
     pip_services3_rpc
-      1.0.8
+      1.1.0
   </span>
 
+  
 </footer>
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<script src="../static-assets/typeahead.bundle.min.js"></script>
-<script src="../static-assets/highlight.pack.js"></script>
-<script src="../static-assets/URI.js"></script>
-<script src="../static-assets/script.js"></script>
+
+
+<script src="../static-assets/highlight.pack.js?v1"></script>
+<script src="../static-assets/script.js?v1"></script>
+
 
 
 </body>
 
 </html>
+

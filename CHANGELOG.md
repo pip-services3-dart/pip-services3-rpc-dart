@@ -35,3 +35,8 @@
 ## 1.0.8
 
 - Add swagger OpenAPI support
+
+## 1.1.0
+
+- Migrate RPC from **angel** to **shelf** framework
+- Added null-safety support

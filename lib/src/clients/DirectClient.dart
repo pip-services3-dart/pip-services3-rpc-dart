@@ -1,6 +1,9 @@
 import 'dart:async';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_components/pip_services3_components.dart';
+import 'package:pip_services3_components/src/trace/CompositeTracer.dart';
+
+import '../../pip_services3_rpc.dart';
 
 /// Abstract client that calls controller directly in the same memory space.
 ///
@@ -30,7 +33,7 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 ///         }
 ///         ...
 ///
-///         Future<MyData> getData(String correlationId, String id) async {
+///         Future<MyData> getData(String? correlationId, String id) async {
 ///           var timing = instrument(correlationId, 'myclient.get_data');
 ///           try {
 ///           var result = await controller.getData(correlationId, id)
@@ -55,7 +58,7 @@ import 'package:pip_services3_components/pip_services3_components.dart';
 abstract class DirectClient<T>
     implements IConfigurable, IReferenceable, IOpenable {
   /// The controller reference.
-  T controller;
+  late T controller;
 
   /// The open flag.
   bool opened = true;
@@ -68,6 +71,9 @@ abstract class DirectClient<T>
 
   /// The dependency resolver to get controller reference.
   var dependencyResolver = DependencyResolver();
+
+  /// The tracer.
+  var tracer = CompositeTracer();
 
   /// Creates a new instance of the client.
   DirectClient() {
@@ -89,6 +95,7 @@ abstract class DirectClient<T>
   void setReferences(IReferences references) {
     logger.setReferences(references);
     counters.setReferences(references);
+    tracer.setReferences(references);
     dependencyResolver.setReferences(references);
     controller = dependencyResolver.getOneRequired<T>('controller');
   }
@@ -98,11 +105,16 @@ abstract class DirectClient<T>
   ///
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// - [name]              a method name.
-  /// Returns Timing object to end the time measurement.
-  Timing instrument(String correlationId, String name) {
-    logger.trace(correlationId, 'Calling %s method', [name]);
-    counters.incrementOne(name + '.call_count');
-    return counters.beginTiming(name + '.call_time');
+  /// Returns               [InstrumentTiming] object to end the time measurement.
+  InstrumentTiming instrument(String? correlationId, String name) {
+    logger.trace(correlationId, 'Executing %s method', [name]);
+    counters.incrementOne(name + '.exec_count');
+
+    var counterTiming = counters.beginTiming(name + '.exec_time');
+    var traceTiming = tracer.beginTrace(correlationId, name, '');
+
+    return InstrumentTiming(correlationId, name, 'exec', logger, counters,
+        counterTiming, traceTiming);
   }
 
   /// Adds instrumentation to error handling.
@@ -112,8 +124,8 @@ abstract class DirectClient<T>
   /// - [err]               an occured error
   /// - [result]            (optional) an execution result
   /// - [reerror]           flag for rethrow exception
-  void instrumentError(String correlationId, String name, err,
-      [bool reerror = false]) {
+  void instrumentError(String? correlationId, String name, err,
+      [bool? reerror = false]) {
     if (err != null) {
       logger.error(correlationId, ApplicationException().wrap(err),
           'Failed to call %s method', [name]);
@@ -137,7 +149,7 @@ abstract class DirectClient<T>
   /// - [correlationId] 	(optional) transaction id to trace execution through call chain.
   /// Returns 			Future that receives error or null no errors occured.
   @override
-  Future open(String correlationId) async {
+  Future open(String? correlationId) async {
     if (opened) {
       return null;
     }
@@ -160,7 +172,7 @@ abstract class DirectClient<T>
   /// Return 			      Future that receives null no errors occured.
   /// Throw error
   @override
-  Future close(String correlationId) async {
+  Future close(String? correlationId) async {
     if (opened) {
       logger.info(correlationId, 'Closed direct client');
     }

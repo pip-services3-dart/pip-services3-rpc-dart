@@ -19,7 +19,7 @@ var restConfig = ConfigParams.fromTuples([
 
 void main() {
   group('RetriesRestClient', () {
-    DummyRestClient client;
+    late DummyRestClient client;
 
     setUp(() async {
       client = DummyRestClient();

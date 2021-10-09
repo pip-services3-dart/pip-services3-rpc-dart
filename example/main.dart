@@ -47,7 +47,7 @@ void main() async {
     var dummy = await client.createDummy(null, dummy1);
     // work with created item
 
-    dummy1 = dummy;
+    dummy1 = dummy!;
   } catch (err) {
     // error processing
   }
@@ -56,7 +56,7 @@ void main() async {
   try {
     var dummy = await client.createDummy(null, dummy2);
     // work with second created item
-    dummy2 = dummy;
+    dummy2 = dummy!;
   } catch (err) {
     // error processing
   }
@@ -75,21 +75,21 @@ void main() async {
     dummy1.content = 'Updated Content 1';
     var dummy = await client.updateDummy(null, dummy1);
     // processing with updated item
-    dummy1 = dummy;
+    dummy1 = dummy!;
   } catch (err) {
     // error processing
   }
 
   // Delete dummy
   try {
-    await client.deleteDummy(null, dummy1.id);
+    await client.deleteDummy(null, dummy1.id!);
   } catch (err) {
     // error processing
   }
 
   // Try to get delete dummy
   try {
-    var dummy = await client.getDummyById(null, dummy1.id);
+    var dummy = await client.getDummyById(null, dummy1.id!);
     // work with deleted item
   } catch (err) {
     // error processing

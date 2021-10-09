@@ -66,32 +66,32 @@ class HttpConnectionResolver implements IReferenceable, IConfigurable {
     credentialResolver.setReferences(references);
   }
 
-  dynamic _validateConnection(String correlationId, ConnectionParams connection,
-      CredentialParams credential) {
+  void _validateConnection(String? correlationId, ConnectionParams? connection,
+      CredentialParams? credential) {
     if (connection == null) {
-      return ConfigException(
+      throw ConfigException(
           correlationId, 'NO_CONNECTION', 'HTTP connection is not set');
     }
 
     var uri = connection.getUri();
     if (uri != null) return null;
 
-    var protocol = connection.getProtocol('http');
+    var protocol = connection.getProtocolWithDefault('http');
     if ('http' != protocol && 'https' != protocol) {
-      return ConfigException(correlationId, 'WRONG_PROTOCOL',
+      throw ConfigException(correlationId, 'WRONG_PROTOCOL',
               'Protocol is not supported by REST connection')
           .withDetails('protocol', protocol);
     }
 
     var host = connection.getHost();
     if (host == null) {
-      return ConfigException(
+      throw ConfigException(
           correlationId, 'NO_HOST', 'Connection host is not set');
     }
 
     var port = connection.getPort();
     if (port == 0) {
-      return ConfigException(
+      throw ConfigException(
           correlationId, 'NO_PORT', 'Connection port is not set');
     }
 
@@ -99,15 +99,20 @@ class HttpConnectionResolver implements IReferenceable, IConfigurable {
     if (protocol == 'https') {
       // Check for credential
       if (credential == null) {
-        return ConfigException(correlationId, 'NO_CREDENTIAL',
+        throw ConfigException(correlationId, 'NO_CREDENTIAL',
             'SSL certificates are not configured for HTTPS protocol');
       } else {
-        if (credential.getAsNullableString('ssl_key_file') == null) {
-          return ConfigException(correlationId, 'NO_SSL_KEY_FILE',
-              'SSL key file is not configured in credentials');
-        } else if (credential.getAsNullableString('ssl_crt_file') == null) {
-          return ConfigException(correlationId, 'NO_SSL_CRT_FILE',
-              'SSL crt file is not configured in credentials');
+        // Sometimes when we use https we are on an internal network and do not want to have to deal with security.
+        // When we need a https connection and we don't want to pass credentials, flag is 'credential.internal_network',
+        // this flag just has to be present and non null for this functionality to work.
+        if (credential.getAsNullableString('internal_network') == null) {
+          if (credential.getAsNullableString('ssl_key_file') == null) {
+            throw ConfigException(correlationId, 'NO_SSL_KEY_FILE',
+                'SSL key file is not configured in credentials');
+          } else if (credential.getAsNullableString('ssl_crt_file') == null) {
+            throw ConfigException(correlationId, 'NO_SSL_CRT_FILE',
+                'SSL crt file is not configured in credentials');
+          }
         }
       }
     }
@@ -115,40 +120,38 @@ class HttpConnectionResolver implements IReferenceable, IConfigurable {
     return null;
   }
 
-  void _updateConnection(
-      ConnectionParams connection, CredentialParams credential) {
-    if (connection == null) return;
+  ConfigParams _composeConnection(
+      List<ConfigParams> connections, CredentialParams? credential) {
+    var connection = ConfigParams.mergeConfigs(connections);
 
-    var uri = connection.getUri();
+    var uri = connection.getAsString('uri');
 
-    if (uri == null || uri == '') {
-      var protocol = connection.getProtocol('http');
-      var host = connection.getHost();
-      var port = connection.getPort();
+    if (uri == '') {
+      var protocol = connection.getAsStringWithDefault('protocol', 'uri');
+      var host = connection.getAsString('host');
+      var port = connection.getAsInteger('port');
 
       uri = protocol + '://' + host;
       if (port != 0) {
         uri += ':' + port.toString();
       }
-      connection.setUri(uri);
+      connection.setAsObject('uri', uri);
     } else {
       var address = Uri.parse(uri);
       var protocol = ('' + address.scheme).replaceAll(':', '');
 
-      connection.setProtocol(protocol);
-      connection.setHost(address.host);
-      connection.setPort(address.port);
+      connection.setAsObject('protocol', protocol);
+      connection.setAsObject('host', address.host);
+      connection.setAsObject('port', address.port);
     }
 
-    if (connection.getProtocol() == 'https') {
-      connection.addSection(
-          'credential',
-          credential.getAsNullableString('internal_network') == null
-              ? credential
-              : CredentialParams());
-    } else {
-      connection.addSection('credential', CredentialParams());
+    if (connection.getAsString('protocol') == 'https') {
+      if (credential?.getAsNullableString('internal_network') == null) {
+        connection = connection.override(credential!);
+      }
     }
+
+    return connection;
   }
 
   /// Resolves a single component connection. If connections are configured to be retrieved
@@ -157,12 +160,13 @@ class HttpConnectionResolver implements IReferenceable, IConfigurable {
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// Return 			          Future that receives resolved connection
   /// Throws error.
-  Future<ConnectionParams> resolve(String correlationId) async {
+  Future<ConfigParams?> resolve(String? correlationId) async {
     var connection = await connectionResolver.resolve(correlationId);
     var credential = await credentialResolver.lookup(correlationId);
     _validateConnection(correlationId, connection, credential);
-    _updateConnection(connection, credential);
-    return connection;
+
+    connection = connection ?? ConnectionParams();
+    return _composeConnection([connection], credential);
   }
 
   /// Resolves all component connection. If connections are configured to be retrieved
@@ -171,15 +175,15 @@ class HttpConnectionResolver implements IReferenceable, IConfigurable {
   /// - [correlationId]     (optional) transaction id to trace execution through call chain.
   /// Return 			Future that receives resolved connections
   /// Throws error.
-  Future<List<ConnectionParams>> resolveAll(String correlationId) async {
+  Future<ConfigParams> resolveAll(String? correlationId) async {
     var connections = await connectionResolver.resolveAll(correlationId);
     var credential = await credentialResolver.lookup(correlationId);
+
     for (var connection in connections) {
       _validateConnection(correlationId, connection, credential);
-      _updateConnection(connection, credential);
     }
 
-    return connections;
+    return _composeConnection(connections, credential);
   }
 
   /// Registers the given connection in all referenced discovery services.
@@ -189,10 +193,11 @@ class HttpConnectionResolver implements IReferenceable, IConfigurable {
   /// - [connection]        a connection to register.
   /// Return          future that receives null is registered connection is succes.
   /// Throws error
-  Future register(String correlationId) async {
+  Future register(String? correlationId) async {
     var connection = await connectionResolver.resolve(correlationId);
     var credential = await credentialResolver.lookup(correlationId);
     _validateConnection(correlationId, connection, credential);
-    await connectionResolver.register(correlationId, connection);
+    await connectionResolver.register(
+        correlationId, connection ?? ConnectionParams());
   }
 }

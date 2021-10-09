@@ -14,9 +14,9 @@ void main() {
   ]);
 
   group('HeartbeatRestService', () {
-    HeartbeatRestService service;
-    http.Client rest;
-    String url;
+    late HeartbeatRestService service;
+    late http.Client rest;
+    late String url;
 
     setUpAll(() async {
       service = HeartbeatRestService();
@@ -33,7 +33,7 @@ void main() {
 
     test('Status', () async {
       try {
-        var resp = await rest.get(url + '/heartbeat');
+        var resp = await rest.get(Uri.parse(url + '/heartbeat'));
 
         print(resp.body.toString());
 

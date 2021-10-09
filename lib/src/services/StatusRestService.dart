@@ -1,6 +1,8 @@
-import 'package:angel_framework/angel_framework.dart' as angel;
+import 'dart:async';
+
 import 'package:pip_services3_components/pip_services3_components.dart';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
+import 'package:shelf/shelf.dart';
 
 import './RestService.dart';
 
@@ -57,8 +59,8 @@ import './RestService.dart';
 
 class StatusRestService extends RestService {
   final _startTime = DateTime.now().toUtc();
-  IReferences _references2;
-  ContextInfo _contextInfo;
+  IReferences? _references2;
+  ContextInfo? _contextInfo;
   String _route = 'status';
 
   /// Creates a new instance of this service.
@@ -92,9 +94,8 @@ class StatusRestService extends RestService {
   /// Registers all service routes in HTTP endpoint.
   @override
   void register() {
-    registerRoute('get', _route, null,
-        (angel.RequestContext req, angel.ResponseContext res) {
-      _status(req, res);
+    registerRoute('get', _route, null, (Request req) async {
+      return await _status(req);
     });
   }
 
@@ -102,18 +103,18 @@ class StatusRestService extends RestService {
   ///
   /// - [req]   an HTTP request
   /// - [res]   an HTTP response
-  void _status(angel.RequestContext req, angel.ResponseContext res) {
-    var id = _contextInfo != null ? _contextInfo.contextId : '';
-    var name = _contextInfo != null ? _contextInfo.name : 'Unknown';
-    var description = _contextInfo != null ? _contextInfo.description : '';
+  FutureOr<Response> _status(Request req) async {
+    var id = _contextInfo != null ? _contextInfo!.contextId : '';
+    var name = _contextInfo != null ? _contextInfo!.name : 'Unknown';
+    var description = _contextInfo != null ? _contextInfo!.description : '';
     var uptime = DateTime.now()
         .toUtc()
         .subtract(Duration(milliseconds: _startTime.millisecondsSinceEpoch));
-    var properties = _contextInfo != null ? _contextInfo.properties : '';
+    var properties = _contextInfo != null ? _contextInfo!.properties : '';
 
     var components = [];
     if (_references2 != null) {
-      for (var locator in _references2.getAllLocators()) {
+      for (var locator in _references2!.getAllLocators()) {
         components.add(locator.toString());
       }
     }
@@ -129,6 +130,6 @@ class StatusRestService extends RestService {
       'components': components
     };
 
-    sendResult(req, res, null, status);
+    return await sendResult(req, status);
   }
 }

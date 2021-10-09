@@ -15,9 +15,9 @@ void main() {
   ]);
 
   group('StatusRestService', () {
-    StatusRestService service;
-    http.Client rest;
-    String url;
+    late StatusRestService service;
+    late http.Client rest;
+    late String url;
 
     setUpAll(() async {
       service = StatusRestService();
@@ -47,7 +47,7 @@ void main() {
 
     test('Status', () async {
       try {
-        var resp = await rest.get(url + '/status');
+        var resp = await rest.get(Uri.parse(url + '/status'));
 
         print(resp.body.toString());
 

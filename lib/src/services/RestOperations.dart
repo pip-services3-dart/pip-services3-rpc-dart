@@ -1,8 +1,8 @@
 import 'dart:async';
 
-import 'package:angel_framework/angel_framework.dart' as angel;
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_components/pip_services3_components.dart';
+import 'package:shelf/shelf.dart';
 
 import './HttpResponseSender.dart';
 
@@ -11,13 +11,11 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
   var counters = CompositeCounters();
   var dependencyResolver = DependencyResolver();
 
-  String componentName;
+  String? componentName;
 
   RestOperations();
 
-  RestOperations.withName(String name) {
-    componentName = name;
-  }
+  RestOperations.withName(String name) : componentName = name;
 
   @override
   void configure(ConfigParams config) {
@@ -31,14 +29,14 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
     dependencyResolver.setReferences(references);
   }
 
-  Timing instrument(String correlationId, String name) {
+  CounterTiming instrument(String? correlationId, String name) {
     logger.trace(correlationId, 'Executing %s method', [name]);
     counters.incrementOne(name + '.exec_count');
     return counters.beginTiming(name + '.exec_time');
   }
 
-  void instrumentError(String correlationId, String name, err,
-      [bool reerror = false]) {
+  void instrumentError(String? correlationId, String name, err,
+      [bool? reerror = false]) {
     if (err != null) {
       logger.error(correlationId, ApplicationException().wrap(err),
           'Failed to execute %s method', [name]);
@@ -49,12 +47,19 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
     }
   }
 
-  dynamic getCorrelationId(angel.RequestContext req) {
-    return req.params['correlation_id'];
+  /// Returns correlationId from request
+  /// - [req] -  http request
+  /// Returns Returns correlationId from request
+  String? getCorrelationId(Request req) {
+    var correlationId = req.url.queryParameters['correlation_id'];
+    if (correlationId == null || correlationId == '') {
+      correlationId = req.headers['correlation_id'];
+    }
+    return correlationId;
   }
 
-  FilterParams getFilterParams(angel.RequestContext req) {
-    var params = Map.from(req.queryParameters);
+  FilterParams getFilterParams(Request req) {
+    var params = Map.from(req.url.queryParameters);
 
     params.remove('skip');
     params.remove('take');
@@ -64,110 +69,98 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
     return filter;
   }
 
-  PagingParams getPagingParams(angel.RequestContext req) {
+  PagingParams getPagingParams(Request req) {
     var params = <String, dynamic>{};
-    params['skip'] = req.queryParameters['skip'] ?? 0;
-    params['take'] = req.queryParameters['take'] ?? 100;
-    params['total'] = req.queryParameters['total'] ?? false;
+    params['skip'] = req.url.queryParameters['skip'] ?? 0;
+    params['take'] = req.url.queryParameters['take'] ?? 100;
+    params['total'] = req.url.queryParameters['total'] ?? false;
     var paging = PagingParams.fromValue(params);
     return paging;
   }
 
-  void sendResult(
-      angel.RequestContext req, angel.ResponseContext res, err, result) {
-    HttpResponseSender.sendResult(req, res, err, result);
+  FutureOr<Response> sendResult(Request req, err, result) async {
+    return await HttpResponseSender.sendResult(req, result);
   }
 
-  void sendEmptyResult(
-      angel.RequestContext req, angel.ResponseContext res, err) {
-    HttpResponseSender.sendEmptyResult(req, res, err);
+  FutureOr<Response> sendEmptyResult(Request req, err) async {
+    return await HttpResponseSender.sendEmptyResult(req, err);
   }
 
-  void sendCreatedResult(
-      angel.RequestContext req, angel.ResponseContext res, err, result) {
-    return HttpResponseSender.sendCreatedResult(req, res, err, result);
+  FutureOr<Response> sendCreatedResult(Request req, err, result) async {
+    return await HttpResponseSender.sendCreatedResult(req, result);
   }
 
-  void sendDeletedResult(
-      angel.RequestContext req, angel.ResponseContext res, err, result) {
-    return HttpResponseSender.sendDeletedResult(req, res, err, result);
+  FutureOr<Response> sendDeletedResult(Request req, err, result) async {
+    return await HttpResponseSender.sendDeletedResult(req, result);
   }
 
-  void sendError(angel.RequestContext req, angel.ResponseContext res, error) {
-    HttpResponseSender.sendError(req, res, error);
+  FutureOr<Response> sendError(Request req, error) async {
+    return await HttpResponseSender.sendError(req, error);
   }
 
-  void sendBadRequest(
-      angel.RequestContext req, angel.ResponseContext res, String message) {
+  FutureOr<Response> sendBadRequest(Request req, String message) async {
     var correlationId = getCorrelationId(req);
     var error = BadRequestException(correlationId, 'BAD_REQUEST', message);
-    sendError(req, res, error);
+    return await sendError(req, error);
   }
 
-  void sendUnauthorized(
-      angel.RequestContext req, angel.ResponseContext res, String message) {
+  FutureOr<Response> sendUnauthorized(Request req, String message) async {
     var correlationId = getCorrelationId(req);
     var error = UnauthorizedException(correlationId, 'UNAUTHORIZED', message);
-    sendError(req, res, error);
+    return await sendError(req, error);
   }
 
-  void sendNotFound(
-      angel.RequestContext req, angel.ResponseContext res, String message) {
+  FutureOr<Response> sendNotFound(Request req, String message) async {
     var correlationId = getCorrelationId(req);
     var error = NotFoundException(correlationId, 'NOT_FOUND', message);
-    sendError(req, res, error);
+    return await sendError(req, error);
   }
 
-  void sendConflict(
-      angel.RequestContext req, angel.ResponseContext res, String message) {
+  FutureOr<Response> sendConflict(Request req, String message) async {
     var correlationId = getCorrelationId(req);
     var error = ConflictException(correlationId, 'CONFLICT', message);
-    sendError(req, res, error);
+    return await sendError(req, error);
   }
 
-  void sendSessionExpired(
-      angel.RequestContext req, angel.ResponseContext res, String message) {
+  FutureOr<Response> sendSessionExpired(Request req, String message) async {
     var correlationId = getCorrelationId(req);
     var error = UnknownException(correlationId, 'SESSION_EXPIRED', message);
     error.status = 440;
-    sendError(req, res, error);
+    return await sendError(req, error);
   }
 
-  void sendInternalError(
-      angel.RequestContext req, angel.ResponseContext res, String message) {
+  FutureOr<Response> sendInternalError(Request req, String message) async {
     var correlationId = getCorrelationId(req);
     var error = UnknownException(correlationId, 'INTERNAL', message);
-    sendError(req, res, error);
+    return await sendError(req, error);
   }
 
-  void sendServerUnavailable(
-      angel.RequestContext req, angel.ResponseContext res, String message) {
+  FutureOr<Response> sendServerUnavailable(Request req, String message) async {
     var correlationId = getCorrelationId(req);
     var error = ConflictException(correlationId, 'SERVER_UNAVAILABLE', message);
     error.status = 503;
-    sendError(req, res, error);
+    return await sendError(req, error);
   }
 
-  Function(angel.RequestContext req, angel.ResponseContext res) invoke(
-      String operation) {
-    return (angel.RequestContext req, angel.ResponseContext res) {
+  Function(Request req, Response res) invoke(String operation) {
+    return (Request req, Response res) {
       //TODO: Wrote code, if thos methods are needed
       throw Exception('RestOperations: Need wrote Invoke method!!!');
       //this. ['operation'](req, res);
     };
   }
 
-  Future safeInvoke(angel.RequestContext req, angel.ResponseContext res,
-      String name, Function() operation, Function(Exception err) error) async {
+  Future safeInvoke(Request req, String name, Function() operation,
+      Function(Exception err) error) async {
     var correlationId = getCorrelationId(req);
 
     var timing = instrument(correlationId, name);
     try {
-      await operation();
+      return await operation();
     } catch (err) {
       instrumentError(correlationId, name, err);
 
-      await error(ApplicationException().wrap(err));
+      return await error(ApplicationException().wrap(err));
     } finally {
       timing.endTiming();
     }

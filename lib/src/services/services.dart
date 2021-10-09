@@ -13,3 +13,5 @@ export './StatusOperations.dart';
 
 export './ISwaggerService.dart';
 export './CommandableSwaggerDocument.dart';
+
+export './InstrumentTiming.dart';

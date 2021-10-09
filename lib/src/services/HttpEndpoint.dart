@@ -1,7 +1,10 @@
 import 'dart:async';
+import 'dart:convert';
+import 'dart:io';
 
-import 'package:angel_framework/angel_framework.dart' as angel;
-import 'package:angel_framework/http.dart';
+import 'package:shelf/shelf.dart';
+import 'package:shelf_router/shelf_router.dart';
+import 'package:shelf/shelf_io.dart' as shelf_io;
 
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import 'package:pip_services3_components/pip_services3_components.dart';
@@ -78,17 +81,18 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
     true
   ]);
 
-  AngelHttp _server;
-  angel.Angel _app;
-  final _middleware = <angel.RequestHandler>[];
+  HttpServer? _server; // = shelf_io.serve((request) => null, address, port);
+  Router? _app;
   final _connectionResolver = HttpConnectionResolver();
   final _logger = CompositeLogger();
   final _counters = CompositeCounters();
   bool _maintenanceEnabled = false;
   int _fileMaxSize = 200 * 1024 * 1024;
   bool _protocolUpgradeEnabled = false;
-  String _uri;
+  String? _uri;
   final _registrations = <IRegisterable>[];
+
+  final List<Function(Request req)> _interceptors = [];
 
   /// Configures this HttpEndpoint using the given configuration parameters.
   ///
@@ -138,6 +142,12 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
     _connectionResolver.setReferences(references);
   }
 
+  /// Gets an HTTP server instance.
+  /// Returns an HTTP server instance of <code>null</code> if endpoint is closed.
+  HttpServer? getServer() {
+    return _server;
+  }
+
   /// Returns whether or not this endpoint is open with an actively listening REST server.
   @override
   bool isOpen() {
@@ -151,32 +161,44 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// Return              Future when the opening process is complete.
   ///                     Will be called with an error if one is raised.
   @override
-  Future open(String correlationId) async {
+  Future open(String? correlationId) async {
     if (isOpen()) {
       return null;
     }
 
     var connection = await _connectionResolver.resolve(correlationId);
 
-    _uri = connection.getUri();
+    _uri = connection?.getAsString('uri');
+    var host = connection!.getAsString('host');
+    var port = connection.getAsInteger('port');
     try {
-      _app = angel.Angel();
+      _app = Router();
 
-      if (connection.getProtocol('http') == 'https') {
-        var sslKeyFile = connection.getAsNullableString('ssl_key_file');
-        var sslCrtFile = connection.getAsNullableString('ssl_crt_file');
-        _server = AngelHttp.secure(_app, sslCrtFile, sslKeyFile);
-      } else {
-        _server = AngelHttp(_app);
+      var startServer;
+
+      var serverContext;
+
+      if (connection.getAsStringWithDefault('protocol', 'http') == 'https') {
+        var sslKeyFile = connection.getAsString('ssl_key_file');
+        var sslCrtFile = connection.getAsString('ssl_crt_file');
+
+        var certificateChain = Platform.script.resolve(sslCrtFile).toFilePath();
+        var serverKey = Platform.script.resolve(sslKeyFile).toFilePath();
+        serverContext = SecurityContext();
+        serverContext.useCertificateChain(certificateChain);
+        serverContext.usePrivateKey(serverKey);
+
+        // todo add ssl_ca_file
       }
 
-      _middleware.add(_addCors);
-      _middleware.add(_addCompatibility);
-      _middleware.add(_noCache);
-      _middleware.add(_doMaintenance);
+      startServer = () async {
+        _server = await shelf_io.serve(
+            Pipeline().addMiddleware(_handler()).addHandler(_app!), host, port,
+            securityContext: serverContext);
+      };
 
       _performRegistrations();
-      await _server.startServer(connection.getHost(), connection.getPort());
+      await startServer();
       await _connectionResolver.register(correlationId);
       _logger.debug(correlationId, 'Opened REST service at %s', [_uri]);
     } catch (ex) {
@@ -193,18 +215,44 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
     }
   }
 
-  Future _addCors(angel.RequestContext req, angel.ResponseContext res) async {
-    res.headers.addAll(<String, String>{
+  /// request handler
+  Middleware _handler() => (innerHandler) {
+        return (request) async {
+          // execute before request
+          request = await _noCache(request);
+          request = await _addCompatibility(request);
+
+          // apply interceptors
+          _interceptors.forEach((interseptor) async {
+            request = await interseptor(request) ?? request;
+          });
+
+          return Future.sync(() => innerHandler(request)).then(
+              (response) async {
+            // execute after request
+            response = await _addCors(response);
+            response = await _doMaintenance(response);
+
+            return response;
+          }, onError: (Object error, StackTrace stackTrace) {
+            // execute if error
+            if (error is HijackException) throw error;
+          });
+        };
+      };
+
+  FutureOr<Response> _addCors(Response res) async {
+    res = res.change(headers: <String, String>{
       'Access-Control-Allow-Origin': '*',
       'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
       'Access-Control-Allow-Headers':
           'Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization'
     });
-    return true;
+
+    return res;
   }
 
-  Future _addCompatibility(
-      angel.RequestContext req, angel.ResponseContext res) async {
+  FutureOr<Request> _addCompatibility(Request req) async {
     // TODO: need write the method
     // req.param = (name) => {
     //     if (req.query) {
@@ -223,29 +271,32 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
     // }
 
     // req.route.params = req.params;
-    return true;
+    return req;
   }
 
   // Prevents IE from caching REST requests
-  Future _noCache(angel.RequestContext req, angel.ResponseContext res) async {
-    var headers = <String, String>{
+  FutureOr<Request> _noCache(Request request) async {
+    request = request.change(headers: <String, Object>{
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
       'Expires': '0',
-    };
-    res.headers.addAll(headers);
-    return true;
+    });
+
+    return request;
   }
 
   // Returns maintenance error code
-  Future _doMaintenance(
-      angel.RequestContext req, angel.ResponseContext res) async {
+  FutureOr<Response> _doMaintenance(Response res) async {
     // Make this more sophisticated
     if (_maintenanceEnabled) {
-      res.headers.addAll({'Retry-After': '3600'});
-      res.json(503);
+      res.change(headers: {'Retry-After': '3600'});
+      res = Response(503,
+          body: await res.readAsString(),
+          headers: res.headers,
+          encoding: res.encoding,
+          context: res.context);
     }
-    return true;
+    return res;
   }
 
   /// Closes this endpoint and the REST server (service) that was opened earlier.
@@ -254,23 +305,20 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// Return              once the closing process is complete.
   ///                     Will be called with an error if one is raised.
   @override
-  Future close(String correlationId) async {
+  Future close(String? correlationId) async {
     if (_server != null) {
       // Eat exceptions
       try {
-        await _server.close();
-        await _app.close();
+        await _server!.close();
+        // await _app.close();
 
         _logger.debug(correlationId, 'Closed REST service at %s', [_uri]);
       } catch (ex) {
-        _logger.warn(
-            correlationId, 'Failed while closing REST service: %s', ex);
+        _logger
+            .warn(correlationId, 'Failed while closing REST service: %s', [ex]);
         rethrow;
       }
-      _middleware.remove(_addCors);
-      _middleware.remove(_addCompatibility);
-      _middleware.remove(_noCache);
-      _middleware.remove(_doMaintenance);
+
       _server = null;
       _app = null;
       _uri = null;
@@ -302,11 +350,11 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
     }
   }
 
-  String _fixRoute(String route) {
+  String _fixRoute(String? route) {
     if (route != null && route.isNotEmpty && !route.startsWith('/')) {
       route = '/' + route;
     }
-    return route;
+    return route ?? '';
   }
 
   /// Registers an action in this objects REST server (service) by the given method and route.
@@ -315,8 +363,8 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   /// - [route]         the route to register in this object's REST server (service).
   /// - [schema]        the schema to use for parameter validation.
   /// - [action]        the action to perform at the given route.
-  void registerRoute(String method, String route, Schema schema,
-      action(angel.RequestContext req, angel.ResponseContext res)) {
+  void registerRoute(String method, String route, Schema? schema,
+      FutureOr<Response> Function(Request req) action) {
     if (_app == null) {
       throw ApplicationException('', 'NOT_OPENED', 'Can\'t add route');
     }
@@ -326,29 +374,48 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
     route = _fixRoute(route);
 
-    var actionCurl =
-        (angel.RequestContext req, angel.ResponseContext res) async {
+    var actionCurl = (Request req) async {
       // Perform validation
       if (schema != null) {
-        var params = req.params;
-        params.addAll(req.queryParameters);
-        if (req.contentType != null) {
-          await req.parseBody();
-          var body = req.bodyAsMap;
-          params['body'] = body;
+        var params = <dynamic, dynamic>{};
+
+        // query parameters
+        req.url.queryParameters.forEach((key, value) {
+          params.addAll({key: value});
+        });
+
+        // route parameters
+        req.params.forEach((key, value) {
+          params.addAll({key: value});
+        });
+
+        if (req.headers.containsKey('Content-Type')) {
+          var body = await req.readAsString();
+          params.addAll({'body': json.decode(body)});
+          req = req.change(body: body);
         }
 
-        var correlationId = params['correlaton_id'];
+        var correlationId = getCorrelationId(req);
         var err =
             schema.validateAndReturnException(correlationId, params, false);
         if (err != null) {
-          HttpResponseSender.sendError(req, res, err);
-          return;
+          return HttpResponseSender.sendError(req, err);
         }
       }
-      await action(req, res);
+      return await action(req);
     };
-    _app.addRoute(method, route, actionCurl, middleware: _middleware);
+    _app!.add(method, route, actionCurl);
+  }
+
+  /// Returns correlationId from request
+  /// - [req] -  http request
+  /// Returns Returns correlationId from request
+  String? getCorrelationId(Request req) {
+    var correlationId = req.url.queryParameters['correlation_id'];
+    if (correlationId == null || correlationId == '') {
+      correlationId = req.headers['correlation_id'];
+    }
+    return correlationId;
   }
 
   /// Registers an action with authorization in this objects REST server (service)
@@ -363,34 +430,31 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
       String method,
       String route,
       Schema schema,
-      authorize(angel.RequestContext req, angel.ResponseContext res, next()),
-      action(angel.RequestContext req, angel.ResponseContext res)) {
+      Future Function(Request req, Function next)? authorize,
+      Future Function(Request req) action) {
     if (authorize != null) {
       var nextAction = action;
-      action = (req, res) async {
-        await authorize(req, res, () async {
-          await nextAction(req, res);
+      action = (req) async {
+        await authorize(req, () async {
+          await nextAction(req);
         });
       };
     }
 
-    registerRoute(method, route, schema, action);
+    // registerRoute(method, route, schema, action); // todo after finish auth nodule
   }
 
   /// Registers a middleware action for the given route.
   ///
   /// - [route]         the route to register in this object's REST server (service).
   /// - [action]        the middleware action to perform at the given route.
-  void registerInterceptor(String route,
-      Future action(angel.RequestContext req, angel.ResponseContext res)) {
-    route = _fixRoute(route);
-
-    _middleware
-        .add((angel.RequestContext req, angel.ResponseContext res) async {
-      if (route != null && route != '' && !req.uri.path.startsWith(route)) {
-        return true;
+  void registerInterceptor(String? route, Function(Request req) action) {
+    route = route != null && route.startsWith('/') ? route.substring(1) : route;
+    _interceptors.add((Request req) async {
+      if (route != null && route != '' && !req.url.path.startsWith(route)) {
+        return null;
       } else {
-        return action(req, res);
+        return await action(req);
       }
     });
   }

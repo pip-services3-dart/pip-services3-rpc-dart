@@ -33,7 +33,7 @@ import './RestClient.dart';
 ///     class MyCommandableHttpClient extends CommandableHttpClient implements IMyClient {
 ///        ...
 ///
-///        Future<MyData> getData(String correlationId, String id) async {
+///        Future<MyData> getData(String? correlationId, String id) async {
 ///            var result = await callCommand(
 ///                "get_data",
 ///                correlationId,
@@ -71,8 +71,8 @@ class CommandableHttpClient extends RestClient {
   /// - [params]            command parameters.
   /// Return          Future that receives result or error.
 
-  Future callCommand(String name, String correlationId, params) async {
-    var timing = instrument(correlationId, baseRoute + '.' + name);
+  Future callCommand(String name, String? correlationId, params) async {
+    var timing = instrument(correlationId, (baseRoute ?? '') + '.' + name);
 
     try {
       var response = await call('post', name, correlationId, {}, params ?? {});
@@ -80,7 +80,7 @@ class CommandableHttpClient extends RestClient {
       return response;
     } catch (err) {
       timing.endTiming();
-      instrumentError(correlationId, baseRoute + '.' + name, err, true);
+      instrumentError(correlationId, (baseRoute ?? '') + '.' + name, err, true);
     }
   }
 }

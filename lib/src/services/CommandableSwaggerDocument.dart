@@ -3,27 +3,27 @@ import 'package:pip_services3_commons/pip_services3_commons.dart';
 class CommandableSwaggerDocument {
   String _content = '';
 
-  List<ICommand> commands;
+  List<ICommand> commands = [];
 
   String version = '3.0.2';
-  String baseRoute;
+  String baseRoute = '';
 
-  String infoTitle;
-  String infoDescription;
+  String? infoTitle;
+  String? infoDescription;
   String infoVersion = '1';
-  String infoTermsOfService;
+  String? infoTermsOfService;
 
-  String infoContactName;
-  String infoContactUrl;
-  String infoContactEmail;
+  String? infoContactName;
+  String? infoContactUrl;
+  String? infoContactEmail;
 
-  String infoLicenseName;
-  String infoLicenseUrl;
+  String? infoLicenseName;
+  String? infoLicenseUrl;
 
   CommandableSwaggerDocument(
-      String baseRoute, ConfigParams config, List<ICommand> commands) {
+      String baseRoute, ConfigParams? config, List<ICommand> commands) {
     this.baseRoute = baseRoute;
-    this.commands = commands ?? [];
+    this.commands = commands;
 
     config = config ?? ConfigParams();
     infoTitle = config.getAsStringWithDefault('name', 'CommandableHttpService');
@@ -78,7 +78,7 @@ class CommandableSwaggerDocument {
     return data;
   }
 
-  Map<String, dynamic> _createRequestBodyData(ICommand command) {
+  Map<String, dynamic>? _createRequestBodyData(ICommand command) {
     var schemaData = _createSchemaData(command);
     return schemaData == null
         ? null
@@ -89,11 +89,16 @@ class CommandableSwaggerDocument {
           };
   }
 
-  Map<String, dynamic> _createSchemaData(ICommand command) {
-    var schema = ((command as Command).getSchema()
-        as ObjectSchema); //command.getSchema();// as ObjectSchema;
+  Map<String, dynamic>? _createSchemaData(ICommand command) {
+    ObjectSchema? schema;
 
-    if (schema == null || schema.getProperties() == null) {
+    try {
+      schema = (command as dynamic).get_schema;
+    } on NoSuchMethodError {
+      schema = null;
+    }
+
+    if (schema == null || schema.getProperties().isEmpty) {
       return null;
     }
 
@@ -101,7 +106,7 @@ class CommandableSwaggerDocument {
     var required = [];
 
     for (var property in schema.getProperties()) {
-      properties[property.getName()] = <String, dynamic>{
+      properties[property.getName()!] = <String, dynamic>{
         'type': typeToString(property.getType())
       };
 
@@ -134,21 +139,21 @@ class CommandableSwaggerDocument {
       if (value is String) {
         writeAsString(indent, key, value);
       } else if (value is List) {
-        if ((value as List).isNotEmpty) {
+        if ((value).isNotEmpty) {
           writeName(indent, key);
           for (var index = 0; index < value.length; index++) {
-            var item = (value as List)[index];
+            var item = (value)[index];
             writeArrayItem(indent + 1, item);
           }
         }
       } else if (value is Map) {
-        var values = List.from((value as Map).values);
+        var values = List.from(value.values);
         if (values.indexWhere((dynamic item) {
               return item != null;
             }) >=
             0) {
           writeName(indent, key);
-          writeData(indent + 1, (value as Map));
+          writeData(indent + 1, (value as Map<String, dynamic>));
         }
       } else {
         writeAsObject(indent, key, value);
@@ -179,7 +184,7 @@ class CommandableSwaggerDocument {
     _content += spaces + name + ': ' + value + '\n';
   }
 
-  void writeAsString(int indent, String name, String value) {
+  void writeAsString(int indent, String name, String? value) {
     if (value == null) return;
     var spaces = getSpaces(indent);
     _content += spaces + name + ': \'' + value + '\'\n';

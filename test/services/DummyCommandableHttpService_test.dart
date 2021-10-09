@@ -21,13 +21,13 @@ var restConfig = ConfigParams.fromTuples([
 
 void main() {
   group('DummyCommandableHttpService', () {
-    Dummy _dummy1;
-    Dummy _dummy2;
+    late Dummy _dummy1;
+    late Dummy _dummy2;
 
-    DummyCommandableHttpService service;
+    late DummyCommandableHttpService service;
 
-    http.Client rest;
-    String url;
+    late http.Client rest;
+    late String url;
 
     setUpAll(() async {
       var ctrl = DummyController();
@@ -62,7 +62,7 @@ void main() {
       var dummy1;
 
       // Create one dummy
-      var resp = await rest.post(url + '/dummy/create_dummy',
+      var resp = await rest.post(Uri.parse(url + '/dummy/create_dummy'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'dummy': _dummy1}));
       var dummy = Dummy.fromJson(json.decode(resp.body.toString()));
@@ -73,7 +73,7 @@ void main() {
       dummy1 = dummy;
 
       // Create another dummy
-      resp = await rest.post(url + '/dummy/create_dummy',
+      resp = await rest.post(Uri.parse(url + '/dummy/create_dummy'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'dummy': _dummy2}));
       dummy = Dummy.fromJson(json.decode(resp.body.toString()));
@@ -82,7 +82,7 @@ void main() {
       expect(dummy.key, _dummy2.key);
 
       // Get all dummies
-      resp = await rest.post(url + '/dummy/get_dummies');
+      resp = await rest.post(Uri.parse(url + '/dummy/get_dummies'));
       var dummies = DataPage<Dummy>.fromJson(
           json.decode(resp.body.toString()), (item) => Dummy.fromJson(item));
       expect(dummies, isNotNull);
@@ -90,7 +90,7 @@ void main() {
 
       // Update the dummy
       dummy1.content = 'Updated Content 1';
-      resp = await rest.post(url + '/dummy/update_dummy',
+      resp = await rest.post(Uri.parse(url + '/dummy/update_dummy'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'dummy': dummy1}));
       dummy = Dummy.fromJson(json.decode(resp.body.toString()));
@@ -101,21 +101,33 @@ void main() {
       dummy1 = dummy;
 
       // Delete dummy
-      resp = await rest.post(url + '/dummy/delete_dummy',
+      resp = await rest.post(Uri.parse(url + '/dummy/delete_dummy'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'dummy_id': dummy1.id}));
       dummy = Dummy.fromJson(json.decode(resp.body.toString()));
       expect(dummy.id, dummy1.id);
 
       // Try to get delete dummy
-      resp = await rest.post(url + '/dummy/get_dummy_by_id',
+      resp = await rest.post(Uri.parse(url + '/dummy/get_dummy_by_id'),
           headers: {'Content-Type': 'application/json'},
           body: json.encode({'dummy_id': dummy1.id}));
       expect(resp.body, isEmpty);
     });
 
+    test('Check correlationId', () async {
+      // check transmit correllationId over params
+      var resp = await rest.post(Uri.parse(
+          url + '/dummy/check_correlation_id?correlation_id=test_cor_id'));
+      expect(json.decode(resp.body)['correlation_id'], 'test_cor_id');
+
+      // check transmit correllationId over header
+      resp = await rest.post(Uri.parse(url + '/dummy/check_correlation_id'),
+          headers: {'correlation_id': 'test_cor_id_header'});
+      expect(json.decode(resp.body)['correlation_id'], 'test_cor_id_header');
+    });
+
     test('Get OpenApi Spec', () async {
-      var resp = await rest.get(url + '/dummy/swagger');
+      var resp = await rest.get(Uri.parse(url + '/dummy/swagger'));
       expect(resp.body.contains('openapi:'), true);
     });
 
@@ -141,7 +153,7 @@ void main() {
       ]);
       service.setReferences(references);
       await service.open('');
-      var resp = await rest.get(url + '/dummy/swagger');
+      var resp = await rest.get(Uri.parse(url + '/dummy/swagger'));
       expect(openApiContent, resp.body);
     });
   });

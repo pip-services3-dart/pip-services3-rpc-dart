@@ -7,10 +7,10 @@ import './DummyDirectClient.dart';
 
 void main() {
   group('DummyDirectClient', () {
-    Dummy _dummy1;
-    Dummy _dummy2;
+    late Dummy _dummy1;
+    late Dummy _dummy2;
 
-    DummyDirectClient client;
+    late DummyDirectClient client;
 
     setUpAll(() async {
       var ctrl = DummyController();
@@ -40,7 +40,7 @@ void main() {
       // Create one dummy
       var dummy = await client.createDummy(null, _dummy1);
       expect(dummy, isNotNull);
-      expect(dummy.content, _dummy1.content);
+      expect(dummy!.content, _dummy1.content);
       expect(dummy.key, _dummy1.key);
 
       dummy1 = dummy;
@@ -48,7 +48,7 @@ void main() {
       // Create another dummy
       dummy = await client.createDummy(null, _dummy2);
       expect(dummy, isNotNull);
-      expect(dummy.content, _dummy2.content);
+      expect(dummy!.content, _dummy2.content);
       expect(dummy.key, _dummy2.key);
 
       // Get all dummies
@@ -56,13 +56,13 @@ void main() {
           null, FilterParams(), PagingParams(0, 5, false));
 
       expect(dummies, isNotNull);
-      expect(dummies.data.length >= 2, isTrue);
+      expect(dummies!.data.length >= 2, isTrue);
 
       // Update the dummy
       dummy1.content = 'Updated Content 1';
       dummy = await client.updateDummy(null, dummy1);
       expect(dummy, isNotNull);
-      expect(dummy.content, 'Updated Content 1');
+      expect(dummy!.content, 'Updated Content 1');
       expect(dummy.key, _dummy1.key);
 
       dummy1 = dummy;

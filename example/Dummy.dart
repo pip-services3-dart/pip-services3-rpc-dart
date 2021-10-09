@@ -2,9 +2,9 @@ import 'package:pip_services3_commons/pip_services3_commons.dart';
 
 class Dummy implements IStringIdentifiable, ICloneable {
   @override
-  String id;
-  String key;
-  String content;
+  String? id;
+  String? key;
+  String? content;
 
   Dummy() {
     Dummy.from('', '', '');
