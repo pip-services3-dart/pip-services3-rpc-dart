@@ -19,6 +19,8 @@ import './IRegisterable.dart';
 ///
 /// Parameters to pass to the [configure] method for component configuration:
 ///
+/// - [cors_headers] - a comma-separated list of allowed CORS headers
+/// - [cors_origins] - a comma-separated list of allowed CORS origins
 /// - [connection(s)] - the connection resolver's connections:
 ///     - '[connection.discovery_key]' - the key to use for connection resolving in a discovery service;
 ///     - '[connection.protocol]' - the connection's protocol;
@@ -91,6 +93,8 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   bool _protocolUpgradeEnabled = false;
   String? _uri;
   final _registrations = <IRegisterable>[];
+  List<String> _allowedHeaders = ['correlation_id'];
+  List<String> _allowedOrigins = [];
 
   final List<Function(Request req)> _interceptors = [];
 
@@ -122,6 +126,24 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
         config.getAsLongWithDefault('options.file_max_size', _fileMaxSize);
     _protocolUpgradeEnabled = config.getAsBooleanWithDefault(
         'options.protocol_upgrade_enabled', _protocolUpgradeEnabled);
+
+    var headers = config.getAsStringWithDefault('cors_headers', '').split(',');
+    for (var header in headers) {
+      header = header.trim();
+      if (header != '') {
+        _allowedHeaders = _allowedHeaders.where((h) => h != header).toList();
+        _allowedHeaders.add(header);
+      }
+    }
+
+    var origins = config.getAsStringWithDefault('cors_origins', '').split(',');
+    for (var origin in origins) {
+      origin = origin.trim();
+      if (origin != '') {
+        _allowedOrigins = _allowedOrigins.where((h) => h != origin).toList();
+        _allowedOrigins.add(origin);
+      }
+    }
   }
 
   /// Sets references to this endpoint's logger, counters, and connection resolver.
@@ -242,11 +264,17 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
       };
 
   FutureOr<Response> _addCors(Response res) async {
+    // Configure CORS requests
+    var origins = _allowedOrigins;
+    if (origins.isEmpty) {
+      origins = ['*'];
+    }
+
     res = res.change(headers: <String, String>{
-      'Access-Control-Allow-Origin': '*',
+      'Access-Control-Allow-Origin': origins.join(', '),
       'Access-Control-Allow-Methods': 'POST, GET, OPTIONS, PUT, DELETE',
-      'Access-Control-Allow-Headers':
-          'Accept, Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token, Authorization'
+      'Access-Control-Expose-Headers': _allowedHeaders.join(', '),
+      'Access-Control-Allow-Headers': _allowedHeaders.join(', ')
     });
 
     return res;

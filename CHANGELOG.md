@@ -40,3 +40,8 @@
 
 - Migrate RPC from **angel** to **shelf** framework
 - Added null-safety support
+
+## 1.1.1
+
+- Added configuration of CORS headers to HttpEndpoint
+- Fixed HttpConnectionResolver resolve uri

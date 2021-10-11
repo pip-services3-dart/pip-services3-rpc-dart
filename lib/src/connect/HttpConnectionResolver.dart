@@ -127,7 +127,7 @@ class HttpConnectionResolver implements IReferenceable, IConfigurable {
     var uri = connection.getAsString('uri');
 
     if (uri == '') {
-      var protocol = connection.getAsStringWithDefault('protocol', 'uri');
+      var protocol = connection.getAsStringWithDefault('protocol', 'http');
       var host = connection.getAsString('host');
       var port = connection.getAsInteger('port');
 
