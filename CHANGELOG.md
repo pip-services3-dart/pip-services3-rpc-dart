@@ -45,3 +45,7 @@
 
 - Added configuration of CORS headers to HttpEndpoint
 - Fixed HttpConnectionResolver resolve uri
+
+## 1.1.2
+
+- Fixed params req, res for StatusService and RestOperations

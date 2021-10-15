@@ -28,9 +28,9 @@ class StatusOperations extends RestOperations {
         dependencyResolver.getOneOptional<ContextInfo>('context-info');
   }
 
-  Function(Request req, Response res) getStatusOperation() {
-    return (Request req, Response res) async {
-      return await status(req, res);
+  Function(Request req) getStatusOperation() {
+    return (Request req) async {
+      return await status(req);
     };
   }
 
@@ -38,7 +38,7 @@ class StatusOperations extends RestOperations {
   ///
   /// - [req]   an HTTP request
   /// - [res]   an HTTP response
-  FutureOr<Response> status(Request req, Response res) async {
+  FutureOr<Response> status(Request req) async {
     var id = _contextInfo != null ? _contextInfo!.contextId : '';
     var name = _contextInfo != null ? _contextInfo!.name : 'Unknown';
     var description = _contextInfo != null ? _contextInfo!.description : '';

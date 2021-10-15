@@ -142,8 +142,8 @@ abstract class RestOperations implements IConfigurable, IReferenceable {
     return await sendError(req, error);
   }
 
-  Function(Request req, Response res) invoke(String operation) {
-    return (Request req, Response res) {
+  Function(Request req) invoke(String operation) {
+    return (Request req) {
       //TODO: Wrote code, if thos methods are needed
       throw Exception('RestOperations: Need wrote Invoke method!!!');
       //this. ['operation'](req, res);
