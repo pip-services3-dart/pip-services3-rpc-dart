@@ -419,7 +419,8 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
         if (req.headers.containsKey('Content-Type')) {
           var body = await req.readAsString();
-          params.addAll({'body': json.decode(body)});
+          var mapBody = body.isNotEmpty ? json.decode(body) : {};
+          params.addAll({'body': mapBody});
           req = req.change(body: body);
         }
 

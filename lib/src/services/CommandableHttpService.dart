@@ -100,7 +100,7 @@ abstract class CommandableHttpService extends RestService {
 
         if (req.headers['Content-Type'] != null && req.headers.isNotEmpty) {
           var body = await req.readAsString();
-          params = json.decode(body) ?? {};
+          params = body.isNotEmpty ? json.decode(body) : {};
           req = req.change(body: body);
         }
 

@@ -49,3 +49,7 @@
 ## 1.1.2
 
 - Fixed params req, res for StatusService and RestOperations
+
+## 1.1.3
+
+- Fixed prepearing empty POST requests
