@@ -21,6 +21,9 @@ import './IRegisterable.dart';
 ///
 /// - [cors_headers] - a comma-separated list of allowed CORS headers
 /// - [cors_origins] - a comma-separated list of allowed CORS origins
+///
+/// - [cors_headers] - a comma-separated list of allowed CORS headers
+/// - [cors_origins] - a comma-separated list of allowed CORS origins
 /// - [connection(s)] - the connection resolver's connections:
 ///     - '[connection.discovery_key]' - the key to use for connection resolving in a discovery service;
 ///     - '[connection.protocol]' - the connection's protocol;
@@ -480,7 +483,14 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   void registerInterceptor(String? route, Function(Request req) action) {
     route = route != null && route.startsWith('/') ? route.substring(1) : route;
     _interceptors.add((Request req) async {
-      if (route != null && route != '' && !req.url.path.startsWith(route)) {
+      var regExp = RegExp(
+        route ?? '',
+        caseSensitive: true,
+        multiLine: false,
+      );
+
+      var match = regExp.hasMatch(req.url.path);
+      if (route != null && route != '' && !match) {
         return null;
       } else {
         return await action(req);

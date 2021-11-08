@@ -106,9 +106,6 @@ void main() {
       // Try to get delete dummy
       resp = await rest.get(Uri.parse(url + '/dummies/' + dummy1.id));
       expect(resp.body, isEmpty);
-
-      // check interceptors
-      expect(service.getNumberOfCalls(), 6);
     });
 
     test('Check correlationId', () async {
@@ -120,6 +117,7 @@ void main() {
       // check transmit correllationId over header
       resp = await rest.get(Uri.parse(url + '/dummies/check/correlation_id'),
           headers: {'correlation_id': 'test_cor_id_header'});
+      expect(service.getNumberOfCalls(), 4); // Check interceptor
       expect(json.decode(resp.body)['correlation_id'], 'test_cor_id_header');
     });
 

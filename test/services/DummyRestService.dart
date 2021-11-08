@@ -87,7 +87,7 @@ class DummyRestService extends RestService {
 
   @override
   void register() {
-    registerInterceptor('/dummies', _incrementNumberOfCalls);
+    registerInterceptor(r'/dummies$', _incrementNumberOfCalls);
 
     registerRoute(
         'get',

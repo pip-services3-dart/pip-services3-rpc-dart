@@ -1,5 +1,5 @@
 name: pip_services3_rpc
-version: 1.1.3
+version: 1.2.0
 description: This framework is a part of the [Pip.Services] project. It provides the following synchronous communication components over HTTP RPC
 homepage: https://github.com/pip-services3-dart/pip-services3-rpc-dart
 

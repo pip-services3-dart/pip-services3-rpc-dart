@@ -53,3 +53,12 @@
 ## 1.1.3
 
 - Fixed prepearing empty POST requests
+
+## 1.2.0
+
+- **services**  Added RegRxp supporting to interceptors 
+   Examples:
+   - the interceptor route **"/dummies"** corresponds to all of this routes **"/dummies"**, **"/dummies/check"**, **"/dummies/test"**
+   - the interceptor route **"/dummies$"** corresponds only for this route **"/dummies"**. The routes **"/dummies/check"**, **"/dummies/test"** aren't processing by interceptor
+   Please, don't forgot, route in interceptor always automaticaly concateneted with base route, like this **service_base_route + route_in_interceptor**. 
+   For example, "/api/v1/" - service base route, "/dummies$" - interceptor route, in result will be next expression - "/api/v1/dummies$"
