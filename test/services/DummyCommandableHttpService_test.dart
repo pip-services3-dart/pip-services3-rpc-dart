@@ -6,6 +6,7 @@ import 'package:pip_services3_commons/pip_services3_commons.dart';
 
 import '../Dummy.dart';
 import '../DummyController.dart';
+import '../SubDummy.dart';
 import './DummyCommandableHttpService.dart';
 
 var restConfig = ConfigParams.fromTuples([
@@ -54,8 +55,17 @@ void main() {
 
     setUp(() {
       rest = http.Client();
-      _dummy1 = Dummy(id: null, key: 'Key 1', content: 'Content 1');
-      _dummy2 = Dummy(id: null, key: 'Key 2', content: 'Content 2');
+      _dummy1 = Dummy(
+          id: null,
+          key: 'Key 1',
+          content: 'Content 1',
+          array: [SubDummy(key: 'SubKey 1', content: 'SubContent 1')]);
+
+      _dummy2 = Dummy(
+          id: null,
+          key: 'Key 2',
+          content: 'Content 2',
+          array: [SubDummy(key: 'SubKey 2', content: 'SubContent 2')]);
     });
 
     test('CRUD Operations', () async {

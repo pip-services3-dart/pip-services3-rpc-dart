@@ -1,6 +1,7 @@
 import 'package:test/test.dart';
 import 'package:pip_services3_commons/pip_services3_commons.dart';
 import '../Dummy.dart';
+import '../SubDummy.dart';
 import './IDummyClient.dart';
 
 class DummyClientFixture {
@@ -11,8 +12,17 @@ class DummyClientFixture {
   }
 
   Future testCrudOperations() async {
-    var dummy1 = Dummy(id: null, key: 'Key 1', content: 'Content 1');
-    var dummy2 = Dummy(id: null, key: 'Key 2', content: 'Content 2');
+    var dummy1 = Dummy(
+        id: null,
+        key: 'Key 1',
+        content: 'Content 1',
+        array: [SubDummy(key: 'SubKey 1', content: 'SubContent 1')]);
+
+    var dummy2 = Dummy(
+        id: null,
+        key: 'Key 2',
+        content: 'Content 2',
+        array: [SubDummy(key: 'SubKey 2', content: 'SubContent 2')]);
 
     // Create one dummy
     var dummy = await _client.createDummy(null, dummy1);

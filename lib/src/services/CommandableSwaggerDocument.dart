@@ -20,6 +20,8 @@ class CommandableSwaggerDocument {
   String? infoLicenseName;
   String? infoLicenseUrl;
 
+  Map<String, dynamic> objectType = {'type': 'object'};
+
   CommandableSwaggerDocument(
       String baseRoute, ConfigParams? config, List<ICommand> commands) {
     this.baseRoute = baseRoute;
@@ -102,15 +104,34 @@ class CommandableSwaggerDocument {
       return null;
     }
 
+    return _createPropertyData(schema, true);
+  }
+
+  Map<String, dynamic> _createPropertyData(
+      ObjectSchema schema, bool includeRequired) {
     var properties = <String, dynamic>{};
     var required = [];
 
     for (var property in schema.getProperties()) {
-      properties[property.getName()!] = <String, dynamic>{
-        'type': typeToString(property.getType())
-      };
+      if (property.getType() == null) {
+        properties[property.getName()!] = objectType;
+      } else {
+        var propertyName = property.getName();
+        var propertyType = property.getType();
 
-      if (property.isRequired()) required.add(property.getName());
+        if (propertyType is ArraySchema) {
+          properties[propertyName!] = {
+            'type': 'array',
+            'items': _createPropertyTypeData(propertyType.getValueType())
+          };
+        } else {
+          properties[propertyName!] = _createPropertyTypeData(propertyType);
+        }
+
+        if (includeRequired && property.isRequired()) {
+          required.add(propertyName);
+        }
+      }
     }
 
     var data = <String, dynamic>{'properties': properties};
@@ -119,6 +140,43 @@ class CommandableSwaggerDocument {
       data['required'] = required;
     }
     return data;
+  }
+
+  Map<String, dynamic> _createPropertyTypeData(dynamic propertyType) {
+    if (propertyType is ObjectSchema) {
+      var objectMap = _createPropertyData(propertyType, false);
+      var result = <String, dynamic>{};
+      result.addAll(objectType);
+      result.addAll(objectMap);
+      return result;
+    } else {
+      TypeCode typeCode;
+
+      if (propertyType is TypeCode) {
+        typeCode = propertyType;
+      } else {
+        typeCode = TypeConverter.toTypeCode(propertyType);
+      }
+
+      if (typeCode == TypeCode.Unknown || typeCode == TypeCode.Map) {
+        typeCode = TypeCode.Object;
+      }
+
+      switch (typeCode) {
+        case TypeCode.Integer:
+          return {'type': 'integer', 'format': 'int32'};
+        case TypeCode.Long:
+          return {'type': 'number', 'format': 'int64'};
+        case TypeCode.Float:
+          return {'type': 'number', 'format': 'float'};
+        case TypeCode.Double:
+          return {'type': 'number', 'format': 'double'};
+        case TypeCode.DateTime:
+          return {'type': 'string', 'format': 'date-time'};
+        default:
+          return {'type': TypeConverter.asString(typeCode)};
+      }
+    }
   }
 
   Map<String, dynamic> _createResponsesData() {
@@ -192,16 +250,5 @@ class CommandableSwaggerDocument {
 
   String getSpaces(int length) {
     return ' ' * (length * 2);
-  }
-
-  String typeToString(dynamic type) {
-    // allowed types: array, boolean, integer, number, object, String
-    if (type == TypeCode.Integer || type == TypeCode.Long) return 'integer';
-    if (type == TypeCode.Double || type == TypeCode.Float) return 'number';
-    if (type == TypeCode.String) return 'String';
-    if (type == TypeCode.Boolean) return 'boolean';
-    if (type == TypeCode.Array) return 'array';
-
-    return 'object';
   }
 }
