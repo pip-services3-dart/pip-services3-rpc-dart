@@ -24,27 +24,27 @@ class OwnerAuthorizer {
                 .withStatus(403));
       }
     }
+  }
 
-    Future<Response?> ownerOrAdmin(Request req, user,
-        {String idParam = 'user_id'}) async {
-      if (user == null) {
+  Future<Response?> ownerOrAdmin(Request req, user,
+      {String idParam = 'user_id'}) async {
+    if (user == null) {
+      return await HttpResponseSender.sendError(
+          req,
+          UnauthorizedException(null, 'NOT_SIGNED',
+                  'User must be signed in to perform this operation')
+              .withStatus(401));
+    } else {
+      var userId = req.params[idParam] ?? req.url.queryParameters[idParam];
+      var roles = user != null ? user.roles : null;
+      var admin = roles['admin'] != null;
+
+      if (user.user_id != userId && !admin) {
         return await HttpResponseSender.sendError(
             req,
-            UnauthorizedException(null, 'NOT_SIGNED',
-                    'User must be signed in to perform this operation')
-                .withStatus(401));
-      } else {
-        var userId = req.params[idParam] ?? req.url.queryParameters[idParam];
-        var roles = user != null ? user.roles : null;
-        var admin = roles['admin'] != null;
-
-        if (user.user_id != userId && !admin) {
-          return await HttpResponseSender.sendError(
-              req,
-              UnauthorizedException(null, 'FORBIDDEN',
-                      'Only data owner can perform this operation')
-                  .withStatus(403));
-        }
+            UnauthorizedException(null, 'FORBIDDEN',
+                    'Only data owner can perform this operation')
+                .withStatus(403));
       }
     }
   }

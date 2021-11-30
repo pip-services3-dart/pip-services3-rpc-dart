@@ -362,8 +362,9 @@ abstract class RestService
       String method,
       String route,
       Schema schema,
-      Future Function(Request req, Function next) authorize,
-      Future Function(Request req) action) {
+      FutureOr<Response?> Function(Request req, Future Function() next)
+          authorize,
+      FutureOr<Response> Function(Request req) action) {
     if (endpoint == null) return;
 
     route = _appendBaseRoute(route);

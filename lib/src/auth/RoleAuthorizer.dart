@@ -32,13 +32,13 @@ class RoleAuthorizer {
                 .withStatus(403));
       }
     }
+  }
 
-    Future<Response?> userInRole(Request req, user, String role) async {
-      return await userInRoles(req, user, [role]);
-    }
+  Future<Response?> userInRole(Request req, user, String role) async {
+    return await userInRoles(req, user, [role]);
+  }
 
-    Future<Response?> admin(Request req, user) async {
-      return await userInRole(req, user, 'admin');
-    }
+  Future<Response?> admin(Request req, user) async {
+    return await userInRole(req, user, 'admin');
   }
 }

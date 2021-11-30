@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
+import 'dart:cli';
 
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -99,7 +100,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   List<String> _allowedHeaders = ['correlation_id'];
   List<String> _allowedOrigins = [];
 
-  final List<Function(Request req)> _interceptors = [];
+  final List<Future<Request?> Function(Request req)> _interceptors = [];
 
   /// Configures this HttpEndpoint using the given configuration parameters.
   ///
@@ -244,19 +245,20 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   Middleware _handler() => (innerHandler) {
         return (request) async {
           // execute before request
-          request = await _noCache(request);
-          request = await _addCompatibility(request);
+          request = waitFor(_noCache(request));
+          request = waitFor(_addCompatibility(request));
 
           // apply interceptors
-          _interceptors.forEach((interseptor) async {
-            request = await interseptor(request) ?? request;
+          _interceptors.forEach((interseptor) {
+            request = waitFor(interseptor(request)) ?? request;
+            // request = await interseptor(request) ?? request;
           });
 
           return Future.sync(() => innerHandler(request)).then(
               (response) async {
             // execute after request
-            response = await _addCors(response);
-            response = await _doMaintenance(response);
+            response = waitFor(_addCors(response));
+            response = waitFor(_doMaintenance(response));
 
             return response;
           }, onError: (Object error, StackTrace stackTrace) {
@@ -266,7 +268,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
         };
       };
 
-  FutureOr<Response> _addCors(Response res) async {
+  Future<Response> _addCors(Response res) async {
     // Configure CORS requests
     var origins = _allowedOrigins;
     if (origins.isEmpty) {
@@ -283,7 +285,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
     return res;
   }
 
-  FutureOr<Request> _addCompatibility(Request req) async {
+  Future<Request> _addCompatibility(Request req) async {
     // TODO: need write the method
     // req.param = (name) => {
     //     if (req.query) {
@@ -306,7 +308,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   }
 
   // Prevents IE from caching REST requests
-  FutureOr<Request> _noCache(Request request) async {
+  Future<Request> _noCache(Request request) async {
     request = request.change(headers: <String, Object>{
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
@@ -317,7 +319,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   }
 
   // Returns maintenance error code
-  FutureOr<Response> _doMaintenance(Response res) async {
+  Future<Response> _doMaintenance(Response res) async {
     // Make this more sophisticated
     if (_maintenanceEnabled) {
       res.change(headers: {'Retry-After': '3600'});
@@ -462,18 +464,25 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
       String method,
       String route,
       Schema schema,
-      Future Function(Request req, Function next)? authorize,
-      Future Function(Request req) action) {
+      FutureOr<Response?> Function(Request req, Future Function() next)?
+          authorize,
+      FutureOr<Response> Function(Request req) action) {
     if (authorize != null) {
       var nextAction = action;
-      action = (req) async {
-        await authorize(req, () async {
-          await nextAction(req);
-        });
-      };
+      action = _action(authorize, nextAction);
     }
 
-    // registerRoute(method, route, schema, action); // todo after finish auth nodule
+    registerRoute(method, route, schema, action);
+  }
+
+  FutureOr<Response> Function(Request req) _action(
+      Function auth, Function nextAction) {
+    return (Request req) async {
+      return await auth(req, () {
+            return nextAction(req);
+          }) ??
+          Response.forbidden('');
+    };
   }
 
   /// Registers a middleware action for the given route.

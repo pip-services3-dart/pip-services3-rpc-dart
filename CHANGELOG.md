@@ -64,3 +64,8 @@
    For example, "/api/v1/" - service base route, "/dummies$" - interceptor route, in result will be next expression - "/api/v1/dummies$"
 
 - **services** Fixed bug with formatting ArraySchema in swagger document
+
+## 1.2.1
+
+- Fixed types of register routes
+- Fixed working with auth routes

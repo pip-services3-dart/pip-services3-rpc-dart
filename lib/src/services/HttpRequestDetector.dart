@@ -109,7 +109,7 @@ class HttpRequestDetector {
       }
     }
 
-    return ip;
+    return ip.toString();
   }
 
   /// Detects the host name of the request's destination server.
@@ -117,7 +117,7 @@ class HttpRequestDetector {
   /// - [req]   an HTTP RequestContext request to process.
   /// Returns the destination server's host name.
   static String detectServerHost(Request req) {
-    return req.url.host; // socket.localAddress;
+    return req.url.host.toString(); // socket.localAddress;
   }
 
   /// Detects the request's destination port number.
