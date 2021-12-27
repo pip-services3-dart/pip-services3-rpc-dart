@@ -243,7 +243,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
 
   /// request handler
   Middleware _handler() => (innerHandler) {
-        return (request) async {
+        return (request) {
           // execute before request
           request = waitFor(_noCache(request));
           request = waitFor(_addCompatibility(request));
@@ -254,8 +254,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
             // request = await interseptor(request) ?? request;
           });
 
-          return Future.sync(() => innerHandler(request)).then(
-              (response) async {
+          return Future.sync(() => innerHandler(request)).then((response) {
             // execute after request
             response = waitFor(_addCors(response));
             response = waitFor(_doMaintenance(response));

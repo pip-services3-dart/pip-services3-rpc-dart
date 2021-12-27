@@ -73,3 +73,7 @@
 ## 1.2.2
 
 - Fixed Swagger support
+
+## 1.2.3
+
+- Fixed async middleware errors
