@@ -55,7 +55,20 @@
 <h3 id="configuration-parameters">Configuration parameters</h3>
 <p>Parameters to pass to the <a href="../pip_services3_rpc/HttpEndpoint/configure.html">configure</a> method for component configuration:</p>
 <ul>
-<li><code>connection(s)</code> - the connection resolver's connections:
+<li>
+<p><code>cors_headers</code> - a comma-separated list of allowed CORS headers</p>
+</li>
+<li>
+<p><code>cors_origins</code> - a comma-separated list of allowed CORS origins</p>
+</li>
+<li>
+<p><code>cors_headers</code> - a comma-separated list of allowed CORS headers</p>
+</li>
+<li>
+<p><code>cors_origins</code> - a comma-separated list of allowed CORS origins</p>
+</li>
+<li>
+<p><code>connection(s)</code> - the connection resolver's connections:</p>
 <ul>
 <li>'<code>connection.discovery_key</code>' - the key to use for connection resolving in a discovery service;</li>
 <li>'<code>connection.protocol</code>' - the connection's protocol;</li>
@@ -64,7 +77,8 @@
 <li>'<code>connection.uri</code>' - the target URI.</li>
 </ul>
 </li>
-<li><code>credential</code> - the HTTPS credentials:
+<li>
+<p><code>credential</code> - the HTTPS credentials:</p>
 <ul>
 <li>'<code>credential.ssl_key_file</code>' - the SSL private key in PEM</li>
 <li>'<code>credential.ssl_crt_file</code>' - the SSL certificate in PEM</li>
@@ -104,9 +118,9 @@ following references to the object's <a href="../pip_services3_rpc/HttpEndpoint/
         <dt>Implemented types</dt>
         <dd>
           <ul class="comma-separated clazz-relationships">
-            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/IOpenable-class.html">IOpenable</a></li>
-            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/IConfigurable-class.html">IConfigurable</a></li>
-            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/IReferenceable-class.html">IReferenceable</a></li>
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.1.5/pip_services3_commons/IOpenable-class.html">IOpenable</a></li>
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.1.5/pip_services3_commons/IConfigurable-class.html">IConfigurable</a></li>
+            <li><a href="https://pub.dev/documentation/pip_services3_commons/1.1.5/pip_services3_commons/IReferenceable-class.html">IReferenceable</a></li>
           </ul>
         </dd>
 
@@ -134,19 +148,19 @@ following references to the object's <a href="../pip_services3_rpc/HttpEndpoint/
 
       <dl class="properties">
         <dt id="hashCode" class="property inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/hashCode.html">hashCode</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/int-class.html">int</a></span> 
+  <span class="name"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/hashCode.html">hashCode</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.15.1/dart-core/int-class.html">int</a></span> 
 
 </dt>
 <dd class="inherited">
-  The hash code for this object. <a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/hashCode.html">[...]</a>
+  The hash code for this object. <a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/hashCode.html">[...]</a>
   <div class="features">read-only, inherited</div>
 
 </dd>
 
         <dt id="runtimeType" class="property inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/runtimeType.html">runtimeType</a></span>
-  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/Type-class.html">Type</a></span> 
+  <span class="name"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/runtimeType.html">runtimeType</a></span>
+  <span class="signature">&#8594; <a href="https://api.dart.dev/stable/2.15.1/dart-core/Type-class.html">Type</a></span> 
 
 </dt>
 <dd class="inherited">
@@ -162,8 +176,8 @@ following references to the object's <a href="../pip_services3_rpc/HttpEndpoint/
       <h2>Methods</h2>
       <dl class="callables">
         <dt id="close" class="callable">
-  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/close.html">close</a></span><span class="signature">(<wbr><span class="parameter" id="close-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">correlationId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-async/Future-class.html">Future</a></span>
+  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/close.html">close</a></span><span class="signature">(<wbr><span class="parameter" id="close-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">correlationId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.15.1/dart-async/Future-class.html">Future</a></span>
   </span>
   
 
@@ -175,7 +189,7 @@ following references to the object's <a href="../pip_services3_rpc/HttpEndpoint/
 </dd>
 
         <dt id="configure" class="callable">
-  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/configure.html">configure</a></span><span class="signature">(<wbr><span class="parameter" id="configure-param-config"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/ConfigParams-class.html">ConfigParams</a></span> <span class="parameter-name">config</span></span>)
+  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/configure.html">configure</a></span><span class="signature">(<wbr><span class="parameter" id="configure-param-config"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.5/pip_services3_commons/ConfigParams-class.html">ConfigParams</a></span> <span class="parameter-name">config</span></span>)
     <span class="returntype parameter">&#8594; void</span>
   </span>
   
@@ -189,7 +203,7 @@ following references to the object's <a href="../pip_services3_rpc/HttpEndpoint/
 
         <dt id="getCorrelationId" class="callable">
   <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/getCorrelationId.html">getCorrelationId</a></span><span class="signature">(<wbr><span class="parameter" id="getCorrelationId-param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Request-class.html">Request</a></span> <span class="parameter-name">req</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.15.1/dart-core/String-class.html">String</a>?</span>
   </span>
   
 
@@ -202,7 +216,7 @@ following references to the object's <a href="../pip_services3_rpc/HttpEndpoint/
 
         <dt id="getServer" class="callable">
   <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/getServer.html">getServer</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-io/HttpServer-class.html">HttpServer</a>?</span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.15.1/dart-io/HttpServer-class.html">HttpServer</a>?</span>
   </span>
   
 
@@ -216,7 +230,7 @@ Returns an HTTP server instance of <code>null</code> if endpoint is closed.
 
         <dt id="isOpen" class="callable">
   <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/isOpen.html">isOpen</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/bool-class.html">bool</a></span>
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.15.1/dart-core/bool-class.html">bool</a></span>
   </span>
   
 
@@ -228,21 +242,21 @@ Returns an HTTP server instance of <code>null</code> if endpoint is closed.
 </dd>
 
         <dt id="noSuchMethod" class="callable inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
+  <span class="name"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/noSuchMethod.html">noSuchMethod</a></span><span class="signature">(<wbr><span class="parameter" id="noSuchMethod-param-invocation"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Invocation-class.html">Invocation</a></span> <span class="parameter-name">invocation</span></span>)
     <span class="returntype parameter">&#8594; dynamic</span>
   </span>
   
 
 </dt>
 <dd class="inherited">
-  Invoked when a non-existent method or property is accessed. <a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/noSuchMethod.html">[...]</a>
+  Invoked when a non-existent method or property is accessed. <a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/noSuchMethod.html">[...]</a>
   <div class="features">inherited</div>
 
 </dd>
 
         <dt id="open" class="callable">
-  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/open.html">open</a></span><span class="signature">(<wbr><span class="parameter" id="open-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">correlationId</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-async/Future-class.html">Future</a></span>
+  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/open.html">open</a></span><span class="signature">(<wbr><span class="parameter" id="open-param-correlationId"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">correlationId</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.15.1/dart-async/Future-class.html">Future</a></span>
   </span>
   
 
@@ -268,7 +282,7 @@ resolver and creates a REST server (service) using the set options and parameter
 </dd>
 
         <dt id="registerInterceptor" class="callable">
-  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/registerInterceptor.html">registerInterceptor</a></span><span class="signature">(<wbr><span class="parameter" id="registerInterceptor-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">route</span>, </span><span class="parameter" id="registerInterceptor-param-action"><span class="type-annotation">dynamic</span> <span class="parameter-name">action</span>(<span class="parameter" id="param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Request-class.html">Request</a></span> <span class="parameter-name">req</span></span>)</span>)
+  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/registerInterceptor.html">registerInterceptor</a></span><span class="signature">(<wbr><span class="parameter" id="registerInterceptor-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-core/String-class.html">String</a>?</span> <span class="parameter-name">route</span>, </span><span class="parameter" id="registerInterceptor-param-action"><span class="type-annotation">dynamic</span> <span class="parameter-name">action</span>(<span class="parameter" id="param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Request-class.html">Request</a></span> <span class="parameter-name">req</span></span>)</span>)
     <span class="returntype parameter">&#8594; void</span>
   </span>
   
@@ -281,7 +295,7 @@ resolver and creates a REST server (service) using the set options and parameter
 </dd>
 
         <dt id="registerRoute" class="callable">
-  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/registerRoute.html">registerRoute</a></span><span class="signature">(<wbr><span class="parameter" id="registerRoute-param-method"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="registerRoute-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span>, </span><span class="parameter" id="registerRoute-param-schema"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/Schema-class.html">Schema</a>?</span> <span class="parameter-name">schema</span>, </span><span class="parameter" id="registerRoute-param-action"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Response-class.html">Response</a></span>&gt;</span></span> <span class="parameter-name">action</span>(<span class="parameter" id="param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Request-class.html">Request</a></span> <span class="parameter-name">req</span></span>)</span>)
+  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/registerRoute.html">registerRoute</a></span><span class="signature">(<wbr><span class="parameter" id="registerRoute-param-method"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="registerRoute-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span>, </span><span class="parameter" id="registerRoute-param-schema"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.5/pip_services3_commons/Schema-class.html">Schema</a>?</span> <span class="parameter-name">schema</span>, </span><span class="parameter" id="registerRoute-param-action"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Response-class.html">Response</a></span>&gt;</span></span> <span class="parameter-name">action</span>(<span class="parameter" id="param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Request-class.html">Request</a></span> <span class="parameter-name">req</span></span>)</span>)
     <span class="returntype parameter">&#8594; void</span>
   </span>
   
@@ -294,7 +308,7 @@ resolver and creates a REST server (service) using the set options and parameter
 </dd>
 
         <dt id="registerRouteWithAuth" class="callable">
-  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/registerRouteWithAuth.html">registerRouteWithAuth</a></span><span class="signature">(<wbr><span class="parameter" id="registerRouteWithAuth-param-method"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="registerRouteWithAuth-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span>, </span><span class="parameter" id="registerRouteWithAuth-param-schema"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/Schema-class.html">Schema</a></span> <span class="parameter-name">schema</span>, </span><span class="parameter" id="registerRouteWithAuth-param-authorize"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-async/Future-class.html">Future</a></span> <span class="parameter-name">authorize</span>(<span class="parameter" id="param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Request-class.html">Request</a></span> <span class="parameter-name">req</span>, </span><span class="parameter" id="param-next"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Function-class.html">Function</a></span> <span class="parameter-name">next</span></span>)?, </span><span class="parameter" id="registerRouteWithAuth-param-action"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-async/Future-class.html">Future</a></span> <span class="parameter-name">action</span>(<span class="parameter" id="param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Request-class.html">Request</a></span> <span class="parameter-name">req</span></span>)</span>)
+  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/registerRouteWithAuth.html">registerRouteWithAuth</a></span><span class="signature">(<wbr><span class="parameter" id="registerRouteWithAuth-param-method"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">method</span>, </span><span class="parameter" id="registerRouteWithAuth-param-route"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-core/String-class.html">String</a></span> <span class="parameter-name">route</span>, </span><span class="parameter" id="registerRouteWithAuth-param-schema"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.5/pip_services3_commons/Schema-class.html">Schema</a></span> <span class="parameter-name">schema</span>, </span><span class="parameter" id="registerRouteWithAuth-param-authorize"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Response-class.html">Response</a>?</span>&gt;</span></span> <span class="parameter-name">authorize</span>(<span class="parameter" id="param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Request-class.html">Request</a></span> <span class="parameter-name">req</span>, </span><span class="parameter" id="param-next"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-async/Future-class.html">Future</a></span> <span class="parameter-name">next</span>()</span>)?, </span><span class="parameter" id="registerRouteWithAuth-param-action"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-async/FutureOr-class.html">FutureOr</a><span class="signature">&lt;<wbr><span class="type-parameter"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Response-class.html">Response</a></span>&gt;</span></span> <span class="parameter-name">action</span>(<span class="parameter" id="param-req"><span class="type-annotation"><a href="https://pub.dev/documentation/shelf/1.2.0/shelf/Request-class.html">Request</a></span> <span class="parameter-name">req</span></span>)</span>)
     <span class="returntype parameter">&#8594; void</span>
   </span>
   
@@ -308,7 +322,7 @@ by the given method and route. <a href="../pip_services3_rpc/HttpEndpoint/regist
 </dd>
 
         <dt id="setReferences" class="callable">
-  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/setReferences.html">setReferences</a></span><span class="signature">(<wbr><span class="parameter" id="setReferences-param-references"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.3/pip_services3_commons/IReferences-class.html">IReferences</a></span> <span class="parameter-name">references</span></span>)
+  <span class="name"><a href="../pip_services3_rpc/HttpEndpoint/setReferences.html">setReferences</a></span><span class="signature">(<wbr><span class="parameter" id="setReferences-param-references"><span class="type-annotation"><a href="https://pub.dev/documentation/pip_services3_commons/1.1.5/pip_services3_commons/IReferences-class.html">IReferences</a></span> <span class="parameter-name">references</span></span>)
     <span class="returntype parameter">&#8594; void</span>
   </span>
   
@@ -321,14 +335,14 @@ by the given method and route. <a href="../pip_services3_rpc/HttpEndpoint/regist
 </dd>
 
         <dt id="toString" class="callable inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/String-class.html">String</a></span>
+  <span class="name"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/toString.html">toString</a></span><span class="signature">(<wbr>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.15.1/dart-core/String-class.html">String</a></span>
   </span>
   
 
 </dt>
 <dd class="inherited">
-  A string representation of this object. <a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/toString.html">[...]</a>
+  A string representation of this object. <a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/toString.html">[...]</a>
   <div class="features">inherited</div>
 
 </dd>
@@ -354,14 +368,14 @@ endpoint discovery. <a href="../pip_services3_rpc/HttpEndpoint/unregister.html">
       <h2>Operators</h2>
       <dl class="callables">
         <dt id="operator ==" class="callable inherited">
-  <span class="name"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
-    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.14.3/dart-core/bool-class.html">bool</a></span>
+  <span class="name"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/operator_equals.html">operator ==</a></span><span class="signature">(<wbr><span class="parameter" id="==-param-other"><span class="type-annotation"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object-class.html">Object</a></span> <span class="parameter-name">other</span></span>)
+    <span class="returntype parameter">&#8594; <a href="https://api.dart.dev/stable/2.15.1/dart-core/bool-class.html">bool</a></span>
   </span>
   
 
 </dt>
 <dd class="inherited">
-  The equality operator. <a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/operator_equals.html">[...]</a>
+  The equality operator. <a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/operator_equals.html">[...]</a>
   <div class="features">inherited</div>
 
 </dd>
@@ -435,8 +449,8 @@ endpoint discovery. <a href="../pip_services3_rpc/HttpEndpoint/unregister.html">
     <li class="section-title inherited">
       <a href="../pip_services3_rpc/HttpEndpoint-class.html#instance-properties">Properties</a>
     </li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/hashCode.html">hashCode</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/runtimeType.html">runtimeType</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/hashCode.html">hashCode</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/runtimeType.html">runtimeType</a></li>
 
     <li class="section-title"><a href="../pip_services3_rpc/HttpEndpoint-class.html#instance-methods">Methods</a></li>
     <li><a href="../pip_services3_rpc/HttpEndpoint/close.html">close</a></li>
@@ -444,18 +458,18 @@ endpoint discovery. <a href="../pip_services3_rpc/HttpEndpoint/unregister.html">
     <li><a href="../pip_services3_rpc/HttpEndpoint/getCorrelationId.html">getCorrelationId</a></li>
     <li><a href="../pip_services3_rpc/HttpEndpoint/getServer.html">getServer</a></li>
     <li><a href="../pip_services3_rpc/HttpEndpoint/isOpen.html">isOpen</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/noSuchMethod.html">noSuchMethod</a></li>
     <li><a href="../pip_services3_rpc/HttpEndpoint/open.html">open</a></li>
     <li><a href="../pip_services3_rpc/HttpEndpoint/register.html">register</a></li>
     <li><a href="../pip_services3_rpc/HttpEndpoint/registerInterceptor.html">registerInterceptor</a></li>
     <li><a href="../pip_services3_rpc/HttpEndpoint/registerRoute.html">registerRoute</a></li>
     <li><a href="../pip_services3_rpc/HttpEndpoint/registerRouteWithAuth.html">registerRouteWithAuth</a></li>
     <li><a href="../pip_services3_rpc/HttpEndpoint/setReferences.html">setReferences</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/toString.html">toString</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/toString.html">toString</a></li>
     <li><a href="../pip_services3_rpc/HttpEndpoint/unregister.html">unregister</a></li>
 
     <li class="section-title inherited"><a href="../pip_services3_rpc/HttpEndpoint-class.html#operators">Operators</a></li>
-    <li class="inherited"><a href="https://api.dart.dev/stable/2.14.3/dart-core/Object/operator_equals.html">operator ==</a></li>
+    <li class="inherited"><a href="https://api.dart.dev/stable/2.15.1/dart-core/Object/operator_equals.html">operator ==</a></li>
 
 
 
@@ -469,7 +483,7 @@ endpoint discovery. <a href="../pip_services3_rpc/HttpEndpoint/unregister.html">
 <footer>
   <span class="no-break">
     pip_services3_rpc
-      1.1.0
+      1.2.2
   </span>
 
   

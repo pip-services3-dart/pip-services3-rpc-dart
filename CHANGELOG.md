@@ -69,3 +69,7 @@
 
 - Fixed types of register routes
 - Fixed working with auth routes
+
+## 1.2.2
+
+- Fixed Swagger support

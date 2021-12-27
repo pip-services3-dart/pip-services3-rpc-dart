@@ -126,7 +126,7 @@ class DummyRestService extends RestService {
         ObjectSchema(true).withRequiredProperty('dummy_id', TypeCode.String),
         _deleteById);
 
-    if (_swaggerContent != null) registerOpenApiSpec(_swaggerContent!);
+    if (_swaggerContent != null) registerOpenApiSpec_(_swaggerContent!);
     if (_swaggerPath != null) registerOpenApiSpecFromFile(_swaggerPath!);
   }
 }

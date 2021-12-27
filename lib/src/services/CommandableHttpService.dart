@@ -124,7 +124,7 @@ abstract class CommandableHttpService extends RestService {
 
       var doc =
           CommandableSwaggerDocument(baseRoute ?? '', swaggerConfig, commands);
-      registerOpenApiSpec(doc.toString());
+      registerOpenApiSpec_(doc.toString());
     }
   }
 }

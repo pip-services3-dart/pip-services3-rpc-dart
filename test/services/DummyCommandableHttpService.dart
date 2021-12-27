@@ -10,7 +10,7 @@ class DummyCommandableHttpService extends CommandableHttpService {
   @override
   void register() {
     if (!swaggerAuto && swaggerEnable) {
-      registerOpenApiSpec('swagger yaml content');
+      registerOpenApiSpec_('swagger yaml content');
     }
 
     super.register();

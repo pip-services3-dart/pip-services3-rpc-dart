@@ -88,8 +88,14 @@ abstract class RestService
         IReferenceable,
         IUnreferenceable,
         IRegisterable {
-  static final _defaultConfig = ConfigParams.fromTuples(
-      ['base_route', null, 'dependencies.endpoint', '*:endpoint:http:*:1.0']);
+  static final _defaultConfig = ConfigParams.fromTuples([
+    'base_route',
+    null,
+    'dependencies.endpoint',
+    '*:endpoint:http:*:1.0',
+    'dependencies.swagger',
+    '*:swagger-service:*:*:1.0'
+  ]);
 
   ConfigParams? config;
   IReferences? _references;
@@ -114,6 +120,7 @@ abstract class RestService
   // The tracer.
   var tracer = CompositeTracer();
 
+  ISwaggerService? _swaggerService;
   bool swaggerEnable = false;
   String swaggerRoute = 'swagger';
 
@@ -125,7 +132,7 @@ abstract class RestService
     config = config.setDefaults(RestService._defaultConfig);
     this.config = config;
     dependencyResolver.configure(config);
-    baseRoute = config.getAsStringWithDefault('base_route', baseRoute ?? '');
+    baseRoute = config.getAsNullableString('base_route') ?? baseRoute;
     swaggerEnable =
         config.getAsBooleanWithDefault('swagger.enable', swaggerEnable);
     swaggerRoute = config.getAsStringWithDefault('swagger.route', swaggerRoute);
@@ -153,6 +160,9 @@ abstract class RestService
     }
     // Add registration callback to the endpoint
     endpoint!.register(this);
+
+    _swaggerService =
+        dependencyResolver.getOneOptional<ISwaggerService>('swagger');
   }
 
   /// Unsets (clears) previously set references to dependent components.
@@ -163,6 +173,8 @@ abstract class RestService
       endpoint!.unregister(this);
       endpoint = null;
     }
+
+    _swaggerService = null;
   }
 
   HttpEndpoint _createEndpoint() {
@@ -392,17 +404,21 @@ abstract class RestService
   void registerOpenApiSpecFromFile(String path) async {
     var file = File(path);
     var content = await file.readAsString();
-    registerOpenApiSpec(content);
+    registerOpenApiSpec_(content);
   }
 
-  void registerOpenApiSpec(String content) {
-    if (swaggerEnable) {
-      registerRoute('get', swaggerRoute, null, (Request req) {
-        return Response(200, body: content, headers: {
-          'Content-Length': content.length.toString(),
-          'Content-Type': 'application/x-yaml'
-        });
+  void registerOpenApiSpec_(String content) {
+    if (!swaggerEnable) return;
+
+    registerRoute('get', swaggerRoute, null, (Request req) async {
+      return Response(200, body: content, headers: {
+        'Content-Length': content.length.toString(),
+        'Content-Type': 'application/x-yaml'
       });
+    });
+
+    if (_swaggerService != null) {
+      _swaggerService?.registerOpenApiSpec(baseRoute, swaggerRoute);
     }
   }
 
