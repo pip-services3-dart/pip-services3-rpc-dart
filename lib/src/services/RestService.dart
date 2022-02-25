@@ -403,7 +403,7 @@ abstract class RestService
 
   void registerOpenApiSpecFromFile(String path) async {
     var file = File(path);
-    var content = await file.readAsString();
+    var content = file.readAsStringSync();
     registerOpenApiSpec_(content);
   }
 

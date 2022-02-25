@@ -95,7 +95,7 @@ class CommandableSwaggerDocument {
     ObjectSchema? schema;
 
     try {
-      schema = (command as dynamic).get_schema;
+      schema = (command as dynamic).schema_;
     } on NoSuchMethodError {
       schema = null;
     }
@@ -142,6 +142,23 @@ class CommandableSwaggerDocument {
     return data;
   }
 
+  String toSupportedSwaggerType(String typeName) {
+    switch (typeName) {
+      case 'String':
+        return 'string';
+      case 'bool':
+        return 'boolean';
+      case 'int':
+        return 'integer';
+      case 'double':
+        return 'number';
+      case 'List':
+        return 'array';
+      default:
+        return typeName;
+    }
+  }
+
   Map<String, dynamic> _createPropertyTypeData(dynamic propertyType) {
     if (propertyType is ObjectSchema) {
       var objectMap = _createPropertyData(propertyType, false);
@@ -174,7 +191,9 @@ class CommandableSwaggerDocument {
         case TypeCode.DateTime:
           return {'type': 'string', 'format': 'date-time'};
         default:
-          return {'type': TypeConverter.asString(typeCode)};
+          return {
+            'type': toSupportedSwaggerType(TypeConverter.asString(typeCode))
+          };
       }
     }
   }
@@ -249,6 +268,6 @@ class CommandableSwaggerDocument {
   }
 
   String getSpaces(int length) {
-    return ' ' * (length * 2);
+    return ' ' * length * 2;
   }
 }

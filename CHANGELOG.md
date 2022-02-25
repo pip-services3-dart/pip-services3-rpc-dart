@@ -77,3 +77,7 @@
 ## 1.2.3
 
 - Fixed async middleware errors
+
+## 1.2.4
+
+- Fixed swagger data type supports
