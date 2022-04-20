@@ -81,3 +81,7 @@
 ## 1.2.4
 
 - Fixed swagger data type supports
+
+## 1.2.5
+
+- Fixed request processing for HttpEndpoint

@@ -1,7 +1,6 @@
 import 'dart:async';
 import 'dart:convert';
 import 'dart:io';
-import 'dart:cli';
 
 import 'package:shelf/shelf.dart';
 import 'package:shelf_router/shelf_router.dart';
@@ -245,21 +244,19 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   Middleware _handler() => (innerHandler) {
         return (request) {
           // execute before request
-          request = waitFor(_noCache(request));
-          request = waitFor(_addCompatibility(request));
+          request = _noCache(request);
+          request = _addCompatibility(request);
 
           // apply interceptors
-          _interceptors.forEach((interseptor) {
-            request = waitFor(interseptor(request)) ?? request;
+          _interceptors.forEach((interseptor) async {
+            request = await interseptor(request) ?? request;
             // request = await interseptor(request) ?? request;
           });
 
           return Future.sync(() => innerHandler(request)).then((response) {
             // execute after request
-            response = waitFor(_addCors(response));
-            response = waitFor(_doMaintenance(response));
-
-            return response;
+            response = _addCors(response);
+            return _doMaintenance(response).then((value) => value);
           }, onError: (Object error, StackTrace stackTrace) {
             // execute if error
             if (error is HijackException) throw error;
@@ -267,7 +264,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
         };
       };
 
-  Future<Response> _addCors(Response res) async {
+  Response _addCors(Response res) {
     // Configure CORS requests
     var origins = _allowedOrigins;
     if (origins.isEmpty) {
@@ -284,7 +281,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
     return res;
   }
 
-  Future<Request> _addCompatibility(Request req) async {
+  Request _addCompatibility(Request req) {
     // TODO: need write the method
     // req.param = (name) => {
     //     if (req.query) {
@@ -307,7 +304,7 @@ class HttpEndpoint implements IOpenable, IConfigurable, IReferenceable {
   }
 
   // Prevents IE from caching REST requests
-  Future<Request> _noCache(Request request) async {
+  Request _noCache(Request request) {
     request = request.change(headers: <String, Object>{
       'Cache-Control': 'no-cache, no-store, must-revalidate',
       'Pragma': 'no-cache',
