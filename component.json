@@ -1,6 +1,6 @@
 {
-    "name": "pip-services-rpc",
-    "registry": "pipdevs",
+    "name": "pip_services3_rpc",
+    "registry": "github.com/pip-services3-dart",
     "version": "1.2.5",
     "build": "0"
 }
