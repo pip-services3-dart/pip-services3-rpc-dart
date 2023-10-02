@@ -85,3 +85,7 @@
 ## 1.2.5
 
 - Fixed request processing for HttpEndpoint
+
+## 1.2.6
+
+- * *HttpResponseSender.SendError* - fixed error with zero statuses

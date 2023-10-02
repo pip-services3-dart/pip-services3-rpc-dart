@@ -14,7 +14,7 @@ class HttpResponseSender {
   /// - [error]     an error object to be sent.
   static FutureOr<Response> sendError(Request req, error) {
     error = error ?? <String, String>{};
-    error = ApplicationException.unwrapError(error);
+    error = ErrorDescriptionFactory.create(error);
 
     return Response(error.status, body: json.encode(error));
   }
